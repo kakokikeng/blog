@@ -1,2 +1,2 @@
 # blog
-to get a simple blog
+start a simple blog
