@@ -7,5 +7,5 @@ import org.apache.ibatis.annotations.Mapper;
  * @date 2018/9/3
  */
 @Mapper
-public class FollowerMapper {
+public interface FollowerMapper {
 }
