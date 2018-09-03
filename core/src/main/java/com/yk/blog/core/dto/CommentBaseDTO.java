@@ -1,0 +1,62 @@
+package com.yk.blog.core.dto;
+
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+/**
+ * @author yikang
+ * @date 2018/8/31
+ */
+@ApiModel
+public class CommentBaseDTO {
+    @ApiModelProperty("用户id")
+    private String userId;
+    @ApiModelProperty("被回复用户id 没有则为空")
+    private String attachedId;
+    @ApiModelProperty("评论内容")
+    private String content;
+    @ApiModelProperty("创建时间")
+    private Long createTime;
+
+    @Override
+    public String toString() {
+        return "CommentBaseDTO{" +
+                "userId='" + userId + '\'' +
+                ", attachedId='" + attachedId + '\'' +
+                ", content='" + content + '\'' +
+                ", createTime=" + createTime +
+                '}';
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getAttachedId() {
+        return attachedId;
+    }
+
+    public void setAttachedId(String attachedId) {
+        this.attachedId = attachedId;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public Long getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Long createTime) {
+        this.createTime = createTime;
+    }
+}

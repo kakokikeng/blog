@@ -1,0 +1,15 @@
+mybatis:
+  mapper-locations: classpath*:com/yk/blog/data/mapper/*.xml
+server:
+  port: 8888
+spring:
+  datasource:
+    data-password: root
+    data-username: Wyy19970704
+    url: jdbc:mysql://localhost:3306/blog?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&autoReconnect=true
+    driver-class-name: com.mysql.jdbc.Driver
+eureka:
+  client:
+    service-url:
+      defaultZone: http://172.20.110.42:8761/eureka
+    register-with-eureka: false
