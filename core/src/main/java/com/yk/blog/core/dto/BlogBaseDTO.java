@@ -1,5 +1,6 @@
 package com.yk.blog.core.dto;
 
+import com.sun.istack.internal.NotNull;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -9,11 +10,13 @@ import io.swagger.annotations.ApiModelProperty;
  */
 @ApiModel
 public class BlogBaseDTO {
-
+    @NotNull
     @ApiModelProperty(name = "title",value = "博客标题")
     private String title;
+    @NotNull
     @ApiModelProperty(name = "content",value = "博客内容")
     private String content;
+    @NotNull
     @ApiModelProperty(name = "userId",value = "所属用户id")
     private String userId;
 

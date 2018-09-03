@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -60,14 +61,14 @@ public class BlogController {
     @PutMapping("{userId}/{blogId}")
     public Result updateBlog(@ApiParam("登录用户id") @PathVariable("userId") String userId,
                              @ApiParam("博客id") @PathVariable("blogId") int blogId,
-                             @ApiParam("博客相关信息") @RequestBody BlogReqDTO blog) {
+                             @ApiParam("博客相关信息") @Valid @RequestBody BlogReqDTO blog) {
         return blogService.updateBlog(userId, blogId, blog);
     }
 
     @ApiOperation("新建博客")
     @PostMapping("{userId}")
     public Result createBlog(@ApiParam("登录用户id") @PathVariable("userId") String userId,
-                             @ApiParam("博客相关信息") @RequestBody BlogReqDTO blog) {
+                             @ApiParam("博客相关信息") @Valid @RequestBody BlogReqDTO blog) {
         return blogService.createBlog(userId, blog);
     }
 

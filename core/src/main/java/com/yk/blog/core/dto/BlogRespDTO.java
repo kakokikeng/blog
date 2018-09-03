@@ -1,5 +1,6 @@
 package com.yk.blog.core.dto;
 
+import com.yk.blog.domain.dto.Blog;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -19,6 +20,19 @@ public class BlogRespDTO extends BlogBaseDTO{
     private Integer likeCount;
     @ApiModelProperty(name = "commentCount",value = "评论数")
     private Integer commentCount;
+
+    public BlogRespDTO(Blog blog){
+        setId(blog.getId());
+        setCommentCount(blog.getCommentCount());
+        setCreateTime(blog.getCreateTime());
+        setLikeCount(blog.getLikeCount());
+        setReadCount(blog.getReadCount());
+        setContent(blog.getContent());
+        setTitle(blog.getTitle());
+        setUserId(blog.getUserId());
+    }
+
+    public BlogRespDTO(){}
 
 
     @Override
