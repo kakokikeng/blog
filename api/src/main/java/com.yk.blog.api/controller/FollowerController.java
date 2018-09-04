@@ -35,9 +35,9 @@ public class FollowerController {
 
     @ApiOperation("取消关注")
     @DeleteMapping("{followId}/{followedId}")
-    public Result cancel(@ApiParam("登录用户id") @PathVariable("followId") String followId,
+    public Result unfollow(@ApiParam("登录用户id") @PathVariable("followId") String followId,
                          @ApiParam("被关注的用户id") @PathVariable("followedId") String followedId) {
-        return followerService.cancel(followId, followedId);
+        return followerService.unfollow(followId, followedId);
     }
 
     @ApiOperation("查询所有关注我的用户")

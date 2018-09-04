@@ -30,7 +30,7 @@ public interface FollowerService {
      *  @Author yikang
      *  @Date 2018/9/4
     */
-    Result cancel(String followId, String followedId);
+    Result unfollow(String followId, String followedId);
 
     /**
      *  获得用户所有关注者

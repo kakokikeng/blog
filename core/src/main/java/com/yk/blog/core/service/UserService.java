@@ -1,5 +1,7 @@
 package com.yk.blog.core.service;
 
+import com.yk.blog.domain.dto.User;
+
 import java.util.List;
 
 /**
@@ -27,6 +29,16 @@ public interface UserService {
      * @Date 2018/9/4
      */
     boolean existUsers(List<String> userIds);
+
+    /**
+     * 通过用户id列表获得用户信息列表
+     *
+     * @param userIds 用户id列表
+     * @return 用户信息列表
+     * @Author yikang
+     * @Date 2018/9/4
+     */
+    List<User> getUserListByIdList(List<String> userIds);
 
 
 }

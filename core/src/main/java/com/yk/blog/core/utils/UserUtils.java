@@ -3,7 +3,11 @@ package com.yk.blog.core.utils;
 import com.t4f.gaea.dto.GenericResult;
 import com.t4f.gaea.dto.Result;
 import com.yk.blog.core.dto.BlogRespDTO;
+import com.yk.blog.core.dto.UserRespDTO;
+import com.yk.blog.domain.dto.User;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -20,4 +24,19 @@ public class UserUtils {
     public static <T>GenericResult<T> wrongUserIdGenericResult(){
         return GenericResultUtils.genericFailureResult(ErrorMessages.WRONG_USER_ID.message,ErrorMessages.WRONG_USER_ID.code);
     }
+
+    public static List<String> getIdList(String ... id){
+        return Arrays.asList(id);
+    }
+
+    public static List<UserRespDTO> changeUserListToDTOList(List<User> userList){
+        List<UserRespDTO> result = new ArrayList<>();
+        if(userList != null){
+            for (User user:userList) {
+                result.add(new UserRespDTO(user));
+            }
+        }
+        return result;
+    }
+
 }

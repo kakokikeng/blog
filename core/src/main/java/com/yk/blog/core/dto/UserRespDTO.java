@@ -1,20 +1,36 @@
 package com.yk.blog.core.dto;
 
+import com.yk.blog.domain.dto.User;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author yikang
  * @date 2018/8/30
  */
 @ApiModel
-public class UserRespDTO {
+public class UserRespDTO extends UserBaseDTO{
     @ApiModelProperty("用户名")
     private String id;
     @ApiModelProperty("粉丝数量")
     private Integer fans;
     @ApiModelProperty("博客数量")
     private Integer blogs;
+
+    public UserRespDTO(){}
+
+    public UserRespDTO(User user){
+        setUserName(user.getUserName());
+        setEmail(user.getEmail());
+        setCreateTime(user.getCreateTime());
+        setId(user.getId());
+        setFans(user.getFans());
+        setBlogs(user.getBlogs());
+    }
+
 
     @Override
     public String toString() {

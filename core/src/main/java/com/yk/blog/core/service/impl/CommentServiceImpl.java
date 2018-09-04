@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.yk.blog.core.utils.GenericResultUtils.generateResultWithCount;
 import static com.yk.blog.core.utils.UserUtils.wrongUserIdGenericResult;
 
 /**
@@ -37,11 +38,7 @@ public class CommentServiceImpl implements CommentService {
             return wrongUserIdGenericResult();
         }
         int count = commentMapper.insertComment(commentReqDTO.changeToComment());
-        if (count > 0) {
-            return GenericResultUtils.genericNormalResult(true);
-        } else {
-            return GenericResultUtils.genericNormalResult(false);
-        }
+        return generateResultWithCount(count);
     }
 
     private boolean commentNotLegal(CommentReqDTO commentReqDTO) {
@@ -64,19 +61,15 @@ public class CommentServiceImpl implements CommentService {
                 datas.add(new CommentRespDTO(comment));
             }
         }
-        return GenericResultUtils.genericResult(true, datas);
+        return GenericResultUtils.genericResult(Boolean.TRUE, datas);
     }
 
     @Override
     public Result deleteComment(String userId, int commentId) {
         if (!userService.existUser(userId)) {
-            GenericResultUtils.genericNormalResult(false, ErrorMessages.WRONG_USER_ID.message);
+            GenericResultUtils.genericNormalResult(Boolean.FALSE, ErrorMessages.WRONG_USER_ID.message);
         }
         int count = commentMapper.deleteComment(userId, commentId);
-        if (count > 0) {
-            return GenericResultUtils.genericNormalResult(true);
-        } else {
-            return GenericResultUtils.genericNormalResult(false);
-        }
+        return generateResultWithCount(count);
     }
 }

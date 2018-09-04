@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.yk.blog.core.utils.GenericResultUtils.generateResultWithCount;
 import static com.yk.blog.core.utils.UserUtils.wrongUserIdGenericResult;
 import static com.yk.blog.core.utils.UserUtils.wrongUserIdResult;
 
@@ -53,7 +54,7 @@ public class BlogServiceImpl implements BlogService {
                 data.add(tmp);
             }
         }
-        return GenericResultUtils.genericResult(true, data);
+        return GenericResultUtils.genericResult(Boolean.TRUE, data);
     }
 
     @Override
@@ -65,7 +66,7 @@ public class BlogServiceImpl implements BlogService {
         if (blog != null) {
             BlogRespDTO tmp = new BlogRespDTO(blog);
             tmp.setReadCount(countService.getReadCount(tmp.getId()));
-            return GenericResultUtils.genericResult(true, tmp);
+            return GenericResultUtils.genericResult(Boolean.TRUE, tmp);
         } else {
             return GenericResultUtils.genericFailureResult(ErrorMessages.BLOG_NOT_EXIST.message, ErrorMessages.BLOG_NOT_EXIST.code);
         }
@@ -78,11 +79,7 @@ public class BlogServiceImpl implements BlogService {
             return wrongUserIdResult();
         }
         int count = blogMapper.deleteBlog(userId, blogId);
-        if (count > 0) {
-            return GenericResultUtils.genericNormalResult(true);
-        } else {
-            return GenericResultUtils.genericNormalResult(false);
-        }
+        return generateResultWithCount(count);
     }
 
     @Override
@@ -92,11 +89,7 @@ public class BlogServiceImpl implements BlogService {
         }
         Blog updateBlog = blog.changeToBlog(false);
         int count = blogMapper.updateBlog(userId, blogId, updateBlog);
-        if (count > 0) {
-            return GenericResultUtils.genericNormalResult(true);
-        } else {
-            return GenericResultUtils.genericNormalResult(false);
-        }
+        return generateResultWithCount(count);
     }
 
     @Override
@@ -109,10 +102,6 @@ public class BlogServiceImpl implements BlogService {
         map.put("userId",userId);
         map.put("blog",blog);
         int count = blogMapper.createBlog(map);
-        if (count > 0) {
-            return GenericResultUtils.genericNormalResult(true);
-        } else {
-            return GenericResultUtils.genericNormalResult(false);
-        }
+        return generateResultWithCount(count);
     }
 }

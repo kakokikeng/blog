@@ -13,3 +13,7 @@ eureka:
     service-url:
       defaultZone: http://172.20.110.42:8761/eureka
     register-with-eureka: false
+
+redis:
+  url: 127.0.0.1
+  port: 6379

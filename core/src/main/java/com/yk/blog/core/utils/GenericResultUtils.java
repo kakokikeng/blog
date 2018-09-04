@@ -20,6 +20,14 @@ public class GenericResultUtils {
         return result;
     }
 
+    public static Result generateResultWithCount(int count){
+        if (count > 0) {
+            return GenericResultUtils.genericNormalResult(true);
+        } else {
+            return GenericResultUtils.genericNormalResult(false);
+        }
+    }
+
 
     public static <T> GenericResult<T> genericFailureResult(String message,String ... code) {
         GenericResult<T> result = new GenericResult<>();

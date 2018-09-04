@@ -7,7 +7,10 @@ import com.yk.blog.core.utils.GenericResultUtils;
 import com.yk.blog.data.dao.BlogMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
+import static com.yk.blog.core.utils.GenericResultUtils.generateResultWithCount;
 import static com.yk.blog.core.utils.UserUtils.wrongUserIdResult;
 
 /**
@@ -21,6 +24,9 @@ public class CountServiceImpl implements CountService {
     BlogMapper blogMapper;
 
     @Autowired
+    JedisPool jedisPool;
+
+    @Autowired
     UserService userService;
 
     @Override
@@ -29,16 +35,22 @@ public class CountServiceImpl implements CountService {
             return wrongUserIdResult();
         }
         int count = blogMapper.increaseLikeCount(userId, blogId);
-        if (count > 0) {
-            return GenericResultUtils.genericNormalResult(true);
-        } else {
-            return GenericResultUtils.genericNormalResult(false);
-        }
+        return generateResultWithCount(count);
     }
 
     @Override
     public Result increaseReadCount(int blogId) {
+
+        try(Jedis jedis = jedisPool.getResource()){
+            jedis.incrBy(String.valueOf(blogId),1);
+        }
+
         return null;
+    }
+
+    @Override
+    public int increaseFans(String userId) {
+        return 0;
     }
 
     @Override
