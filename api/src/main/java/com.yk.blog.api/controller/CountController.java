@@ -7,13 +7,15 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author yikang
  * @date 2018/9/4
  */
-@RestController("count")
+@RestController
+@RequestMapping("count")
 public class CountController {
 
     @Autowired
