@@ -1,5 +1,6 @@
 package com.yk.blog.api.controller;
 
+import com.t4f.gaea.dto.GenericResult;
 import com.t4f.gaea.dto.Result;
 import com.yk.blog.core.dto.CommentReqDTO;
 import com.yk.blog.core.dto.CommentRespDTO;
@@ -33,7 +34,7 @@ public class CommentController {
 
     @ApiOperation("通过博客id获取所有评论")
     @GetMapping("{blogId}/comments")
-    public List<CommentRespDTO> getComments(@ApiParam("博客id") @PathVariable("blogId") int blogId) {
+    public GenericResult<List<CommentRespDTO>> getComments(@ApiParam("博客id") @PathVariable("blogId") int blogId) {
         return commentService.getComments(blogId);
     }
 
