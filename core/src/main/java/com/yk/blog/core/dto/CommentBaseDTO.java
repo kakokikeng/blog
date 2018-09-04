@@ -1,5 +1,6 @@
 package com.yk.blog.core.dto;
 
+import com.sun.istack.internal.NotNull;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -9,14 +10,20 @@ import io.swagger.annotations.ApiModelProperty;
  */
 @ApiModel
 public class CommentBaseDTO {
+    @NotNull
     @ApiModelProperty("用户id")
     private String userId;
     @ApiModelProperty("被回复用户id 没有则为空")
     private String attachedId;
+    @NotNull
     @ApiModelProperty("评论内容")
     private String content;
+    @NotNull
     @ApiModelProperty("创建时间")
     private Long createTime;
+    @NotNull
+    @ApiModelProperty("博客id")
+    private Integer blogId;
 
     @Override
     public String toString() {
@@ -25,7 +32,16 @@ public class CommentBaseDTO {
                 ", attachedId='" + attachedId + '\'' +
                 ", content='" + content + '\'' +
                 ", createTime=" + createTime +
+                ", blogId=" + blogId +
                 '}';
+    }
+
+    public Integer getBlogId() {
+        return blogId;
+    }
+
+    public void setBlogId(Integer blogId) {
+        this.blogId = blogId;
     }
 
     public String getUserId() {

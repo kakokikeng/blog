@@ -1,5 +1,6 @@
 package com.yk.blog.core.dto;
 
+import com.yk.blog.domain.dto.Comment;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -11,6 +12,17 @@ import io.swagger.annotations.ApiModelProperty;
 public class CommentRespDTO extends CommentBaseDTO{
     @ApiModelProperty("评论id")
     private Integer id;
+
+    public CommentRespDTO(){}
+
+    public CommentRespDTO(Comment comment){
+        setId(comment.getId());
+        setAttachedId(comment.getAttachedUserId());
+        setBlogId(comment.getBlogId());
+        setUserId(comment.getUserId());
+        setCreateTime(comment.getCreateTime());
+        setContent(comment.getContent());
+    }
 
     @Override
     public String toString() {

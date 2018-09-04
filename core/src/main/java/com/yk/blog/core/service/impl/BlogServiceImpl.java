@@ -37,7 +37,7 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public GenericResult<List<BlogRespDTO>> getBlogsByUserId(String userId) {
-        if (notExistUser(userId)) {
+        if (!userService.existUser(userId)) {
             return wrongUserIdGenericResult();
         }
         List<Blog> blogList = blogMapper.getBlogsByUserId(userId);
@@ -50,13 +50,9 @@ public class BlogServiceImpl implements BlogService {
         return GenericResultUtils.genericResult(true, data);
     }
 
-    private boolean notExistUser(String userId) {
-        return userId.isEmpty() || !userService.existUser(userId);
-    }
-
     @Override
     public GenericResult<BlogRespDTO> getBlogByUserIdAndBlogId(String userId, String blogId) {
-        if (notExistUser(userId)) {
+        if (!userService.existUser(userId)) {
             return wrongUserIdGenericResult();
         }
         Blog blog = blogMapper.getBlogByUserIdAndBlogId(userId, blogId);
@@ -69,7 +65,7 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public Result increaseLikeCount(String userId, int blogId) {
-        if (notExistUser(userId)) {
+        if (!userService.existUser(userId)) {
             return wrongUserIdResult();
         }
         int count = blogMapper.increaseLikeCount(userId, blogId);
@@ -82,7 +78,7 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public Result deleteBlog(String userId, int blogId) {
-        if (notExistUser(userId)) {
+        if (!userService.existUser(userId)) {
             return wrongUserIdResult();
         }
         int count = blogMapper.deleteBlog(userId, blogId);
@@ -95,7 +91,7 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public Result updateBlog(String userId, int blogId, BlogReqDTO blog) {
-        if (notExistUser(userId)) {
+        if (!userService.existUser(userId)) {
             return wrongUserIdResult();
         }
         Blog updateBlog = genericBlog(blog,false);
@@ -122,7 +118,7 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public Result createBlog(String userId, BlogReqDTO blogReqDTO) {
-        if (notExistUser(userId)) {
+        if (!userService.existUser(userId)) {
             return wrongUserIdResult();
         }
         Blog blog = genericBlog(blogReqDTO,true);
