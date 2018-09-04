@@ -20,7 +20,7 @@ public class GenericResultUtils {
         return result;
     }
 
-    public static Result generateResultWithCount(int count){
+    public static Result generateResultWithCount(int count) {
         if (count > 0) {
             return GenericResultUtils.genericNormalResult(true);
         } else {
@@ -29,11 +29,11 @@ public class GenericResultUtils {
     }
 
 
-    public static <T> GenericResult<T> genericFailureResult(String message,String ... code) {
+    public static <T> GenericResult<T> genericFailureResult(String message, String... code) {
         GenericResult<T> result = new GenericResult<>();
         result.setSuccess(false);
         result.setMessage(message);
-        if(code.length > 0){
+        if (code.length > 0) {
             result.setCode(code[0]);
         }
         return result;
