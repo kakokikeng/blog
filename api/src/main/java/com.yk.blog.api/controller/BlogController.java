@@ -42,14 +42,6 @@ public class BlogController {
         return blogService.getBlogByUserIdAndBlogId(userId, blogId);
     }
 
-
-    @ApiOperation("通过登录用户和博客id对博客进行点赞")
-    @PutMapping("{userId}/{blogId}/laud")
-    public Result increaseLikeCount(@ApiParam("登录用户id") @PathVariable("userId") String userId,
-                                    @ApiParam("博客id") @PathVariable("blogId") int blogId) {
-        return blogService.increaseLikeCount(userId, blogId);
-    }
-
     @ApiOperation("删除博客")
     @DeleteMapping("{userId}/{blogId}")
     public Result deleteBlog(@ApiParam("登录用户id") @PathVariable("userId") String userId,

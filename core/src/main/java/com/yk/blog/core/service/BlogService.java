@@ -33,15 +33,6 @@ public interface BlogService {
      */
     GenericResult<BlogRespDTO> getBlogByUserIdAndBlogId(String userId, String blogId);
 
-    /**
-     *  通过登录用户和博客id对博客进行点赞
-     * @param userId 登录用户id
-     * @param blogId 当前博客id
-     * @return
-     *  @Author yikang
-     *  @Date 2018/9/3
-     */
-    Result increaseLikeCount(String userId, int blogId);
 
     /**
      *  删除博客

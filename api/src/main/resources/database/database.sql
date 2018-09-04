@@ -91,3 +91,18 @@ create table user
 )
   comment '存储博客用户相关信息';
 
+  create table like_relations
+(
+  id      int auto_increment
+    primary key,
+  user_id varchar(32) not null
+  comment '点赞用户id',
+  blog_id int         not null
+  comment '被点赞博客id',
+  constraint like_relations_user_id_blog_id_uindex
+  unique (user_id, blog_id)
+)
+  comment '点赞相关表';
+
+
+
