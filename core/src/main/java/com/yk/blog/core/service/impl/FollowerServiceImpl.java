@@ -75,11 +75,10 @@ public class FollowerServiceImpl implements FollowerService {
         }
         List<UserRespDTO> data = new ArrayList<>();
         List<String> userIdList = followerMapper.getFollowers(userId);
-        if(userIdList != null){
-            List<User> userList = userService.getUserListByIdList(userIdList);
-            data = UserUtils.changeUserListToDTOList(userList);
+        if (userIdList != null) {
+            data = userService.getUserListByIdList(userIdList);
         }
-        return GenericResultUtils.genericResult(Boolean.TRUE,data);
+        return GenericResultUtils.genericResult(Boolean.TRUE, data);
     }
 
     @Override
@@ -89,10 +88,9 @@ public class FollowerServiceImpl implements FollowerService {
         }
         List<UserRespDTO> data = new ArrayList<>();
         List<String> userIdList = followerMapper.getFolloweders(userId);
-        if(userIdList != null){
-            List<User> userList = userService.getUserListByIdList(userIdList);
-            data = UserUtils.changeUserListToDTOList(userList);
+        if (userIdList != null) {
+            data = userService.getUserListByIdList(userIdList);
         }
-        return GenericResultUtils.genericResult(Boolean.TRUE,data);
+        return GenericResultUtils.genericResult(Boolean.TRUE, data);
     }
 }

@@ -41,8 +41,8 @@ public class CountServiceImpl implements CountService {
     @Override
     public Result increaseReadCount(int blogId) {
 
-        try(Jedis jedis = jedisPool.getResource()){
-            jedis.incrBy(String.valueOf(blogId),1);
+        try (Jedis jedis = jedisPool.getResource()) {
+            jedis.incrBy(String.valueOf(blogId), 1);
         }
 
         return null;

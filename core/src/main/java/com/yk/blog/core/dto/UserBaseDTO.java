@@ -1,8 +1,15 @@
 package com.yk.blog.core.dto;
 
+import com.mysql.jdbc.StringUtils;
 import com.sun.istack.internal.NotNull;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.apache.logging.log4j.util.Strings;
+
+import java.text.SimpleDateFormat;
+import java.util.Random;
+import java.util.UUID;
+import java.util.logging.SimpleFormatter;
 
 /**
  * @author yikang
@@ -28,6 +35,15 @@ public class UserBaseDTO {
                 ", email='" + email + '\'' +
                 '}';
     }
+
+    public String generateUserId(){
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+        long timeStamp = System.currentTimeMillis();
+        String randomStr = UUID.randomUUID().toString();
+        String result = formatter.format(timeStamp) + randomStr.substring(randomStr.length() - 12, randomStr.length());
+        return result;
+    }
+
 
     public String getUserName() {
         return userName;

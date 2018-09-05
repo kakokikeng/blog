@@ -31,7 +31,7 @@ public class UserUtils {
 
     public static List<UserRespDTO> changeUserListToDTOList(List<User> userList){
         List<UserRespDTO> result = new ArrayList<>();
-        if(userList != null){
+        if(userList != null && userList.size() != 0){
             for (User user:userList) {
                 result.add(new UserRespDTO(user));
             }
