@@ -98,9 +98,9 @@ public class BlogServiceImpl implements BlogService {
             return wrongUserIdResult();
         }
         Blog blog = blogReqDTO.changeToBlog(true);
-        Map<String,Object> map = new HashMap<>();
-        map.put("userId",userId);
-        map.put("blog",blog);
+        Map<String, Object> map = new HashMap<>();
+        map.put("userId", userId);
+        map.put("blog", blog);
         int count = blogMapper.createBlog(map);
         return generateResultWithCount(count);
     }

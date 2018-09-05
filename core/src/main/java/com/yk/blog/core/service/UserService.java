@@ -1,5 +1,9 @@
 package com.yk.blog.core.service;
 
+import com.t4f.gaea.dto.GenericResult;
+import com.t4f.gaea.dto.Result;
+import com.yk.blog.core.dto.UserReqDTO;
+import com.yk.blog.core.dto.UserRespDTO;
 import com.yk.blog.domain.dto.User;
 
 import java.util.List;
@@ -10,6 +14,28 @@ import java.util.List;
  */
 
 public interface UserService {
+
+    /**
+     * 更新用户信息
+     *
+     * @param userId     用户id
+     * @param userReqDTO 用户信息
+     * @return
+     * @Author yikang
+     * @Date 2018/9/5
+     */
+    Result updateUser(String userId, UserReqDTO userReqDTO);
+
+    /**
+     * 通过用户id删除用户
+     *
+     * @param userId 用户id
+     * @return
+     * @Author yikang
+     * @Date 2018/9/5
+     */
+    Result deleteUser(String userId);
+
     /**
      * 通过userId判断这个用户是否存在
      *
@@ -38,7 +64,27 @@ public interface UserService {
      * @Author yikang
      * @Date 2018/9/4
      */
-    List<User> getUserListByIdList(List<String> userIds);
+    List<UserRespDTO> getUserListByIdList(List<String> userIds);
+
+    /**
+     * 通过用户id列表获得用户信息列表
+     *
+     * @param userIds 用户id列表
+     * @return 用户信息列表
+     * @Author yikang
+     * @Date 2018/9/4
+     */
+    GenericResult<List<UserRespDTO>> getUsers(List<String> userIds);
+
+    /**
+     * 新建用户
+     *
+     * @param userReqDTO 用户信息
+     * @return
+     * @Author yikang
+     * @Date 2018/9/5
+     */
+    Result createUser(UserReqDTO userReqDTO);
 
 
 }

@@ -1,9 +1,12 @@
 package com.yk.blog.api.controller;
 
+import com.t4f.gaea.dto.GenericResult;
 import com.t4f.gaea.dto.Result;
 import com.yk.blog.core.dto.UserReqDTO;
 import com.yk.blog.core.dto.UserRespDTO;
+import com.yk.blog.core.service.UserService;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,28 +27,31 @@ import java.util.List;
 @RequestMapping("user")
 public class UserController {
 
+    @Autowired
+    UserService userService;
+
     @ApiOperation("创建用户")
     @PostMapping("")
     public Result createUser(@RequestBody UserReqDTO userReqDTO) {
-        return null;
+        return userService.createUser(userReqDTO);
     }
 
     @ApiOperation("删除用户")
     @DeleteMapping("{userId}")
     public Result deleteUser(@PathVariable("userId") String userId) {
-        return null;
+        return userService.deleteUser(userId);
     }
 
     @ApiOperation("修改用户信息")
     @PutMapping("{userId}")
     public Result updateUser(@PathVariable("userId") String userId, @RequestBody UserReqDTO userReqDTO) {
-        return null;
+        return userService.updateUser(userId,userReqDTO);
     }
 
     @ApiOperation("搜索用户列表")
     @GetMapping("users")
-    public List<UserRespDTO> getUsers(@RequestParam("userIds")List<String> userIds){
-        return null;
+    public GenericResult<List<UserRespDTO>> getUsers(@RequestParam("userIds")List<String> userIds){
+        return userService.getUsers(userIds);
     }
 
 }
