@@ -17,6 +17,7 @@ import static com.yk.blog.core.utils.UserUtils.wrongUserIdResult;
  * @author yikang
  * @date 2018/9/4
  */
+//TODO 计数相关service实现
 @Service
 public class CountServiceImpl implements CountService {
 
@@ -34,7 +35,8 @@ public class CountServiceImpl implements CountService {
         if (!userService.existUser(userId)) {
             return wrongUserIdResult();
         }
-        int count = blogMapper.increaseLikeCount(userId, blogId);
+        //TODO 除了点赞数增加还要增加点赞记录
+        int count = blogMapper.increaseLikeCount(blogId);
         return generateResultWithCount(count);
     }
 

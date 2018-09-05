@@ -58,11 +58,9 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public GenericResult<BlogRespDTO> getBlogByUserIdAndBlogId(String userId, String blogId) {
-        if (!userService.existUser(userId)) {
-            return wrongUserIdGenericResult();
-        }
-        Blog blog = blogMapper.getBlogByUserIdAndBlogId(userId, blogId);
+    public GenericResult<BlogRespDTO> getBlogById(int blogId) {
+
+        Blog blog = blogMapper.getBlogById(blogId);
         if (blog != null) {
             BlogRespDTO tmp = new BlogRespDTO(blog);
             tmp.setReadCount(countService.getReadCount(tmp.getId()));
@@ -93,15 +91,12 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public Result createBlog(String userId, BlogReqDTO blogReqDTO) {
-        if (!userService.existUser(userId)) {
+    public Result createBlog(BlogReqDTO blogReqDTO) {
+        if (!userService.existUser(blogReqDTO.getUserId())) {
             return wrongUserIdResult();
         }
         Blog blog = blogReqDTO.changeToBlog(true);
-        Map<String, Object> map = new HashMap<>();
-        map.put("userId", userId);
-        map.put("blog", blog);
-        int count = blogMapper.createBlog(map);
+        int count = blogMapper.createBlog(blog);
         return generateResultWithCount(count);
     }
 }

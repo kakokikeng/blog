@@ -38,10 +38,9 @@ public class BlogController {
     }
 
     @ApiOperation("获得用户的特定博客")
-    @GetMapping("{userId}/blog/{blogId}")
-    public GenericResult<BlogRespDTO> getBlogByUserIdAndBlogId(@ApiParam("用户id") @PathVariable("userId") String userId,
-                                                @ApiParam("博客id") @PathVariable("blogId") String blogId) {
-        return blogService.getBlogByUserIdAndBlogId(userId, blogId);
+    @GetMapping("{blogId}")
+    public GenericResult<BlogRespDTO> getBlogById(@ApiParam("博客id") @PathVariable("blogId") int blogId) {
+        return blogService.getBlogById(blogId);
     }
 
     @ApiOperation("删除博客")
@@ -60,10 +59,9 @@ public class BlogController {
     }
 
     @ApiOperation("新建博客")
-    @PostMapping("{userId}")
-    public Result createBlog(@ApiParam("登录用户id") @PathVariable("userId") String userId,
-                             @ApiParam("博客相关信息") @Valid @RequestBody BlogReqDTO blog) {
-        return blogService.createBlog(userId, blog);
+    @PostMapping("")
+    public Result createBlog(@ApiParam("博客相关信息") @Valid @RequestBody BlogReqDTO blog) {
+        return blogService.createBlog(blog);
     }
 
 
