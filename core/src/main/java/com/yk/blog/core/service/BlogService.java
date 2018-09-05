@@ -28,12 +28,11 @@ public interface BlogService {
      * 获得用户的特定博客
      *
      * @param blogId 博客id
-     * @param userId 用户ID
      * @return 获得博客详情
      * @Author yikang
      * @Date 2018/9/3
      */
-    GenericResult<BlogRespDTO> getBlogByUserIdAndBlogId(String userId, String blogId);
+    GenericResult<BlogRespDTO> getBlogById(int blogId);
 
 
     /**
@@ -62,12 +61,11 @@ public interface BlogService {
     /**
      * 新建博客
      *
-     * @param userId 登录用户id
      * @param blog   博客内容
      * @return
      * @Author yikang
      * @Date 2018/9/3
      */
-    Result createBlog(String userId, BlogReqDTO blog);
+    Result createBlog(BlogReqDTO blog);
 
 }
