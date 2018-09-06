@@ -9,16 +9,13 @@ import com.yk.blog.core.service.CountService;
 import com.yk.blog.core.service.UserService;
 import com.yk.blog.core.utils.ErrorMessages;
 import com.yk.blog.core.utils.GenericResultUtils;
-import com.yk.blog.core.utils.UserUtils;
 import com.yk.blog.data.dao.BlogMapper;
 import com.yk.blog.domain.dto.Blog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static com.yk.blog.core.utils.GenericResultUtils.generateResultWithCount;
 import static com.yk.blog.core.utils.UserUtils.wrongUserIdGenericResult;
