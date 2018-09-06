@@ -56,17 +56,6 @@ create index comment_blog_id_fk
 create index comment_user_id_fk
   on comment (user_id);
 
-create table follower
-(
-  id          int auto_increment
-    primary key,
-  user_id     varchar(32) not null
-  comment '用户id
-',
-  follower_id varchar(32) not null
-  comment '关注他的人的id'
-)
-  comment '用户关注者';
 
 create table user
 (
@@ -90,19 +79,4 @@ create table user
   unique (email)
 )
   comment '存储博客用户相关信息';
-
-  create table like_relations
-(
-  id      int auto_increment
-    primary key,
-  user_id varchar(32) not null
-  comment '点赞用户id',
-  blog_id int         not null
-  comment '被点赞博客id',
-  constraint like_relations_user_id_blog_id_uindex
-  unique (user_id, blog_id)
-)
-  comment '点赞相关表';
-
-
 

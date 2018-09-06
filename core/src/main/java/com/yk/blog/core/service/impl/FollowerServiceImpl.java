@@ -28,6 +28,7 @@ import static com.yk.blog.core.utils.UserUtils.getIdList;
 @Service
 public class FollowerServiceImpl implements FollowerService {
 
+    //TODO 将改成redis存储K-V方式，不使用数据库
     @Autowired
     FollowerMapper followerMapper;
 
