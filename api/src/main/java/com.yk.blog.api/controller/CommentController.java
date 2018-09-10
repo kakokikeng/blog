@@ -41,9 +41,10 @@ public class CommentController {
     }
 
     @ApiOperation("删除评论")
-    @DeleteMapping("{userId}/{commentId}")
+    @DeleteMapping("{userId}/{blogId}/{commentId}")
     public Result deleteComment(@ApiParam("登录用户id") @PathVariable("userId") String userId,
+                                @ApiParam("博客id") @PathVariable("blogId") int blogId,
                                 @ApiParam("评论id") @PathVariable("commentId") int commentId) {
-        return commentService.deleteComment(userId, commentId);
+        return commentService.deleteComment(userId,blogId, commentId);
     }
 }

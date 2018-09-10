@@ -20,11 +20,11 @@ public class GenericResultUtils {
         return result;
     }
 
-    public static Result generateResultWithCount(int count) {
+    public static Result generateResultWithCount(long count,String ... message) {
         if (count > 0) {
-            return GenericResultUtils.genericNormalResult(true);
+            return GenericResultUtils.genericNormalResult(true,message);
         } else {
-            return GenericResultUtils.genericNormalResult(false);
+            return GenericResultUtils.genericNormalResult(false,message);
         }
     }
 

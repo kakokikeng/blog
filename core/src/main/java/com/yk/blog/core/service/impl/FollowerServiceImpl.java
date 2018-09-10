@@ -8,18 +8,19 @@ import com.yk.blog.core.service.FollowerService;
 import com.yk.blog.core.service.UserService;
 import com.yk.blog.core.utils.ErrorMessages;
 import com.yk.blog.core.utils.GenericResultUtils;
-import com.yk.blog.core.utils.UserUtils;
-import com.yk.blog.data.dao.FollowerMapper;
-import com.yk.blog.domain.dto.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.yk.blog.core.utils.ConstantValue.*;
 import static com.yk.blog.core.utils.GenericResultUtils.generateResultWithCount;
 import static com.yk.blog.core.utils.UserUtils.getIdList;
+import static com.yk.blog.core.utils.Utils.generatePrefix;
 
 /**
  * @author yikang
@@ -28,9 +29,8 @@ import static com.yk.blog.core.utils.UserUtils.getIdList;
 @Service
 public class FollowerServiceImpl implements FollowerService {
 
-    //TODO 将改成redis存储K-V方式，不使用数据库
     @Autowired
-    FollowerMapper followerMapper;
+    JedisPool jedisPool;
 
     @Autowired
     UserService userService;
@@ -44,15 +44,18 @@ public class FollowerServiceImpl implements FollowerService {
         if (!userService.existUsers(getIdList(followedId, followId))) {
             return GenericResultUtils.genericNormalResult(Boolean.FALSE, ErrorMessages.WRONG_USER_ID.message);
         }
-        int count = followerMapper.insertFollowRecord(followId, followedId);
-        if (count > 0) {
-            if (countService.increaseFans(followedId) > 0) {
-                return generateResultWithCount(count);
-            } else {
-                throw new RuntimeException(ErrorMessages.ERROR_INCREASE_FANS.message);
+        try(Jedis jedis = jedisPool.getResource()){
+            long count = jedis.sadd(generatePrefix(FOLLOWED + followId),followedId);
+            jedis.sadd(generatePrefix(FOLLOWER + followedId),followedId);
+            if (count > 0) {
+                if (countService.updateFans(followedId) > 0) {
+                    return generateResultWithCount(count);
+                } else {
+                    throw new RuntimeException(ErrorMessages.ERROR_INCREASE_FANS.message);
+                }
             }
+            return generateResultWithCount(count);
         }
-        return generateResultWithCount(count);
     }
 
     @Override
@@ -60,12 +63,15 @@ public class FollowerServiceImpl implements FollowerService {
         if (!userService.existUsers(getIdList(followedId, followId))) {
             return GenericResultUtils.genericNormalResult(Boolean.FALSE, ErrorMessages.WRONG_USER_ID.message);
         }
-        Integer recordId = followerMapper.getIdByFollowAndFollower(followId, followedId);
-        if (recordId != null) {
-            int count = followerMapper.deleteRecord(recordId);
-            return generateResultWithCount(count);
-        } else {
-            return GenericResultUtils.genericNormalResult(Boolean.FALSE, ErrorMessages.FOLLOW_RECORD_NOT_EXIST.message);
+        try(Jedis jedis = jedisPool.getResource()){
+            long count = jedis.srem(generatePrefix(FOLLOWED + followId),followedId);
+            jedis.srem(generatePrefix(FOLLOWER + followedId),followId);
+            if(count > 0){
+                countService.updateFans(followedId);
+                return generateResultWithCount(count);
+            }else{
+                return GenericResultUtils.genericNormalResult(Boolean.FALSE, ErrorMessages.FOLLOW_RECORD_NOT_EXIST.message);
+            }
         }
     }
 
@@ -75,9 +81,11 @@ public class FollowerServiceImpl implements FollowerService {
             return GenericResultUtils.genericFailureResult(ErrorMessages.WRONG_USER_ID.message);
         }
         List<UserRespDTO> data = new ArrayList<>();
-        List<String> userIdList = followerMapper.getFollowers(userId);
-        if (userIdList != null) {
-            data = userService.getUserListByIdList(userIdList);
+        try(Jedis jedis = jedisPool.getResource()){
+            List<String> userIdList = new ArrayList<>(jedis.smembers(generatePrefix(FOLLOWER + userId)));
+            if (userIdList.size() > 0) {
+                data = userService.getUserListByIdList(userIdList);
+            }
         }
         return GenericResultUtils.genericResult(Boolean.TRUE, data);
     }
@@ -88,9 +96,11 @@ public class FollowerServiceImpl implements FollowerService {
             return GenericResultUtils.genericFailureResult(ErrorMessages.WRONG_USER_ID.message);
         }
         List<UserRespDTO> data = new ArrayList<>();
-        List<String> userIdList = followerMapper.getFolloweders(userId);
-        if (userIdList != null) {
-            data = userService.getUserListByIdList(userIdList);
+        try(Jedis jedis = jedisPool.getResource()){
+            List<String> userIdList = new ArrayList<>(jedis.smembers(generatePrefix(FOLLOWED + userId)));
+            if (userIdList.size() > 0) {
+                data = userService.getUserListByIdList(userIdList);
+            }
         }
         return GenericResultUtils.genericResult(Boolean.TRUE, data);
     }

@@ -15,6 +15,16 @@ import java.util.List;
 public interface BlogService {
 
     /**
+     * 更新博客的评论数目
+     *
+     * @param id    博客id
+     * @param count 评论数目
+     * @Author yikang
+     * @Date 2018/9/10
+     */
+    void updateBlogCommentCount(int id, int count);
+
+    /**
      * 通过用户id获取博客列表
      *
      * @param userId 被查询博客用户id
@@ -61,7 +71,7 @@ public interface BlogService {
     /**
      * 新建博客
      *
-     * @param blog   博客内容
+     * @param blog 博客内容
      * @return
      * @Author yikang
      * @Date 2018/9/3

@@ -37,6 +37,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public int updateFans(String userId, int fansCount) {
+        return userMapper.updateFans(userId,fansCount);
+    }
+
+    @Override
+    public int updateBlogCount(String userId, int updateCount) {
+        return userMapper.updateBlogCountByUserId(userId,updateCount);
+    }
+
+    @Override
     public boolean existUsers(List<String> userIds) {
         if (userIds == null || userIds.size() == 0) {
             return true;
@@ -71,8 +81,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Result updateUser(String userId, UserReqDTO userReqDTO) {
-        User user = userReqDTO.changeToUser(userId);
-        int count = userMapper.updateUser(userId, user);
+        int count = userMapper.updateUser(userId, userReqDTO.changeToUser(userId));
         return GenericResultUtils.generateResultWithCount(count);
     }
 
@@ -84,8 +93,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Result createUser(UserReqDTO userReqDTO) {
-        User user = userReqDTO.changeToUser();
-        int count = userMapper.insertUser(user);
+        int count = userMapper.insertUser(userReqDTO.changeToUser());
         return GenericResultUtils.generateResultWithCount(count);
     }
 }

@@ -38,12 +38,13 @@ public interface CommentService {
     /**
      * 删除评论
      *
-     * @param userId    登录用户id
+     * @param userId    用户id
+     * @param blogId    博客id
      * @param commentId 博客id
      * @return 删除结果
      * @Author yikang
      * @Date 2018/9/4
      */
-    Result deleteComment(String userId, int commentId);
+    Result deleteComment(String userId, int blogId, int commentId);
 
 }

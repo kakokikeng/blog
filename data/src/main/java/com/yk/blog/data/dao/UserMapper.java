@@ -13,6 +13,28 @@ import java.util.List;
 public interface UserMapper {
 
     /**
+     * 更新用户的粉丝数
+     *
+     * @param fansCount 粉丝总数
+     * @param userId    用户id
+     * @return
+     * @Author yikang
+     * @Date 2018/9/10
+     */
+    int updateFans(String userId, int fansCount);
+
+    /**
+     * 更新用户的博客数
+     *
+     * @param userId   用户id
+     * @param addCount 更新的数量，增加则为正数，删除为负数
+     * @return 操作失败返回0
+     * @Author yikang
+     * @Date 2018/9/10
+     */
+    int updateBlogCountByUserId(String userId, int addCount);
+
+    /**
      * 新增用户
      *
      * @param user 用户信息

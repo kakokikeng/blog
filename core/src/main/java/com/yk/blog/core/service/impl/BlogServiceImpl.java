@@ -38,6 +38,11 @@ public class BlogServiceImpl implements BlogService {
     UserService userService;
 
     @Override
+    public void updateBlogCommentCount(int id, int count) {
+        blogMapper.updateBlogCommentCount(id,count);
+    }
+
+    @Override
     public GenericResult<List<BlogRespDTO>> getBlogsByUserId(String userId) {
         if (!userService.existUser(userId)) {
             return wrongUserIdGenericResult();
@@ -74,6 +79,9 @@ public class BlogServiceImpl implements BlogService {
             return wrongUserIdResult();
         }
         int count = blogMapper.deleteBlog(userId, blogId);
+        if(count > 0){
+            countService.updateBlogCount(userId,-1);
+        }
         return generateResultWithCount(count);
     }
 
@@ -94,6 +102,9 @@ public class BlogServiceImpl implements BlogService {
         }
         Blog blog = blogReqDTO.changeToBlog(true);
         int count = blogMapper.createBlog(blog);
+        if(count > 0){
+            countService.updateBlogCount(blogReqDTO.getUserId(),1);
+        }
         return generateResultWithCount(count);
     }
 }

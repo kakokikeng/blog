@@ -15,6 +15,35 @@ import java.util.Map;
 public interface BlogMapper {
 
     /**
+     * 更新博客的评论数量
+     *
+     * @param id    博客id
+     * @param count 评论总数
+     * @Author yikang
+     * @Date 2018/9/10
+     */
+    void updateBlogCommentCount(int id, int count);
+
+    /**
+     * 通过 博客id -> 阅读量总量 的键值对进行阅读量的批量更新
+     *
+     * @param map 博客id -> 阅读量总量 键值对
+     * @Author yikang
+     * @Date 2018/9/10
+     */
+    void updateReadCountByMap(Map<String, String> map);
+
+    /**
+     * 更新点赞数
+     *
+     * @param count 点赞数量
+     * @return
+     * @Author yikang
+     * @Date 2018/9/10
+     */
+    int updateLikeCount(int count);
+
+    /**
      * 通过用户id获取博客列表,根据创建时间降序
      *
      * @param userId 被查询博客用户id

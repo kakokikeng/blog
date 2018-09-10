@@ -4,14 +4,19 @@ import com.t4f.gaea.dto.GenericResult;
 import com.t4f.gaea.dto.Result;
 import com.yk.blog.core.dto.CommentReqDTO;
 import com.yk.blog.core.dto.CommentRespDTO;
+import com.yk.blog.core.service.BlogService;
 import com.yk.blog.core.service.CommentService;
 import com.yk.blog.core.service.UserService;
+import com.yk.blog.core.utils.ConstantValue;
 import com.yk.blog.core.utils.ErrorMessages;
 import com.yk.blog.core.utils.GenericResultUtils;
+import com.yk.blog.core.utils.Utils;
 import com.yk.blog.data.dao.CommentMapper;
 import com.yk.blog.domain.dto.Comment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,13 +37,26 @@ public class CommentServiceImpl implements CommentService {
     @Autowired
     UserService userService;
 
+    @Autowired
+    BlogService blogService;
+
+    @Autowired
+    JedisPool jedispool;
+
     @Override
     public Result comment(CommentReqDTO commentReqDTO) {
         if (commentNotLegal(commentReqDTO)) {
             return wrongUserIdGenericResult();
         }
-        int count = commentMapper.insertComment(commentReqDTO.changeToComment());
-        return generateResultWithCount(count);
+        try(Jedis jedis = jedispool.getResource()){
+            int count = commentMapper.insertComment(commentReqDTO.changeToComment());
+            if(count > 0){
+                long commentCount = jedis.hincrBy(Utils.generatePrefix(ConstantValue.BLOG_COMMENT_COUNT),String.valueOf(commentReqDTO.getBlogId()),1);
+                blogService.updateBlogCommentCount(commentReqDTO.getBlogId(),(int)commentCount);
+            }
+            return generateResultWithCount(count);
+        }
+
     }
 
     private boolean commentNotLegal(CommentReqDTO commentReqDTO) {
@@ -65,11 +83,17 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Result deleteComment(String userId, int commentId) {
+    public Result deleteComment(String userId, int blogId, int commentId) {
         if (!userService.existUser(userId)) {
             GenericResultUtils.genericNormalResult(Boolean.FALSE, ErrorMessages.WRONG_USER_ID.message);
         }
-        int count = commentMapper.deleteComment(userId, commentId);
-        return generateResultWithCount(count);
+        try(Jedis jedis = jedispool.getResource()){
+            int count = commentMapper.deleteComment(userId,commentId);
+            if(count > 0){
+                long commentCount = jedis.hincrBy(Utils.generatePrefix(ConstantValue.BLOG_COMMENT_COUNT),String.valueOf(blogId),-1);
+                blogService.updateBlogCommentCount(blogId,(int)commentCount);
+            }
+            return generateResultWithCount(count);
+        }
     }
 }

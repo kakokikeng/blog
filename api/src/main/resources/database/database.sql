@@ -44,17 +44,17 @@ create table comment
 ',
   content          text                                not null
   comment '评论内容',
+  constraint comment_user_id_blog_id_pk
+  unique (user_id, blog_id),
+  constraint comment_blog_id_pk
+  unique (blog_id),
   constraint comment_user_id_fk
   foreign key (user_id) references user (id),
   constraint comment_blog_id_fk
   foreign key (blog_id) references blog (id)
 );
 
-create index comment_blog_id_fk
-  on comment (blog_id);
 
-create index comment_user_id_fk
-  on comment (user_id);
 
 
 create table user

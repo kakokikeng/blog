@@ -10,6 +10,16 @@ import io.swagger.annotations.ApiParam;
 
 public interface CountService {
 
+    /**
+     * 更新用户的博客数
+     *
+     * @param userId      用户id
+     * @param updateCount 更新的数量，增加则为正数，删除为负数
+     * @return 操作失败返回0
+     * @Author yikang
+     * @Date 2018/9/6
+     */
+    int updateBlogCount(String userId, int updateCount);
 
     /**
      * 通过登录用户和博客id对博客进行点赞
@@ -43,13 +53,13 @@ public interface CountService {
     int getReadCount(int blogId);
 
     /**
-     * 增加用户的粉丝数
+     * 更新用户的粉丝数，从redis获取粉丝数量
      *
      * @param userId 用户id
-     * @return
+     * @return 操作失败返回0
      * @Author yikang
      * @Date 2018/9/4
      */
-    int increaseFans(String userId);
+    int updateFans(String userId);
 
 }

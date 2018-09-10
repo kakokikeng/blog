@@ -17,7 +17,7 @@ public class JedisConfig {
     private int port;
 
     @Bean
-    public JedisPool getJedis() {
+    public JedisPool getJedisPool() {
         JedisPool pool = new JedisPool(url,port);
         return pool;
     }
