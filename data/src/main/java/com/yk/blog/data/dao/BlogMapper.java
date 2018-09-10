@@ -18,11 +18,11 @@ public interface BlogMapper {
      * 更新博客的评论数量
      *
      * @param id    博客id
-     * @param count 评论总数
+     * @param commentCount 评论总数
      * @Author yikang
      * @Date 2018/9/10
      */
-    void updateBlogCommentCount(int id, int count);
+    void updateBlogCommentCount(int id, int commentCount);
 
     /**
      * 通过 博客id -> 阅读量总量 的键值对进行阅读量的批量更新
@@ -36,12 +36,13 @@ public interface BlogMapper {
     /**
      * 更新点赞数
      *
-     * @param count 点赞数量
+     * @param likeCount 点赞数量
+     * @param id 博客id
      * @return
      * @Author yikang
      * @Date 2018/9/10
      */
-    int updateLikeCount(int count);
+    int updateLikeCount(@Param("id") int id,@Param("likeCount") int likeCount);
 
     /**
      * 通过用户id获取博客列表,根据创建时间降序
@@ -63,15 +64,6 @@ public interface BlogMapper {
      */
     Blog getBlogById(int id);
 
-    /**
-     * 通过博客id对博客进行点赞
-     *
-     * @param id 当前博客id
-     * @return
-     * @Author yikang
-     * @Date 2018/9/3
-     */
-    int increaseLikeCount(int id);
 
     /**
      * 删除博客

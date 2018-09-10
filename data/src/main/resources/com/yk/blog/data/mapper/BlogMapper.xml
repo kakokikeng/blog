@@ -2,17 +2,29 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.yk.blog.data.dao.BlogMapper">
 
+    <update id="updateBlogCommentCount">
+        update blog set comment_count = #{commentCount} where id = #{id};
+    </update>
+
+    <update id="updateReadCountByMap" parameterType="java.util.Map">
+        update blog set read_count = case
+        <foreach collection="map" index="index" item="item">
+            when id = #{index} then #{item}
+        </foreach>
+        end
+    </update>
+
+    <update id="updateLikeCount">
+        update blog set like_count = #{likeCount} where id = #{id};
+    </update>
+
     <select id="getBlogsByUserId" resultType="com.yk.blog.domain.dto.Blog" parameterType="java.lang.String">
         select * from blog where user_id = #{userId} order by create_time desc ;
     </select>
 
-    <select id="getBlogByUserIdAndBlogId" parameterType="com.yk.blog.domain.dto.Blog">
+    <select id="getBlogById" parameterType="int" resultType="com.yk.blog.domain.dto.Blog">
         select * from blog where id = #{id};
     </select>
-
-    <update id="increaseLikeCount">
-        update blog set like_count = like_count + 1 where id = #{id};
-    </update>
 
     <delete id="deleteBlog">
         delete from blog where id = #{id} and user_id = #{userId};

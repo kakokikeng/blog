@@ -47,7 +47,7 @@ public class CountServiceImpl implements CountService {
             if (!liked) {
                 jedis.sadd(Utils.generatePrefix(ConstantValue.BLOG_LIKED_RECORD + userId), String.valueOf(blogId));
                 long count = jedis.hincrBy(Utils.generatePrefix(ConstantValue.BLOG_LIKED_COUNT), String.valueOf(blogId), 1);
-                int n = blogMapper.updateLikeCount((int) count);
+                int n = blogMapper.updateLikeCount(blogId, (int) count);
                 String message = n == 0 ? ErrorMessages.BLOG_UPDATE_FAILD.message : null;
                 return generateResultWithCount(n, message);
             } else {
