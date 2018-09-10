@@ -2,4 +2,51 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.yk.blog.data.dao.CommentMapper">
 
+    <insert id="insertComment" parameterType="com.yk.blog.domain.dto.Comment">
+        insert into comment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="attachedUserId != null">
+                attached_user_id,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="blogId != null">
+                blog_id,
+            </if>
+            <if test="content != null">
+                content,
+            </if>
+        </trim>
+         values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                #{userId},
+            </if>
+            <if test="attachedUserId != null">
+                #{attachedUserId},
+            </if>
+            <if test="createTime != null">
+                #{createTime},
+            </if>
+            <if test="blogId != null">
+                #{blogId},
+            </if>
+            <if test="content != null">
+                #{content},
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="deleteComment">
+        delete from comment where id = #{id} and user_id = #{userId};
+    </delete>
+
+    <select id="getComments" parameterType="int">
+        select * from comment where blog_id = #{blogId};
+    </select>
+
 </mapper>

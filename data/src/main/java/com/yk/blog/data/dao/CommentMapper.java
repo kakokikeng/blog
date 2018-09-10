@@ -2,6 +2,7 @@ package com.yk.blog.data.dao;
 
 import com.yk.blog.domain.dto.Comment;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -25,13 +26,13 @@ public interface CommentMapper {
     /**
      * 删除评论
      *
-     * @param commentId 评论id
-     * @param userId    登录用户id
+     * @param id     评论id
+     * @param userId 登录用户id
      * @return
      * @Author yikang
      * @Date 2018/9/4
      */
-    int deleteComment(String userId, int commentId);
+    int deleteComment(@Param("userId") String userId, @Param("id") int id);
 
     /**
      * 查询博客评论
