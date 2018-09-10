@@ -2,4 +2,80 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.yk.blog.data.dao.UserMapper">
 
+    <update id="updateFans">
+        update user set fans = #{fansCount} where id = #{id};
+    </update>
+
+    <update id="updateBlogCountByUserId">
+        update user set blogs = blogs + #{addCount} where id = #{id};
+    </update>
+
+    <insert id="insertUser" parameterType="com.yk.blog.domain.dto.User">
+        insert into user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="userName != null">
+                user_name,
+            </if>
+            <if test="email != null">
+                email,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="userName != null">
+                userName,
+            </if>
+            <if test="email != null">
+                email,
+            </if>
+            <if test="createTime != null">
+                createTime,
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="deleteUser" parameterType="java.lang.String">
+        delete from user where id = #{id};
+    </delete>
+
+    <update id="updateUser">
+        update user
+        <set>
+            <if test="userName != null">
+                user_name = #{userName},
+            </if>
+            <if test="email != null">
+                email = #{email},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="getUserListByIdList" parameterType="java.util.List">
+        select * from user where id in
+        <foreach collection="list" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="existUser" parameterType="java.lang.String">
+        select id from user where id = #{id};
+    </select>
+
+    <select id="existUsers" parameterType="java.util.List">
+        select id from user where id in
+        <foreach collection="list" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </select>
+
 </mapper>

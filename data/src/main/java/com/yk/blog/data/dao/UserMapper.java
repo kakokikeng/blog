@@ -2,6 +2,7 @@ package com.yk.blog.data.dao;
 
 import com.yk.blog.domain.dto.User;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -16,23 +17,23 @@ public interface UserMapper {
      * 更新用户的粉丝数
      *
      * @param fansCount 粉丝总数
-     * @param userId    用户id
+     * @param id    用户id
      * @return
      * @Author yikang
      * @Date 2018/9/10
      */
-    int updateFans(String userId, int fansCount);
+    int updateFans(@Param("id") String id, @Param("fansCount") int fansCount);
 
     /**
      * 更新用户的博客数
      *
-     * @param userId   用户id
+     * @param id   用户id
      * @param addCount 更新的数量，增加则为正数，删除为负数
      * @return 操作失败返回0
      * @Author yikang
      * @Date 2018/9/10
      */
-    int updateBlogCountByUserId(String userId, int addCount);
+    int updateBlogCountByUserId(String id, int addCount);
 
     /**
      * 新增用户
@@ -47,23 +48,23 @@ public interface UserMapper {
     /**
      * 删除用户
      *
-     * @param userId 用户id
+     * @param id 用户id
      * @return
      * @Author yikang
      * @Date 2018/9/5
      */
-    int deleteUser(String userId);
+    int deleteUser(String id);
 
     /**
      * 更新用户信息
      *
-     * @param userId     用户id
-     * @param userReqDTO 用户信息
+     * @param id     用户id
+     * @param user 用户信息
      * @return
      * @Author yikang
      * @Date 2018/9/5
      */
-    int updateUser(String userId, User userReqDTO);
+    int updateUser(@Param("id") String id,@Param("user") User user);
 
     /**
      * 通过用户id列表查询用户信息
@@ -78,12 +79,12 @@ public interface UserMapper {
     /**
      * 通过用户id查询用户是否存在
      *
-     * @param userId 用户id
+     * @param id 用户id
      * @return 返回主键
      * @Author yikang
      * @Date 2018/9/5
      */
-    String existUser(String userId);
+    String existUser(String id);
 
     /**
      * 通过用户id列表查询用户是否全部存在
