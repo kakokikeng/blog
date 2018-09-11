@@ -13,6 +13,7 @@ public class User {
     private Integer fans;
     private Integer blogs;
     private Long createTime;
+    private String passWd;
 
     @Override
     public String toString() {
@@ -23,7 +24,16 @@ public class User {
                 ", fans=" + fans +
                 ", blogs=" + blogs +
                 ", createTime=" + createTime +
+                ", passWd='" + passWd + '\'' +
                 '}';
+    }
+
+    public String getPassWd() {
+        return passWd;
+    }
+
+    public void setPassWd(String passWd) {
+        this.passWd = passWd;
     }
 
     public String getId() {

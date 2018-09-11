@@ -7,8 +7,8 @@ import com.yk.blog.core.dto.CommentRespDTO;
 import com.yk.blog.core.service.BlogService;
 import com.yk.blog.core.service.CommentService;
 import com.yk.blog.core.service.UserService;
-import com.yk.blog.core.utils.ConstantValue;
-import com.yk.blog.core.utils.ErrorMessages;
+import com.yk.blog.core.constant.Constant;
+import com.yk.blog.core.constant.ErrorMessages;
 import com.yk.blog.core.utils.GenericResultUtils;
 import com.yk.blog.core.utils.Utils;
 import com.yk.blog.data.dao.CommentMapper;
@@ -51,7 +51,7 @@ public class CommentServiceImpl implements CommentService {
         try(Jedis jedis = jedispool.getResource()){
             int count = commentMapper.insertComment(commentReqDTO.changeToComment());
             if(count > 0){
-                long commentCount = jedis.hincrBy(Utils.generatePrefix(ConstantValue.BLOG_COMMENT_COUNT),String.valueOf(commentReqDTO.getBlogId()),1);
+                long commentCount = jedis.hincrBy(Utils.generatePrefix(Constant.BLOG_COMMENT_COUNT),String.valueOf(commentReqDTO.getBlogId()),1);
                 blogService.updateBlogCommentCount(commentReqDTO.getBlogId(),(int)commentCount);
             }
             return generateResultWithCount(count);
@@ -90,7 +90,7 @@ public class CommentServiceImpl implements CommentService {
         try(Jedis jedis = jedispool.getResource()){
             int count = commentMapper.deleteComment(userId,commentId);
             if(count > 0){
-                long commentCount = jedis.hincrBy(Utils.generatePrefix(ConstantValue.BLOG_COMMENT_COUNT),String.valueOf(blogId),-1);
+                long commentCount = jedis.hincrBy(Utils.generatePrefix(Constant.BLOG_COMMENT_COUNT),String.valueOf(blogId),-1);
                 blogService.updateBlogCommentCount(blogId,(int)commentCount);
             }
             return generateResultWithCount(count);

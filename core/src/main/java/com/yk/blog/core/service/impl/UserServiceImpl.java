@@ -5,12 +5,17 @@ import com.t4f.gaea.dto.Result;
 import com.yk.blog.core.dto.UserReqDTO;
 import com.yk.blog.core.dto.UserRespDTO;
 import com.yk.blog.core.service.UserService;
+import com.yk.blog.core.constant.Constant;
+import com.yk.blog.core.constant.ErrorMessages;
 import com.yk.blog.core.utils.GenericResultUtils;
 import com.yk.blog.core.utils.UserUtils;
+import com.yk.blog.core.utils.Utils;
 import com.yk.blog.data.dao.UserMapper;
 import com.yk.blog.domain.dto.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -27,6 +32,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     UserMapper userMapper;
 
+    @Autowired
+    JedisPool jedisPool;
+
     @Override
     public boolean existUser(String userId) {
         if (userId.isEmpty() || userMapper.existUser(userId) == null) {
@@ -37,13 +45,30 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Result modifyPasswd(String email, String oldPasswd, String newPasswd) {
+        try (Jedis jedis = jedisPool.getResource()) {
+            String oldMD5 = Utils.generateMd5(oldPasswd);
+            String newMD5 = Utils.generateMd5(newPasswd);
+            if (oldMD5.equals(jedis.hget(Utils.generatePrefix(Constant.USER_LOGIN), email))) {
+                int count = userMapper.updatePasswd(email, newMD5);
+                if (count > 0) {
+                    jedis.hset(Utils.generatePrefix(Constant.USER_LOGIN), email, newMD5);
+                }
+                return GenericResultUtils.generateResultWithCount(count, ErrorMessages.UPDATE_FAILD.message);
+            } else {
+                return GenericResultUtils.genericNormalResult(false, ErrorMessages.ERROR_PASSWORD.message);
+            }
+        }
+    }
+
+    @Override
     public int updateFans(String userId, int fansCount) {
-        return userMapper.updateFans(userId,fansCount);
+        return userMapper.updateFans(userId, fansCount);
     }
 
     @Override
     public int updateBlogCount(String userId, int updateCount) {
-        return userMapper.updateBlogCountByUserId(userId,updateCount);
+        return userMapper.updateBlogCountByUserId(userId, updateCount);
     }
 
     @Override
@@ -93,7 +118,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Result createUser(UserReqDTO userReqDTO) {
-        int count = userMapper.insertUser(userReqDTO.changeToUser());
-        return GenericResultUtils.generateResultWithCount(count);
+        try (Jedis jedis = jedisPool.getResource()) {
+            User user = userReqDTO.changeToUser();
+            if (jedis.hget(Utils.generatePrefix(Constant.USER_LOGIN), user.getEmail()) == null) {
+                int count = userMapper.insertUser(user);
+                if (count > 0) {
+                    jedis.hset(Utils.generatePrefix(Constant.USER_LOGIN), user.getEmail(), user.getPassWd());
+                }
+                return GenericResultUtils.generateResultWithCount(count);
+            } else {
+                return GenericResultUtils.genericNormalResult(false, ErrorMessages.EMAIL_ALREADY_USED.message);
+            }
+
+        }
+
     }
 }

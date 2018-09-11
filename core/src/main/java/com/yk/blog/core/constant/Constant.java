@@ -1,11 +1,11 @@
-package com.yk.blog.core.utils;
+package com.yk.blog.core.constant;
 
 /**
  * @author yikang
  * @date 2018/9/6
  */
 
-public class ConstantValue {
+public class Constant {
 
     public static final String PROJECT_NAME = "blog";
 
@@ -20,6 +20,8 @@ public class ConstantValue {
     public static final String BLOG_READ_COUNT = "blog_read_count";
 
     public static final String BLOG_COMMENT_COUNT = "blog_comment_count";
+
+    public static final String USER_LOGIN = "user_login";
 
 
 }

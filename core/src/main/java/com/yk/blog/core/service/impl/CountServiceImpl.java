@@ -3,8 +3,8 @@ package com.yk.blog.core.service.impl;
 import com.t4f.gaea.dto.Result;
 import com.yk.blog.core.service.CountService;
 import com.yk.blog.core.service.UserService;
-import com.yk.blog.core.utils.ConstantValue;
-import com.yk.blog.core.utils.ErrorMessages;
+import com.yk.blog.core.constant.Constant;
+import com.yk.blog.core.constant.ErrorMessages;
 import com.yk.blog.core.utils.Utils;
 import com.yk.blog.data.dao.BlogMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,6 @@ import redis.clients.jedis.JedisPool;
 
 import java.util.Map;
 
-import static com.yk.blog.core.utils.ErrorMessages.BLOG_UPDATE_FAILD;
 import static com.yk.blog.core.utils.GenericResultUtils.generateResultWithCount;
 import static com.yk.blog.core.utils.GenericResultUtils.genericNormalResult;
 import static com.yk.blog.core.utils.UserUtils.wrongUserIdResult;
@@ -43,12 +42,12 @@ public class CountServiceImpl implements CountService {
             return wrongUserIdResult();
         }
         try (Jedis jedis = jedisPool.getResource()) {
-            boolean liked = jedis.sismember(Utils.generatePrefix(ConstantValue.BLOG_LIKED_RECORD + userId), String.valueOf(blogId));
+            boolean liked = jedis.sismember(Utils.generatePrefix(Constant.BLOG_LIKED_RECORD + userId), String.valueOf(blogId));
             if (!liked) {
-                jedis.sadd(Utils.generatePrefix(ConstantValue.BLOG_LIKED_RECORD + userId), String.valueOf(blogId));
-                long count = jedis.hincrBy(Utils.generatePrefix(ConstantValue.BLOG_LIKED_COUNT), String.valueOf(blogId), 1);
+                jedis.sadd(Utils.generatePrefix(Constant.BLOG_LIKED_RECORD + userId), String.valueOf(blogId));
+                long count = jedis.hincrBy(Utils.generatePrefix(Constant.BLOG_LIKED_COUNT), String.valueOf(blogId), 1);
                 int n = blogMapper.updateLikeCount(blogId, (int) count);
-                String message = n == 0 ? ErrorMessages.BLOG_UPDATE_FAILD.message : null;
+                String message = n == 0 ? ErrorMessages.UPDATE_FAILD.message : null;
                 return generateResultWithCount(n, message);
             } else {
                 return genericNormalResult(false, ErrorMessages.BLOG_ALREADY_LIKED.message);
@@ -60,7 +59,7 @@ public class CountServiceImpl implements CountService {
     public Result increaseReadCount(int blogId) {
 
         try (Jedis jedis = jedisPool.getResource()) {
-            jedis.hincrBy(Utils.generatePrefix(ConstantValue.BLOG_READ_COUNT), String.valueOf(blogId), 1);
+            jedis.hincrBy(Utils.generatePrefix(Constant.BLOG_READ_COUNT), String.valueOf(blogId), 1);
         }
 
         return genericNormalResult(true);
@@ -69,7 +68,7 @@ public class CountServiceImpl implements CountService {
     @Scheduled(cron = "* 0/3 * * * * *")
     public void cronJob() {
         try (Jedis jedis = jedisPool.getResource()) {
-            Map<String, String> map = jedis.hgetAll(Utils.generatePrefix(ConstantValue.BLOG_READ_COUNT));
+            Map<String, String> map = jedis.hgetAll(Utils.generatePrefix(Constant.BLOG_READ_COUNT));
             blogMapper.updateReadCountByMap(map);
         }
 
@@ -83,7 +82,7 @@ public class CountServiceImpl implements CountService {
     @Override
     public int updateFans(String userId) {
         try (Jedis jedis = jedisPool.getResource()) {
-            long fansCount = jedis.scard(Utils.generatePrefix(ConstantValue.FOLLOWER + userId));
+            long fansCount = jedis.scard(Utils.generatePrefix(Constant.FOLLOWER + userId));
             return userService.updateFans(userId, (int) fansCount);
         }
     }
@@ -91,7 +90,7 @@ public class CountServiceImpl implements CountService {
     @Override
     public int getReadCount(int blogId) {
         try (Jedis jedis = jedisPool.getResource()) {
-            String readCount = jedis.hget(Utils.generatePrefix(ConstantValue.BLOG_READ_COUNT), String.valueOf(blogId));
+            String readCount = jedis.hget(Utils.generatePrefix(Constant.BLOG_READ_COUNT), String.valueOf(blogId));
             if (readCount != null) {
                 return Integer.parseInt(readCount);
             } else {

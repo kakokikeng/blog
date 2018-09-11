@@ -9,7 +9,7 @@ import com.yk.blog.core.factories.BlogRespFactory;
 import com.yk.blog.core.service.BlogService;
 import com.yk.blog.core.service.CountService;
 import com.yk.blog.core.service.UserService;
-import com.yk.blog.core.utils.ErrorMessages;
+import com.yk.blog.core.constant.ErrorMessages;
 import com.yk.blog.core.utils.GenericResultUtils;
 import com.yk.blog.data.dao.BlogMapper;
 import com.yk.blog.domain.dto.Blog;

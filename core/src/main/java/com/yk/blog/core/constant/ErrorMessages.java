@@ -1,4 +1,4 @@
-package com.yk.blog.core.utils;
+package com.yk.blog.core.constant;
 
 /**
  * @author yikang
@@ -11,7 +11,9 @@ public enum ErrorMessages {
     FOLLOW_RECORD_NOT_EXIST("FOLLOWED RECORD NOT EXIST",""),
     ERROR_INCREASE_FANS("ERROR INCREASE FANS",""),
     BLOG_NOT_EXIST("BLOG NOT EXIST", ""),
-    BLOG_UPDATE_FAILD("BLOG UPDATE FAILD",""),
+    UPDATE_FAILD("UPDATE FAILD",""),
+    EMAIL_ALREADY_USED("EMAIL ALREADY BEEN USED",""),
+    ERROR_PASSWORD("ERROR PASSWORD",""),
     BLOG_ALREADY_LIKED("YOU HAVE ALREADY LIKED THE BLOG","");
 
     public String message;

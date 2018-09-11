@@ -2,6 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.yk.blog.data.dao.UserMapper">
 
+    <update id="updatePasswd">
+        update user set passwd = #{newPasswd} where email = #{email};
+    </update>
+
     <update id="updateFans">
         update user set fans = #{fansCount} where id = #{id};
     </update>

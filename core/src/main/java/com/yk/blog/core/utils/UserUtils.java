@@ -2,7 +2,7 @@ package com.yk.blog.core.utils;
 
 import com.t4f.gaea.dto.GenericResult;
 import com.t4f.gaea.dto.Result;
-import com.yk.blog.core.dto.BlogRespDTO;
+import com.yk.blog.core.constant.ErrorMessages;
 import com.yk.blog.core.dto.UserRespDTO;
 import com.yk.blog.domain.dto.User;
 

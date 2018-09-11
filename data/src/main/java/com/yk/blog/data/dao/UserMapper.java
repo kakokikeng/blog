@@ -14,10 +14,20 @@ import java.util.List;
 public interface UserMapper {
 
     /**
+     * 更新密码
+     *
+     * @param email     登录邮箱
+     * @param newPasswd 新的密码
+     * @Author yikang
+     * @Date 2018/9/11
+     */
+    int updatePasswd(@Param("email") String email,@Param("newPasswd") String newPasswd);
+
+    /**
      * 更新用户的粉丝数
      *
      * @param fansCount 粉丝总数
-     * @param id    用户id
+     * @param id        用户id
      * @return
      * @Author yikang
      * @Date 2018/9/10
@@ -27,7 +37,7 @@ public interface UserMapper {
     /**
      * 更新用户的博客数
      *
-     * @param id   用户id
+     * @param id       用户id
      * @param addCount 更新的数量，增加则为正数，删除为负数
      * @return 操作失败返回0
      * @Author yikang
@@ -58,13 +68,13 @@ public interface UserMapper {
     /**
      * 更新用户信息
      *
-     * @param id     用户id
+     * @param id   用户id
      * @param user 用户信息
      * @return
      * @Author yikang
      * @Date 2018/9/5
      */
-    int updateUser(@Param("id") String id,@Param("user") User user);
+    int updateUser(@Param("id") String id, @Param("user") User user);
 
     /**
      * 通过用户id列表查询用户信息

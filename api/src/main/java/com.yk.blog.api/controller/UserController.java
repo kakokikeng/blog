@@ -6,6 +6,8 @@ import com.yk.blog.core.dto.UserReqDTO;
 import com.yk.blog.core.dto.UserRespDTO;
 import com.yk.blog.core.service.UserService;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -47,6 +49,15 @@ public class UserController {
     public Result updateUser(@PathVariable("userId") String userId, @RequestBody UserReqDTO userReqDTO) {
         return userService.updateUser(userId,userReqDTO);
     }
+
+    @ApiOperation("修改密码")
+    @PutMapping("{email}/{oldPasswd}/{newPasswd}")
+    public Result modifyPasswd(@ApiParam("登录邮箱") @PathVariable("email") String email,
+                               @ApiParam("原来的密码") @PathVariable("oldPasswd") String oldPasswd,
+                               @ApiParam("新的密码") @PathVariable("newPasswd") String newPasswd){
+        return userService.modifyPasswd(email,oldPasswd,newPasswd);
+    }
+
 
     @ApiOperation("搜索用户列表")
     @GetMapping("users")

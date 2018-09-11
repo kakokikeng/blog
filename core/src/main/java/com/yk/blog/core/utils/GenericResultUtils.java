@@ -22,7 +22,7 @@ public class GenericResultUtils {
 
     public static Result generateResultWithCount(long count,String ... message) {
         if (count > 0) {
-            return GenericResultUtils.genericNormalResult(true,message);
+            return GenericResultUtils.genericNormalResult(true);
         } else {
             return GenericResultUtils.genericNormalResult(false,message);
         }

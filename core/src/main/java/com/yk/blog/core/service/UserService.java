@@ -16,6 +16,16 @@ import java.util.List;
 public interface UserService {
 
     /**
+     *  更新密码
+     * @param email 登录邮箱
+     * @param newPasswd 新密码
+     * @param oldPasswd 旧密码
+     *  @Author yikang
+     *  @Date 2018/9/11
+    */
+    Result modifyPasswd(String email,String oldPasswd,String newPasswd);
+
+    /**
      *  更新用户的粉丝数量
      * @param userId 用户id
      * @param fansCount 粉丝数量

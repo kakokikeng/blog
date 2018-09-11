@@ -6,7 +6,7 @@ import com.yk.blog.core.dto.UserRespDTO;
 import com.yk.blog.core.service.CountService;
 import com.yk.blog.core.service.FollowerService;
 import com.yk.blog.core.service.UserService;
-import com.yk.blog.core.utils.ErrorMessages;
+import com.yk.blog.core.constant.ErrorMessages;
 import com.yk.blog.core.utils.GenericResultUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ import redis.clients.jedis.JedisPool;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.yk.blog.core.utils.ConstantValue.*;
+import static com.yk.blog.core.constant.Constant.*;
 import static com.yk.blog.core.utils.GenericResultUtils.generateResultWithCount;
 import static com.yk.blog.core.utils.UserUtils.getIdList;
 import static com.yk.blog.core.utils.Utils.generatePrefix;
