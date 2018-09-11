@@ -4,6 +4,8 @@ import com.t4f.gaea.dto.GenericResult;
 import com.t4f.gaea.dto.Result;
 import com.yk.blog.core.dto.BlogReqDTO;
 import com.yk.blog.core.dto.BlogRespDTO;
+import com.yk.blog.core.factories.BlogReqFactory;
+import com.yk.blog.core.factories.BlogRespFactory;
 import com.yk.blog.core.service.BlogService;
 import com.yk.blog.core.service.CountService;
 import com.yk.blog.core.service.UserService;
@@ -37,6 +39,12 @@ public class BlogServiceImpl implements BlogService {
     @Autowired
     UserService userService;
 
+    @Autowired
+    BlogRespFactory blogRespFactory;
+
+    @Autowired
+    BlogReqFactory blogReqFactory;
+
     @Override
     public void updateBlogCommentCount(int id, int count) {
         blogMapper.updateBlogCommentCount(id,count);
@@ -51,7 +59,7 @@ public class BlogServiceImpl implements BlogService {
         List<BlogRespDTO> data = new ArrayList<>();
         if (blogList != null) {
             for (Blog blog : blogList) {
-                BlogRespDTO tmp = new BlogRespDTO(blog);
+                BlogRespDTO tmp = blogRespFactory.createBlogDtoByBlog(blog);
                 tmp.setReadCount(countService.getReadCount(tmp.getId()));
                 data.add(tmp);
             }
@@ -64,7 +72,7 @@ public class BlogServiceImpl implements BlogService {
 
         Blog blog = blogMapper.getBlogById(blogId);
         if (blog != null) {
-            BlogRespDTO tmp = new BlogRespDTO(blog);
+            BlogRespDTO tmp = blogRespFactory.createBlogDtoByBlog(blog);
             tmp.setReadCount(countService.getReadCount(tmp.getId()));
             return GenericResultUtils.genericResult(Boolean.TRUE, tmp);
         } else {
@@ -86,11 +94,11 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public Result updateBlog(String userId, int blogId, BlogReqDTO blog) {
+    public Result updateBlog(String userId, int blogId, BlogReqDTO blogReqDTO) {
         if (!userService.existUser(userId)) {
             return wrongUserIdResult();
         }
-        Blog updateBlog = blog.changeToBlog(false);
+        Blog updateBlog = blogReqFactory.createBlogByDto(blogReqDTO);
         int count = blogMapper.updateBlog(userId, blogId, updateBlog);
         return generateResultWithCount(count);
     }
@@ -100,7 +108,7 @@ public class BlogServiceImpl implements BlogService {
         if (!userService.existUser(blogReqDTO.getUserId())) {
             return wrongUserIdResult();
         }
-        Blog blog = blogReqDTO.changeToBlog(true);
+        Blog blog = blogReqFactory.createBlogByDto(blogReqDTO);
         int count = blogMapper.createBlog(blog);
         if(count > 0){
             countService.updateBlogCount(blogReqDTO.getUserId(),1);
