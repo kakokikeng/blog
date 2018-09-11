@@ -45,7 +45,7 @@
         delete from comment where id = #{id} and user_id = #{userId};
     </delete>
 
-    <select id="getComments" parameterType="int">
+    <select id="getComments" parameterType="int" resultType="com.yk.blog.domain.dto.Comment">
         select * from comment where blog_id = #{blogId};
     </select>
 

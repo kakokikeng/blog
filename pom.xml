@@ -53,6 +53,12 @@
             </dependency>
 
             <dependency>
+                <groupId>com.google.code.gson</groupId>
+                <artifactId>gson</artifactId>
+                <version>2.8.4</version>
+            </dependency>
+
+            <dependency>
                 <groupId>com.t4f.gaea</groupId>
                 <artifactId>gaea</artifactId>
                 <version>1.1-SNAPSHOT</version>

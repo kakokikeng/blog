@@ -1,6 +1,7 @@
 package com.yk.blog.core.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
 /**
@@ -8,7 +9,7 @@ import org.springframework.stereotype.Component;
  * @date 2018/9/11
  */
 @Component
-@ConfigurationProperties("email")
+@ConfigurationProperties(prefix = "email")
 public class EmailConfig {
 
     private String from;

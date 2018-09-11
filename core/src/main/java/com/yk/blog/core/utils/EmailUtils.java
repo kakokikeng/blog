@@ -3,6 +3,7 @@ package com.yk.blog.core.utils;
 import com.yk.blog.core.config.EmailConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 
 import javax.mail.Authenticator;
 import javax.mail.Message;
@@ -18,7 +19,7 @@ import java.util.Properties;
  * @author yikang
  * @date 2018/9/11
  */
-
+@Component
 public class EmailUtils {
 
     @Autowired

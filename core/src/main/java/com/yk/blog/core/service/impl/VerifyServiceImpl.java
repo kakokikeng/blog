@@ -23,13 +23,15 @@ public class VerifyServiceImpl implements VerifyService {
     @Autowired
     JedisPool jedisPool;
 
+    @Autowired
+    EmailUtils emailUtils;
+
     @Override
     public Result generateVerifyCode(String email) {
         String verifyCode = Utils.generateVerifyCode(Constant.VERIFY_CODE_LENGTH);
         try (Jedis jedis = jedisPool.getResource()) {
             jedis.setex(email, Constant.TIME_OUT_SECONDS, verifyCode);
         }
-        EmailUtils emailUtils = new EmailUtils();
         emailUtils.sendEmail(email, verifyCode);
         return GenericResultUtils.genericNormalResult(true);
     }

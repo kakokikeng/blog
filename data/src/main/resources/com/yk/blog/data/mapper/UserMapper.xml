@@ -64,18 +64,18 @@
         where id = #{id}
     </update>
 
-    <select id="getUserListByIdList" parameterType="java.util.List">
+    <select id="getUserListByIdList" parameterType="java.util.List" resultType="com.yk.blog.domain.dto.User">
         select * from user where id in
         <foreach collection="list" item="item" open="(" close=")" separator=",">
             #{item}
         </foreach>
     </select>
 
-    <select id="existUser" parameterType="java.lang.String">
+    <select id="existUser" parameterType="java.lang.String" resultType="java.lang.String">
         select id from user where id = #{id};
     </select>
 
-    <select id="existUsers" parameterType="java.util.List">
+    <select id="existUsers" parameterType="java.util.List" resultType="java.lang.String">
         select id from user where id in
         <foreach collection="list" item="item" open="(" close=")" separator=",">
             #{item}
