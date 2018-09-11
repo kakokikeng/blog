@@ -23,5 +23,11 @@ public class Constant {
 
     public static final String USER_LOGIN = "user_login";
 
+    public static final int VERIFY_CODE_LENGTH = 4;
+
+    public static final int TIME_OUT_SECONDS = 180;
+
+    public static final int EXPIRE_NOW = 1;
+
 
 }

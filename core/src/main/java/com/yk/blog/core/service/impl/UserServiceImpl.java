@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService {
                 if (count > 0) {
                     jedis.hset(Utils.generatePrefix(Constant.USER_LOGIN), email, newMD5);
                 }
-                return GenericResultUtils.generateResultWithCount(count, ErrorMessages.UPDATE_FAILD.message);
+                return GenericResultUtils.generateResultWithCount(count, ErrorMessages.UPDATE_FAILED.message);
             } else {
                 return GenericResultUtils.genericNormalResult(false, ErrorMessages.ERROR_PASSWORD.message);
             }

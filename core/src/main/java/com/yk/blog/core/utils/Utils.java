@@ -1,8 +1,13 @@
 package com.yk.blog.core.utils;
 
 
+import javax.mail.*;
+import javax.mail.internet.*;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Properties;
+import java.util.Random;
 
 import static com.yk.blog.core.constant.Constant.PROJECT_NAME;
 
@@ -21,7 +26,6 @@ public class Utils {
     public static String generateMd5(String s){
         return textToMD5L32(s);
     }
-
 
     public static String textToMD5L32(String plainText){
         String result = null;
@@ -53,6 +57,19 @@ public class Utils {
         }
         return result;
     }
+
+    public static String generateVerifyCode(int number){
+        String result = "";
+        int [] numbers = {0,1,2,3,4,5,6,7,8,9};
+        Random random = new Random();
+        for (int i = 0; i < number; i++) {
+            int next = random.nextInt(10000);
+            result += numbers[next%10];
+        }
+        System.out.println(result);
+        return result;
+    }
+
 
 
 
