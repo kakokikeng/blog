@@ -28,11 +28,21 @@ public class VerifyServiceImpl implements VerifyService {
 
     @Override
     public Result generateVerifyCode(String email) {
-        String verifyCode = Utils.generateVerifyCode(Constant.VERIFY_CODE_LENGTH);
+
         try (Jedis jedis = jedisPool.getResource()) {
-            jedis.setex(email, Constant.TIME_OUT_SECONDS, verifyCode);
+            String times = jedis.get(Utils.generatePrefix(Constant.EMAIL_WITH_COUNT + email));
+            if (times != null) {
+                if (Integer.parseInt(times) > Constant.MAX_TIMES_PER_MIN) {
+                    return GenericResultUtils.genericNormalResult(false, ErrorMessages.REQUEST_TOO_FREQUENTLY.message);
+                }
+                jedis.setex(Utils.generatePrefix(Constant.EMAIL_WITH_COUNT + email),Constant.MINUTE,String.valueOf(Integer.parseInt(times) + 1));
+            } else {
+                jedis.setex(Utils.generatePrefix(Constant.EMAIL_WITH_COUNT + email),Constant.MINUTE,Constant.VALUE_1);
+            }
+            String verifyCode = Utils.generateVerifyCode(Constant.VERIFY_CODE_LENGTH);
+            jedis.setex(Utils.generatePrefix(Constant.EMAIL_WITH_VERIFY_CODE + email), Constant.TIME_OUT_SECONDS, verifyCode);
+            emailUtils.sendEmail(email, verifyCode);
         }
-        emailUtils.sendEmail(email, verifyCode);
         return GenericResultUtils.genericNormalResult(true);
     }
 

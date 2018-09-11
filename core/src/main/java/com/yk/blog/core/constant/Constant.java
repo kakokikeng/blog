@@ -23,11 +23,21 @@ public class Constant {
 
     public static final String USER_LOGIN = "user_login";
 
+    public static final String EMAIL_WITH_VERIFY_CODE = "email_with_verify_code";
+
+    public static final String EMAIL_WITH_COUNT = "email_with_count";
+
+    public static final int MINUTE = 60;
+
+    public static final String VALUE_1 = "1";
+
+    public static final int MAX_TIMES_PER_MIN = 5;
+
     public static final int VERIFY_CODE_LENGTH = 4;
 
     public static final int TIME_OUT_SECONDS = 180;
 
-    public static final int EXPIRE_NOW = 1;
+    public static final int EXPIRE_NOW = 0;
 
 
 }
