@@ -2,6 +2,7 @@ package com.yk.blog.core.service.impl;
 
 import com.t4f.gaea.dto.GenericResult;
 import com.t4f.gaea.dto.Result;
+import com.yk.blog.core.constant.Constant;
 import com.yk.blog.core.dto.BlogReqDTO;
 import com.yk.blog.core.dto.BlogRespDTO;
 import com.yk.blog.core.factories.BlogReqFactory;
@@ -11,10 +12,13 @@ import com.yk.blog.core.service.CountService;
 import com.yk.blog.core.service.UserService;
 import com.yk.blog.core.constant.ErrorMessages;
 import com.yk.blog.core.utils.GenericResultUtils;
+import com.yk.blog.core.utils.Utils;
 import com.yk.blog.data.dao.BlogMapper;
 import com.yk.blog.domain.dto.Blog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +39,9 @@ public class BlogServiceImpl implements BlogService {
 
     @Autowired
     CountService countService;
+
+    @Autowired
+    JedisPool jedisPool;
 
     @Autowired
     UserService userService;
@@ -88,6 +95,9 @@ public class BlogServiceImpl implements BlogService {
         }
         int count = blogMapper.deleteBlog(userId, blogId);
         if(count > 0){
+            try(Jedis jedis = jedisPool.getResource()){
+                jedis.srem(Utils.generatePrefix(Constant.EXIST_BLOG),String.valueOf(blogId));
+            }
             countService.updateBlogCount(userId,-1);
         }
         return generateResultWithCount(count);
@@ -111,6 +121,9 @@ public class BlogServiceImpl implements BlogService {
         Blog blog = blogReqFactory.createBlogByDto(blogReqDTO);
         int count = blogMapper.createBlog(blog);
         if(count > 0){
+            try(Jedis jedis = jedisPool.getResource()){
+                jedis.sadd(Utils.generatePrefix(Constant.EXIST_BLOG),String.valueOf(blog.getId()));
+            }
             countService.updateBlogCount(blogReqDTO.getUserId(),1);
         }
         return generateResultWithCount(count);

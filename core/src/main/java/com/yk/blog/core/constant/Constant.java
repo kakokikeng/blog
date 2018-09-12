@@ -27,6 +27,8 @@ public class Constant {
 
     public static final String EMAIL_WITH_COUNT = "email_with_count";
 
+    public static final String EXIST_BLOG = "exist_blog";
+
     public static final int MINUTE = 60;
 
     public static final String VALUE_1 = "1";
