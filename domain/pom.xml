@@ -26,11 +26,7 @@
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger2</artifactId>
         </dependency>
-        
-        <dependency>
-            <groupId>com.t4f.gaea</groupId>
-            <artifactId>gaea</artifactId>
-        </dependency>
+
     </dependencies>
 
 </project>

@@ -1,7 +1,7 @@
 package com.yk.blog.api.controller;
 
-import com.t4f.gaea.dto.Result;
 import com.yk.blog.core.dto.LoginReqDTO;
+import com.yk.blog.core.dto.Result;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.web.bind.annotation.PostMapping;
