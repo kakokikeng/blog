@@ -40,7 +40,6 @@ public class FollowerServiceImpl implements FollowerService {
 
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
-    //TODO fans数量一直是1
     public Result follow(String followId, String followedId) {
         if (!userService.existUsers(getIdList(followedId, followId))) {
             return GenericResultUtils.genericNormalResult(Boolean.FALSE, ErrorMessages.WRONG_USER_ID.message);
@@ -50,7 +49,7 @@ public class FollowerServiceImpl implements FollowerService {
         }
         try (Jedis jedis = jedisPool.getResource()) {
             long count = jedis.sadd(generatePrefix(FOLLOWED + followId), followedId);
-            jedis.sadd(generatePrefix(FOLLOWER + followedId), followedId);
+            jedis.sadd(generatePrefix(FOLLOWER + followedId), followId);
             if (count > 0) {
                 if (countService.updateFans(followedId) > 0) {
                     return generateResultWithCount(count);

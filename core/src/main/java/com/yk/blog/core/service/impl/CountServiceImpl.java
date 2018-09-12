@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import static com.yk.blog.core.utils.GenericResultUtils.generateResultWithCount;
@@ -71,12 +72,20 @@ public class CountServiceImpl implements CountService {
 
         return genericNormalResult(true);
     }
-
-    @Scheduled(cron = "* 0/3 * * * * *")
+    //TODO 分布式系统只需要一个服务器进行更新  删除博客的时候要删除redis里的阅读量
+    @Scheduled(cron = "0/30 * * * * ?")
     public void cronJob() {
+        System.out.println("定时任务开始");
         try (Jedis jedis = jedisPool.getResource()) {
             Map<String, String> map = jedis.hgetAll(Utils.generatePrefix(Constant.BLOG_READ_COUNT));
-            blogMapper.updateReadCountByMap(map);
+            if(map == null){
+                System.out.println("map is null...");
+                return ;
+            }
+            Map<String,Object> m = new HashMap<>();
+            m.put("map",map);
+            System.out.println("update...");
+            blogMapper.updateReadCountByMap(m);
         }
 
     }

@@ -45,7 +45,7 @@
         update blog set title = #{blog.title},content = #{blog.content}  where id = #{blog.id} and user_id = #{blog.userId}
     </update>
 
-    <insert id="createBlog" parameterType="com.yk.blog.domain.dto.Blog" keyProperty="id">
+    <insert id="createBlog" useGeneratedKeys="true" keyProperty="id" parameterType="com.yk.blog.domain.dto.Blog">
         insert into blog(create_time, user_id, title, content)
         values (#{createTime},#{userId},#{title},#{content})
     </insert>

@@ -31,7 +31,7 @@ public interface BlogMapper {
      * @Author yikang
      * @Date 2018/9/10
      */
-    void updateReadCountByMap(Map<String, String> map);
+    void updateReadCountByMap(Map<String, Object> map);
 
     /**
      * 更新点赞数
