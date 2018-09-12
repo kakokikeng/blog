@@ -3,6 +3,9 @@ package com.yk.blog.core.dto;
 import com.sun.istack.internal.NotNull;
 import com.yk.blog.core.utils.Utils;
 import com.yk.blog.domain.dto.User;
+import io.swagger.annotations.ApiModelProperty;
+
+import java.util.Date;
 
 /**
  * @author yikang
@@ -12,6 +15,7 @@ import com.yk.blog.domain.dto.User;
 public class UserReqDTO extends UserBaseDTO{
 
     @NotNull
+    @ApiModelProperty("密码")
     private String passwd;
 
     @Override
@@ -35,11 +39,11 @@ public class UserReqDTO extends UserBaseDTO{
             result.setId(userId[0]);
         }else{
             result.setId(generateUserId());
-            result.setPassWd(Utils.generateMd5(getPasswd()));
+            result.setPasswd(Utils.generateMd5(getPasswd()));
         }
         result.setUserName(getUserName());
         result.setEmail(getEmail());
-        result.setCreateTime(getCreateTime());
+        result.setCreateTime(new Date(getCreateTime()));
         return result;
     }
 

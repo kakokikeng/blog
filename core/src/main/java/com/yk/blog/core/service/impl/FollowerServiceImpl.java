@@ -40,21 +40,26 @@ public class FollowerServiceImpl implements FollowerService {
 
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
+    //TODO fans数量一直是1
     public Result follow(String followId, String followedId) {
         if (!userService.existUsers(getIdList(followedId, followId))) {
             return GenericResultUtils.genericNormalResult(Boolean.FALSE, ErrorMessages.WRONG_USER_ID.message);
         }
-        try(Jedis jedis = jedisPool.getResource()){
-            long count = jedis.sadd(generatePrefix(FOLLOWED + followId),followedId);
-            jedis.sadd(generatePrefix(FOLLOWER + followedId),followedId);
+        if (followId.equals(followedId)) {
+            return GenericResultUtils.genericNormalResult(false, ErrorMessages.CAN_NOT_FOLLOW_YOURSELF.message);
+        }
+        try (Jedis jedis = jedisPool.getResource()) {
+            long count = jedis.sadd(generatePrefix(FOLLOWED + followId), followedId);
+            jedis.sadd(generatePrefix(FOLLOWER + followedId), followedId);
             if (count > 0) {
                 if (countService.updateFans(followedId) > 0) {
                     return generateResultWithCount(count);
                 } else {
                     throw new RuntimeException(ErrorMessages.ERROR_INCREASE_FANS.message);
                 }
+            } else {
+                return GenericResultUtils.genericNormalResult(false, ErrorMessages.ALREADY_FOLLOWED.message);
             }
-            return generateResultWithCount(count);
         }
     }
 
@@ -63,14 +68,14 @@ public class FollowerServiceImpl implements FollowerService {
         if (!userService.existUsers(getIdList(followedId, followId))) {
             return GenericResultUtils.genericNormalResult(Boolean.FALSE, ErrorMessages.WRONG_USER_ID.message);
         }
-        try(Jedis jedis = jedisPool.getResource()){
-            long count = jedis.srem(generatePrefix(FOLLOWED + followId),followedId);
-            jedis.srem(generatePrefix(FOLLOWER + followedId),followId);
-            if(count > 0){
+        try (Jedis jedis = jedisPool.getResource()) {
+            long count = jedis.srem(generatePrefix(FOLLOWED + followId), followedId);
+            jedis.srem(generatePrefix(FOLLOWER + followedId), followId);
+            if (count > 0) {
                 countService.updateFans(followedId);
                 return generateResultWithCount(count);
-            }else{
-                return GenericResultUtils.genericNormalResult(Boolean.FALSE, ErrorMessages.FOLLOW_RECORD_NOT_EXIST.message);
+            } else {
+                return GenericResultUtils.genericNormalResult(Boolean.FALSE, ErrorMessages.NOT_FOLLOWED.message);
             }
         }
     }
@@ -81,7 +86,7 @@ public class FollowerServiceImpl implements FollowerService {
             return GenericResultUtils.genericFailureResult(ErrorMessages.WRONG_USER_ID.message);
         }
         List<UserRespDTO> data = new ArrayList<>();
-        try(Jedis jedis = jedisPool.getResource()){
+        try (Jedis jedis = jedisPool.getResource()) {
             List<String> userIdList = new ArrayList<>(jedis.smembers(generatePrefix(FOLLOWER + userId)));
             if (userIdList.size() > 0) {
                 data = userService.getUserListByIdList(userIdList);
@@ -96,7 +101,7 @@ public class FollowerServiceImpl implements FollowerService {
             return GenericResultUtils.genericFailureResult(ErrorMessages.WRONG_USER_ID.message);
         }
         List<UserRespDTO> data = new ArrayList<>();
-        try(Jedis jedis = jedisPool.getResource()){
+        try (Jedis jedis = jedisPool.getResource()) {
             List<String> userIdList = new ArrayList<>(jedis.smembers(generatePrefix(FOLLOWED + userId)));
             if (userIdList.size() > 0) {
                 data = userService.getUserListByIdList(userIdList);

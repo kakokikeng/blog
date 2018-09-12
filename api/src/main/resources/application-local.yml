@@ -17,3 +17,7 @@ email:
   from: 327958113@qq.com
   password: mrgmigvfixpdcajf
   host: smtp.qq.com
+
+logging:
+  level:
+    com.yk.blog.data: debug

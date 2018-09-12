@@ -13,7 +13,7 @@ import java.util.List;
  */
 @ApiModel
 public class UserRespDTO extends UserBaseDTO{
-    @ApiModelProperty("用户名")
+    @ApiModelProperty("用户id")
     private String id;
     @ApiModelProperty("粉丝数量")
     private Integer fans;
@@ -25,7 +25,7 @@ public class UserRespDTO extends UserBaseDTO{
     public UserRespDTO(User user){
         setUserName(user.getUserName());
         setEmail(user.getEmail());
-        setCreateTime(user.getCreateTime());
+        setCreateTime(user.getCreateTime().getTime());
         setId(user.getId());
         setFans(user.getFans());
         setBlogs(user.getBlogs());

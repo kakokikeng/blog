@@ -51,11 +51,9 @@ public class BlogController {
     }
 
     @ApiOperation("更新博客内容")
-    @PutMapping("{userId}/{blogId}")
-    public Result updateBlog(@ApiParam("登录用户id") @PathVariable("userId") String userId,
-                             @ApiParam("博客id") @PathVariable("blogId") int blogId,
-                             @ApiParam("博客相关信息") @Valid @RequestBody BlogReqDTO blog) {
-        return blogService.updateBlog(userId, blogId, blog);
+    @PutMapping("")
+    public Result updateBlog(@ApiParam("博客相关信息") @Valid @RequestBody BlogReqDTO blog) {
+        return blogService.updateBlog(blog);
     }
 
     @ApiOperation("新建博客")

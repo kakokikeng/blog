@@ -15,7 +15,7 @@ public class BlogRespFactory{
         BlogRespDTO result = new BlogRespDTO();
         result.setId(blog.getId());
         result.setCommentCount(blog.getCommentCount());
-        result.setCreateTime(blog.getCreateTime());
+        result.setCreateTime(blog.getCreateTime().getTime());
         result.setLikeCount(blog.getLikeCount());
         result.setReadCount(blog.getReadCount());
         result.setContent(blog.getContent());

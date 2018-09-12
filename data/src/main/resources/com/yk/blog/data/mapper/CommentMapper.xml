@@ -2,6 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.yk.blog.data.dao.CommentMapper">
 
+    <resultMap id="comment" type="com.yk.blog.domain.dto.Comment">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="attached_user_id" property="attachedUserId"/>
+        <result column="create_time" property="createTime"/>
+        <result column="blog_id" property="blogId"/>
+        <result column="content" property="content"/>
+    </resultMap>
+
     <insert id="insertComment" parameterType="com.yk.blog.domain.dto.Comment">
         insert into comment
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -45,7 +54,7 @@
         delete from comment where id = #{id} and user_id = #{userId};
     </delete>
 
-    <select id="getComments" parameterType="int" resultType="com.yk.blog.domain.dto.Comment">
+    <select id="getComments" parameterType="int" resultMap="comment">
         select * from comment where blog_id = #{blogId};
     </select>
 

@@ -1,5 +1,7 @@
 package com.yk.blog.domain.dto;
 
+import java.util.Date;
+
 /**
  * @author yikang
  * @date 2018/8/29
@@ -12,8 +14,8 @@ public class User {
     private String email;
     private Integer fans;
     private Integer blogs;
-    private Long createTime;
-    private String passWd;
+    private Date createTime;
+    private String passwd;
 
     @Override
     public String toString() {
@@ -24,16 +26,16 @@ public class User {
                 ", fans=" + fans +
                 ", blogs=" + blogs +
                 ", createTime=" + createTime +
-                ", passWd='" + passWd + '\'' +
+                ", passwd='" + passwd + '\'' +
                 '}';
     }
 
-    public String getPassWd() {
-        return passWd;
+    public String getPasswd() {
+        return passwd;
     }
 
-    public void setPassWd(String passWd) {
-        this.passWd = passWd;
+    public void setPasswd(String passwd) {
+        this.passwd = passwd;
     }
 
     public String getId() {
@@ -76,11 +78,11 @@ public class User {
         this.blogs = blogs;
     }
 
-    public Long getCreateTime() {
+    public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Long createTime) {
+    public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
 }

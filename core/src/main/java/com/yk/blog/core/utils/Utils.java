@@ -27,7 +27,7 @@ public class Utils {
         return textToMD5L32(s);
     }
 
-    public static String textToMD5L32(String plainText){
+    private static String textToMD5L32(String plainText){
         String result = null;
         //首先判断是否为空
         if(plainText == null || plainText.trim().length() == 0){

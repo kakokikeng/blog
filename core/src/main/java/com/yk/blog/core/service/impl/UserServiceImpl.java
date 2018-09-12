@@ -111,9 +111,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Result deleteUser(String userId) {
-        int count = userMapper.deleteUser(userId);
-        return GenericResultUtils.generateResultWithCount(count);
+    public Result deleteUser(String email, String passwd) {
+
+        try (Jedis jedis = jedisPool.getResource()) {
+            if (Utils.generateMd5(passwd).equals(jedis.hget(Utils.generatePrefix(Constant.USER_LOGIN), email))) {
+                int count = userMapper.deleteUser(email);
+                if (count > 0) {
+                    jedis.hdel(Utils.generatePrefix(Constant.USER_LOGIN), email);
+                }
+                return GenericResultUtils.generateResultWithCount(count);
+            } else {
+                return GenericResultUtils.genericNormalResult(false, ErrorMessages.ERROR_PASSWORD.message);
+            }
+        }
+
     }
 
     @Override
@@ -123,7 +134,7 @@ public class UserServiceImpl implements UserService {
             if (jedis.hget(Utils.generatePrefix(Constant.USER_LOGIN), user.getEmail()) == null) {
                 int count = userMapper.insertUser(user);
                 if (count > 0) {
-                    jedis.hset(Utils.generatePrefix(Constant.USER_LOGIN), user.getEmail(), user.getPassWd());
+                    jedis.hset(Utils.generatePrefix(Constant.USER_LOGIN), user.getEmail(), user.getPasswd());
                 }
                 return GenericResultUtils.generateResultWithCount(count);
             } else {

@@ -4,13 +4,11 @@ import com.sun.istack.internal.NotNull;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-import java.util.Stack;
-
 /**
  * @author yikang
  * @date 2018/8/31
  */
-@ApiModel
+@ApiModel("blog base DTO")
 public class BlogBaseDTO {
     @NotNull
     @ApiModelProperty(name = "title",value = "博客标题")
@@ -21,6 +19,8 @@ public class BlogBaseDTO {
     @NotNull
     @ApiModelProperty(name = "userId",value = "所属用户id")
     private String userId;
+    @ApiModelProperty(name = "id",value = "博客id")
+    private Integer id;
 
     @Override
     public String toString() {
@@ -28,19 +28,16 @@ public class BlogBaseDTO {
                 "title='" + title + '\'' +
                 ", content='" + content + '\'' +
                 ", userId='" + userId + '\'' +
+                ", id=" + id +
                 '}';
     }
 
+    public Integer getId() {
+        return id;
+    }
 
-    public static void main(String[] args) {
-        Stack<Integer> stack = new Stack<>();
-        stack.push(1);
-        stack.push(2);
-        stack.push(3);
-        stack.push(4);
-        System.out.println(stack.pop());
-        System.out.println(stack.pop());
-        System.out.println(stack.pop());
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getUserId() {

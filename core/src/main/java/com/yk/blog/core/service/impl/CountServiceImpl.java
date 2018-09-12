@@ -5,6 +5,7 @@ import com.yk.blog.core.service.CountService;
 import com.yk.blog.core.service.UserService;
 import com.yk.blog.core.constant.Constant;
 import com.yk.blog.core.constant.ErrorMessages;
+import com.yk.blog.core.utils.GenericResultUtils;
 import com.yk.blog.core.utils.Utils;
 import com.yk.blog.data.dao.BlogMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,9 @@ public class CountServiceImpl implements CountService {
         try (Jedis jedis = jedisPool.getResource()) {
             boolean liked = jedis.sismember(Utils.generatePrefix(Constant.BLOG_LIKED_RECORD + userId), String.valueOf(blogId));
             if (!liked) {
+                if(!jedis.sismember(Utils.generatePrefix(Constant.EXIST_BLOG),String.valueOf(blogId))){
+                    return GenericResultUtils.genericNormalResult(false,ErrorMessages.BLOG_NOT_EXIST.message);
+                }
                 jedis.sadd(Utils.generatePrefix(Constant.BLOG_LIKED_RECORD + userId), String.valueOf(blogId));
                 long count = jedis.hincrBy(Utils.generatePrefix(Constant.BLOG_LIKED_COUNT), String.valueOf(blogId), 1);
                 int n = blogMapper.updateLikeCount(blogId, (int) count);
@@ -59,6 +63,9 @@ public class CountServiceImpl implements CountService {
     public Result increaseReadCount(int blogId) {
 
         try (Jedis jedis = jedisPool.getResource()) {
+            if(!jedis.sismember(Utils.generatePrefix(Constant.EXIST_BLOG),String.valueOf(blogId))){
+                return GenericResultUtils.genericNormalResult(false,ErrorMessages.BLOG_NOT_EXIST.message);
+            }
             jedis.hincrBy(Utils.generatePrefix(Constant.BLOG_READ_COUNT), String.valueOf(blogId), 1);
         }
 

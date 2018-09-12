@@ -43,7 +43,7 @@ public interface UserMapper {
      * @Author yikang
      * @Date 2018/9/10
      */
-    int updateBlogCountByUserId(String id, int addCount);
+    int updateBlogCountByUserId(@Param("id") String id, @Param("addCount") int addCount);
 
     /**
      * 新增用户
@@ -58,12 +58,12 @@ public interface UserMapper {
     /**
      * 删除用户
      *
-     * @param id 用户id
+     * @param email 用户登录邮箱
      * @return
      * @Author yikang
      * @Date 2018/9/5
      */
-    int deleteUser(String id);
+    int deleteUser(String email);
 
     /**
      * 更新用户信息
