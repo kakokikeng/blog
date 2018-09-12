@@ -1,7 +1,7 @@
 package com.yk.blog.core.service;
 
-import com.t4f.gaea.dto.GenericResult;
-import com.t4f.gaea.dto.Result;
+import com.yk.blog.core.dto.GenericResult;
+import com.yk.blog.core.dto.Result;
 import com.yk.blog.core.dto.UserRespDTO;
 
 import java.util.List;

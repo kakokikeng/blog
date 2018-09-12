@@ -1,7 +1,6 @@
 package com.yk.blog.core.service;
 
-import com.t4f.gaea.dto.Result;
-import io.swagger.annotations.ApiParam;
+import com.yk.blog.core.dto.Result;
 
 /**
  * @author yikang

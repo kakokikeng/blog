@@ -1,6 +1,6 @@
 package com.yk.blog.api.controller;
 
-import com.t4f.gaea.dto.Result;
+import com.yk.blog.core.dto.Result;
 import com.yk.blog.core.service.CountService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;

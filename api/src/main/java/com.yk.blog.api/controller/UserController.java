@@ -1,13 +1,12 @@
 package com.yk.blog.api.controller;
 
-import com.t4f.gaea.dto.GenericResult;
-import com.t4f.gaea.dto.Result;
+import com.yk.blog.core.dto.GenericResult;
+import com.yk.blog.core.dto.Result;
 import com.yk.blog.core.dto.UserReqDTO;
 import com.yk.blog.core.dto.UserRespDTO;
 import com.yk.blog.core.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;

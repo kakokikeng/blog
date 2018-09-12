@@ -1,6 +1,6 @@
 package com.yk.blog.core.service.impl;
 
-import com.t4f.gaea.dto.Result;
+import com.yk.blog.core.dto.Result;
 import com.yk.blog.core.constant.Constant;
 import com.yk.blog.core.constant.ErrorMessages;
 import com.yk.blog.core.service.VerifyService;
