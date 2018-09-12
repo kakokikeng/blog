@@ -1,6 +1,34 @@
 create schema blog;
 use blog;
 
+
+
+
+create table user
+(
+  id          varchar(32)     not null
+  comment '自增id'
+    primary key,
+  user_name   varchar(10)     not null
+  comment '用户名',
+  email       varchar(20)     not null
+  comment '关联邮箱  通过邮箱登录',
+  fans        int default '0' not null
+  comment '粉丝数量',
+  blogs       int default '0' not null
+  comment '博客数量',
+  create_time timestamp       not null
+  comment '用户创建时间
+',
+  passwd      varchar(32)     not null
+  comment 'MD5加密后的密码',
+  constraint email_user_name_key
+  unique (email, user_name),
+  constraint user_email_uindex
+  unique (email)
+)
+  comment '存储博客用户相关信息';
+
 create table blog
 (
   id            int auto_increment
@@ -52,34 +80,8 @@ create table comment
   foreign key (user_id) references user (id),
   constraint comment_blog_id_fk
   foreign key (blog_id) references blog (id)
-);
-  comment '评论相关信息';
-
-
-
-
-create table user
-(
-  id          varchar(32)     not null
-  comment '自增id'
-    primary key,
-  user_name   varchar(10)     not null
-  comment '用户名',
-  email       varchar(20)     not null
-  comment '关联邮箱  通过邮箱登录',
-  fans        int default '0' not null
-  comment '粉丝数量',
-  blogs       int default '0' not null
-  comment '博客数量',
-  create_time timestamp       not null
-  comment '用户创建时间
-',
-  passwd      varchar(32)     not null
-  comment 'MD5加密后的密码',
-  constraint email_user_name_key
-  unique (email, user_name),
-  constraint user_email_uindex
-  unique (email)
 )
-  comment '存储博客用户相关信息';
+comment '评论相关信息';
+
+
 
