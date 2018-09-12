@@ -49,7 +49,7 @@ public class VerifyServiceImpl implements VerifyService {
     @Override
     public Result validation(String email, String verifyCode) {
         try (Jedis jedis = jedisPool.getResource()) {
-            String trueCode = jedis.get(email);
+            String trueCode = jedis.get(Utils.generatePrefix(Constant.EMAIL_WITH_VERIFY_CODE + email));
             if (trueCode == null) {
                 return GenericResultUtils.genericNormalResult(false, ErrorMessages.VERIFY_CODE_TIME_OUT.message);
             } else if (!trueCode.equalsIgnoreCase(verifyCode)) {

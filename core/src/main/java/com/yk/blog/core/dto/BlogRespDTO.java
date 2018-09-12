@@ -10,8 +10,6 @@ import io.swagger.annotations.ApiModelProperty;
  */
 @ApiModel
 public class BlogRespDTO extends BlogBaseDTO{
-    @ApiModelProperty(name = "id",value = "该篇博客id")
-    private Integer id;
     @ApiModelProperty(name = "createTime",value = "博客创建时间")
     private Long createTime;
     @ApiModelProperty(name = "readCount",value = "博客阅读量")
@@ -27,20 +25,11 @@ public class BlogRespDTO extends BlogBaseDTO{
     @Override
     public String toString() {
         return "BlogRespDTO{" +
-                "id=" + id +
                 ", createTime=" + createTime +
                 ", readCount=" + readCount +
                 ", likeCount=" + likeCount +
                 ", commentCount=" + commentCount +
                 "} " + super.toString();
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public Long getCreateTime() {

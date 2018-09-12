@@ -53,6 +53,7 @@ create table comment
   constraint comment_blog_id_fk
   foreign key (blog_id) references blog (id)
 );
+  comment '评论相关信息';
 
 
 

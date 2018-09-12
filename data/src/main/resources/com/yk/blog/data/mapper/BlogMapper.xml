@@ -2,6 +2,17 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.yk.blog.data.dao.BlogMapper">
 
+    <resultMap id="blog" type="com.yk.blog.domain.dto.Blog">
+        <id column="id" property="id"/>
+        <result column="create_time" property="createTime"/>
+        <result column="read_count" property="readCount"/>
+        <result column="user_id" property="userId"/>
+        <result column="title" property="title"/>
+        <result column="content" property="content"/>
+        <result column="like_count" property="likeCount"/>
+        <result column="comment_count" property="commentCount"/>
+    </resultMap>
+
     <update id="updateBlogCommentCount">
         update blog set comment_count = #{commentCount} where id = #{id};
     </update>
@@ -18,11 +29,11 @@
         update blog set like_count = #{likeCount} where id = #{id};
     </update>
 
-    <select id="getBlogsByUserId" resultType="com.yk.blog.domain.dto.Blog" parameterType="java.lang.String">
+    <select id="getBlogsByUserId" resultMap="blog" parameterType="java.lang.String">
         select * from blog where user_id = #{userId} order by create_time desc ;
     </select>
 
-    <select id="getBlogById" parameterType="int" resultType="com.yk.blog.domain.dto.Blog">
+    <select id="getBlogById" parameterType="int" resultMap="blog">
         select * from blog where id = #{id};
     </select>
 
@@ -31,12 +42,12 @@
     </delete>
 
     <update id="updateBlog">
-        update blog set title = #{blog.title},content = #{blog.content}  where id = #{id} and user_id = #{userId}
+        update blog set title = #{blog.title},content = #{blog.content}  where id = #{blog.id} and user_id = #{blog.userId}
     </update>
 
     <insert id="createBlog" parameterType="com.yk.blog.domain.dto.Blog">
         insert into blog(create_time, user_id, title, content)
-        values (#{blog.createTime},#{blog.userId},#{blog.title},#{blog.content})
+        values (#{createTime},#{userId},#{title},#{content})
     </insert>
 
 </mapper>

@@ -8,7 +8,7 @@ import io.swagger.annotations.ApiModelProperty;
  * @author yikang
  * @date 2018/8/31
  */
-@ApiModel
+@ApiModel("blog base DTO")
 public class BlogBaseDTO {
     @NotNull
     @ApiModelProperty(name = "title",value = "博客标题")
@@ -19,6 +19,8 @@ public class BlogBaseDTO {
     @NotNull
     @ApiModelProperty(name = "userId",value = "所属用户id")
     private String userId;
+    @ApiModelProperty(name = "id",value = "博客id")
+    private Integer id;
 
     @Override
     public String toString() {
@@ -26,7 +28,16 @@ public class BlogBaseDTO {
                 "title='" + title + '\'' +
                 ", content='" + content + '\'' +
                 ", userId='" + userId + '\'' +
+                ", id=" + id +
                 '}';
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getUserId() {

@@ -39,16 +39,18 @@ public class UserController {
     }
 
     @ApiOperation("删除用户")
-    @DeleteMapping("{userId}")
-    public Result deleteUser(@PathVariable("userId") String userId) {
-        return userService.deleteUser(userId);
+    @DeleteMapping("{email}/{passwd}")
+    public Result deleteUser(@ApiParam("登录邮箱") @PathVariable("email") String email,
+                             @ApiParam("登录密码") @PathVariable("passwd") String passwd) {
+        return userService.deleteUser(email,passwd);
     }
 
-    @ApiOperation("修改用户信息")
+    //TODO 目前能修改的信息只有用户名
+    /*@ApiOperation("修改用户信息")
     @PutMapping("{userId}")
     public Result updateUser(@PathVariable("userId") String userId, @RequestBody UserReqDTO userReqDTO) {
         return userService.updateUser(userId,userReqDTO);
-    }
+    }*/
 
     @ApiOperation("修改密码")
     @PutMapping("{email}/{oldPasswd}/{newPasswd}")

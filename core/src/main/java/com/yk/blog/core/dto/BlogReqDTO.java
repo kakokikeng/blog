@@ -1,31 +1,18 @@
 package com.yk.blog.core.dto;
 
-import com.yk.blog.domain.dto.Blog;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiModel;
 
 /**
  * @author yikang
  * @date 2018/8/31
  */
-
+@ApiModel("request DTO")
 public class BlogReqDTO extends BlogBaseDTO{
-    @ApiModelProperty(name = "Id",value = "更新时传入博客id")
-    private Integer Id;
-
 
     @Override
     public String toString() {
-        return "BlogReqDTO{" +
-                "Id=" + Id +
-                "} " + super.toString();
+        return super.toString();
     }
 
-    public Integer getId() {
-        return Id;
-    }
-
-    public void setId(Integer id) {
-        Id = id;
-    }
 
 }

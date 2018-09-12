@@ -59,14 +59,12 @@ public interface BlogService {
     /**
      * 更新博客内容
      *
-     * @param userId 登录用户id
-     * @param blogId 博客id
      * @param blog   博客更新后的内容
      * @return
      * @Author yikang
      * @Date 2018/9/3
      */
-    Result updateBlog(String userId, int blogId, BlogReqDTO blog);
+    Result updateBlog(BlogReqDTO blog);
 
     /**
      * 新建博客

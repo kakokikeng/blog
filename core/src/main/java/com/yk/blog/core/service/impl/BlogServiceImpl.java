@@ -94,12 +94,12 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public Result updateBlog(String userId, int blogId, BlogReqDTO blogReqDTO) {
-        if (!userService.existUser(userId)) {
+    public Result updateBlog(BlogReqDTO blogReqDTO) {
+        if (!userService.existUser(blogReqDTO.getUserId())) {
             return wrongUserIdResult();
         }
         Blog updateBlog = blogReqFactory.createBlogByDto(blogReqDTO);
-        int count = blogMapper.updateBlog(userId, blogId, updateBlog);
+        int count = blogMapper.updateBlog(updateBlog);
         return generateResultWithCount(count);
     }
 

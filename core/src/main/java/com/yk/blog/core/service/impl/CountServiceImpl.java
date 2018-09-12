@@ -44,6 +44,7 @@ public class CountServiceImpl implements CountService {
         try (Jedis jedis = jedisPool.getResource()) {
             boolean liked = jedis.sismember(Utils.generatePrefix(Constant.BLOG_LIKED_RECORD + userId), String.valueOf(blogId));
             if (!liked) {
+                //TODO 判断博客是否存在 创建博客删除博客在redis中也要进行操作
                 jedis.sadd(Utils.generatePrefix(Constant.BLOG_LIKED_RECORD + userId), String.valueOf(blogId));
                 long count = jedis.hincrBy(Utils.generatePrefix(Constant.BLOG_LIKED_COUNT), String.valueOf(blogId), 1);
                 int n = blogMapper.updateLikeCount(blogId, (int) count);

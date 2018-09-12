@@ -79,14 +79,12 @@ public interface BlogMapper {
     /**
      * 更新博客内容
      *
-     * @param userId 登录用户id
-     * @param id     博客id
      * @param blog   博客更新后的内容
      * @return
      * @Author yikang
      * @Date 2018/9/3
      */
-    int updateBlog(@Param("userId") String userId, @Param("id") int id, @Param("blog") Blog blog);
+    int updateBlog(@Param("blog") Blog blog);
 
     /**
      * 新建博客

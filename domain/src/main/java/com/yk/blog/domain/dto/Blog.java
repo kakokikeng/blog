@@ -1,5 +1,7 @@
 package com.yk.blog.domain.dto;
 
+import java.util.Date;
+
 /**
  * @author yikang
  * @date 2018/8/29
@@ -8,7 +10,7 @@ package com.yk.blog.domain.dto;
 public class Blog {
 
     private Integer id;
-    private Long createTime;
+    private Date createTime;
     private Integer readCount;
     private String userId;
     private String title;
@@ -38,11 +40,11 @@ public class Blog {
         this.id = id;
     }
 
-    public Long getCreateTime() {
+    public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Long createTime) {
+    public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
 
