@@ -19,6 +19,7 @@ public interface UserService {
      * @param email 登录邮箱
      * @param newPasswd 新密码
      * @param oldPasswd 旧密码
+     * @return
      *  @Author yikang
      *  @Date 2018/9/11
     */

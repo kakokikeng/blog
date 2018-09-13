@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
  * @author yikang
  * @date 2018/9/11
  */
+
 //TODO 用户登录 token验证 使用MD5加密存储密码 已登录用户带token访问 扩展为单点登录
+
 @RequestMapping("authority")
 @RestController
 public class AuthorityController {

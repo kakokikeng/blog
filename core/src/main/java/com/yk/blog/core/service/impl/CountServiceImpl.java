@@ -1,5 +1,6 @@
 package com.yk.blog.core.service.impl;
 
+import com.sun.org.apache.bcel.internal.classfile.ConstantValue;
 import com.yk.blog.core.dto.Result;
 import com.yk.blog.core.service.CountService;
 import com.yk.blog.core.service.UserService;
@@ -78,11 +79,11 @@ public class CountServiceImpl implements CountService {
      *  @Author yikang
      *  @Date 2018/9/13
     */
-    @Scheduled(cron = "0/30 * * * * ?")
+    @Scheduled(cron = "0 0 2 * * ?")
     public void cronJob() {
         System.out.println("定时任务开始");
         try (Jedis jedis = jedisPool.getResource()) {
-            String updateTime = jedis.get(Constant.LATEST_UPDATE_TIME);
+            String updateTime = jedis.get(Utils.generatePrefix(Constant.LATEST_UPDATE_TIME));
             if(updateTime != null){
                 long time = Long.parseLong(updateTime);
                 //一小时内有其他服务器更新过则直接返回
@@ -91,17 +92,18 @@ public class CountServiceImpl implements CountService {
                     return;
                 }
             }
+            //更新最近一次的更新时间
+            jedis.set(Utils.generatePrefix(Constant.LATEST_UPDATE_TIME),String.valueOf(System.currentTimeMillis()));
+            //TODO hgetall -> hscan
             Map<String, String> map = jedis.hgetAll(Utils.generatePrefix(Constant.BLOG_READ_COUNT));
             if(map == null || map.size() == 0){
                 System.out.println("map is null...");
                 return ;
             }
-            Map<String,Object> m = new HashMap<>();
+            Map<String,Object> m = new HashMap<>(1);
             m.put("map",map);
             System.out.println("update...");
             blogMapper.updateReadCountByMap(m);
-            //更新最近一次的更新时间
-            jedis.set(Constant.LATEST_UPDATE_TIME,String.valueOf(System.currentTimeMillis()));
         }
 
     }

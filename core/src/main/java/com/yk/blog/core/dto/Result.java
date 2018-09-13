@@ -1,6 +1,12 @@
 package com.yk.blog.core.dto;
 
 
+/**
+ * 普通结果类
+ *
+ * @Author yikang
+ * @Date 2018/9/13
+ */
 public class Result {
     private boolean success;
     private String code;

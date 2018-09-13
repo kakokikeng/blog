@@ -6,7 +6,6 @@ package com.yk.blog.core.constant;
  */
 
 public enum ErrorMessages {
-
     WRONG_USER_ID("WRONG USER ID", ""),
     CAN_NOT_FOLLOW_YOURSELF("CAN NOT FOLLOW YOURSELF",""),
     ERROR_LOGIN_INFORMATION("ERROR LOGIN INFORMATION",""),

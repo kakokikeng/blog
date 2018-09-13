@@ -18,6 +18,7 @@ public interface UserMapper {
      *
      * @param email     登录邮箱
      * @param newPasswd 新的密码
+     * @return
      * @Author yikang
      * @Date 2018/9/11
      */

@@ -11,6 +11,8 @@ public class Constant {
 
     public static final long ONE_HOUR = 60 * 60 * 1000;
 
+    public static final long TOKEN_TIMED_OUT = 15 * 24 * 60 * 60 * 1000;
+
     public static final String PROJECT_NAME = "blog";
 
     public static final String FOLLOWED = "followed";
@@ -27,7 +29,7 @@ public class Constant {
 
     public static final String EMAIL_WITH_PASSWORD = "email_with_password";
 
-    public static final String LOGIN_TOKEN = "login_token";
+    public static final String LOGIN_TOKEN_WITH_TIMESTAMP = "login_token_with_timestamp";
 
     public static final String EMAIL_WITH_VERIFY_CODE = "email_with_verify_code";
 
