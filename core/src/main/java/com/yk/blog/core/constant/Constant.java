@@ -25,7 +25,9 @@ public class Constant {
 
     public static final String BLOG_COMMENT_COUNT = "blog_comment_count";
 
-    public static final String USER_LOGIN = "user_login";
+    public static final String EMAIL_WITH_PASSWORD = "email_with_password";
+
+    public static final String LOGIN_TOKEN = "login_token";
 
     public static final String EMAIL_WITH_VERIFY_CODE = "email_with_verify_code";
 

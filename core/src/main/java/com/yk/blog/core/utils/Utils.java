@@ -1,11 +1,14 @@
 package com.yk.blog.core.utils;
 
 
+import com.yk.blog.core.dto.LoginReqDTO;
+
 import javax.mail.*;
 import javax.mail.internet.*;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 import java.util.Properties;
 import java.util.Random;
 
@@ -68,6 +71,19 @@ public class Utils {
         }
         System.out.println(result);
         return result;
+    }
+
+    public static boolean noLoginInformation(LoginReqDTO loginReqDTO){
+        if(loginReqDTO.getToken() == null){
+            if(loginReqDTO.getPasswd() == null || loginReqDTO.getEmail() == null){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static String generateToken(String email,String passwd){
+        return generateMd5(Base64.getEncoder().encode((email + passwd).getBytes()).toString());
     }
 
 

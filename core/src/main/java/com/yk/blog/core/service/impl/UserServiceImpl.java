@@ -49,10 +49,10 @@ public class UserServiceImpl implements UserService {
         try (Jedis jedis = jedisPool.getResource()) {
             String oldMD5 = Utils.generateMd5(oldPasswd);
             String newMD5 = Utils.generateMd5(newPasswd);
-            if (oldMD5.equals(jedis.hget(Utils.generatePrefix(Constant.USER_LOGIN), email))) {
+            if (oldMD5.equals(jedis.hget(Utils.generatePrefix(Constant.EMAIL_WITH_PASSWORD), email))) {
                 int count = userMapper.updatePasswd(email, newMD5);
                 if (count > 0) {
-                    jedis.hset(Utils.generatePrefix(Constant.USER_LOGIN), email, newMD5);
+                    jedis.hset(Utils.generatePrefix(Constant.EMAIL_WITH_PASSWORD), email, newMD5);
                 }
                 return GenericResultUtils.generateResultWithCount(count, ErrorMessages.UPDATE_FAILED.message);
             } else {
@@ -114,10 +114,10 @@ public class UserServiceImpl implements UserService {
     public Result deleteUser(String email, String passwd) {
 
         try (Jedis jedis = jedisPool.getResource()) {
-            if (Utils.generateMd5(passwd).equals(jedis.hget(Utils.generatePrefix(Constant.USER_LOGIN), email))) {
+            if (Utils.generateMd5(passwd).equals(jedis.hget(Utils.generatePrefix(Constant.EMAIL_WITH_PASSWORD), email))) {
                 int count = userMapper.deleteUser(email);
                 if (count > 0) {
-                    jedis.hdel(Utils.generatePrefix(Constant.USER_LOGIN), email);
+                    jedis.hdel(Utils.generatePrefix(Constant.EMAIL_WITH_PASSWORD), email);
                 }
                 return GenericResultUtils.generateResultWithCount(count);
             } else {
@@ -131,10 +131,10 @@ public class UserServiceImpl implements UserService {
     public Result createUser(UserReqDTO userReqDTO) {
         try (Jedis jedis = jedisPool.getResource()) {
             User user = userReqDTO.changeToUser();
-            if (jedis.hget(Utils.generatePrefix(Constant.USER_LOGIN), user.getEmail()) == null) {
+            if (jedis.hget(Utils.generatePrefix(Constant.EMAIL_WITH_PASSWORD), user.getEmail()) == null) {
                 int count = userMapper.insertUser(user);
                 if (count > 0) {
-                    jedis.hset(Utils.generatePrefix(Constant.USER_LOGIN), user.getEmail(), user.getPasswd());
+                    jedis.hset(Utils.generatePrefix(Constant.EMAIL_WITH_PASSWORD), user.getEmail(), user.getPasswd());
                 }
                 return GenericResultUtils.generateResultWithCount(count);
             } else {

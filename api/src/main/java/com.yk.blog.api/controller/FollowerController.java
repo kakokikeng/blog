@@ -6,7 +6,6 @@ import com.yk.blog.core.dto.UserRespDTO;
 import com.yk.blog.core.service.FollowerService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,12 +14,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
  * @author yikang
  * @date 2018/8/30
  */
+//TODO 关注用户最新信息推送 可关注不推送
 @RestController
 @RequestMapping("follower")
 public class FollowerController {
@@ -44,13 +45,13 @@ public class FollowerController {
 
     @ApiOperation("查询所有关注我的用户")
     @GetMapping("{userId}/followers")
-    public GenericResult<List<UserRespDTO>> getFollowers(@ApiParam("被查询用户id") @PathVariable("userId") @NotBlank String userId) {
+    public GenericResult<List<UserRespDTO>> getFollowers(@ApiParam("被查询用户id") @PathVariable("userId") @NotNull String userId) {
         return followerService.getFollowers(userId);
     }
 
     @ApiOperation("获取所有我关注的用户")
     @GetMapping("{userId}/follows")
-    public GenericResult<List<UserRespDTO>> getFolloweders(@PathVariable("userId") @ApiParam("被查询用户ID") @NotBlank String userId) {
+    public GenericResult<List<UserRespDTO>> getFolloweders(@PathVariable("userId") @ApiParam("被查询用户ID") @NotNull String userId) {
         return followerService.getFolloweders(userId);
     }
 
