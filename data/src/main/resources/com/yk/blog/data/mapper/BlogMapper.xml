@@ -18,11 +18,13 @@
     </update>
 
     <update id="updateReadCountByMap" parameterType="java.util.Map">
-        update blog set read_count = case
-        <foreach collection="map" index="index" item="item">
-            when id = #{index} then #{item}
-        </foreach>
-        end
+        update blog set read_count =
+        <trim prefix="case" suffix="end" suffixOverrides=",">
+            <foreach collection="map" index="index" item="item">
+                when id = #{index} then #{item}
+            </foreach>
+            else read_count
+        </trim>
     </update>
 
     <update id="updateLikeCount">

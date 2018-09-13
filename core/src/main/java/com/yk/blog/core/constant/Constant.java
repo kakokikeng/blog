@@ -7,6 +7,10 @@ package com.yk.blog.core.constant;
 
 public class Constant {
 
+    public static final String LATEST_UPDATE_TIME = "latest_update_time";
+
+    public static final long ONE_HOUR = 60 * 60 * 1000;
+
     public static final String PROJECT_NAME = "blog";
 
     public static final String FOLLOWED = "followed";

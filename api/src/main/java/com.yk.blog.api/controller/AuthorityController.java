@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
  * @author yikang
  * @date 2018/9/11
  */
-//TODO 用户登录 使用MD5加密存储密码 已登录用户拥有token
+//TODO 用户登录 token验证 使用MD5加密存储密码 已登录用户带token访问
 @RequestMapping("")
 @RestController
-public class LoginController {
+public class AuthorityController {
 
     @ApiOperation("登录")
     @PostMapping("login")

@@ -72,13 +72,27 @@ public class CountServiceImpl implements CountService {
 
         return genericNormalResult(true);
     }
-    //TODO 分布式系统只需要一个服务器进行更新  删除博客的时候要删除redis里的阅读量
+
+    /**
+     *  每天凌晨2点更新，只有一台服务器更新
+     *  @Author yikang
+     *  @Date 2018/9/13
+    */
     @Scheduled(cron = "0/30 * * * * ?")
     public void cronJob() {
         System.out.println("定时任务开始");
         try (Jedis jedis = jedisPool.getResource()) {
+            String updateTime = jedis.get(Constant.LATEST_UPDATE_TIME);
+            if(updateTime != null){
+                long time = Long.parseLong(updateTime);
+                //一小时内有其他服务器更新过则直接返回
+                if(System.currentTimeMillis() - time < Constant.ONE_HOUR){
+                    System.out.println("一小时内更新过");
+                    return;
+                }
+            }
             Map<String, String> map = jedis.hgetAll(Utils.generatePrefix(Constant.BLOG_READ_COUNT));
-            if(map == null){
+            if(map == null || map.size() == 0){
                 System.out.println("map is null...");
                 return ;
             }
@@ -86,6 +100,8 @@ public class CountServiceImpl implements CountService {
             m.put("map",map);
             System.out.println("update...");
             blogMapper.updateReadCountByMap(m);
+            //更新最近一次的更新时间
+            jedis.set(Constant.LATEST_UPDATE_TIME,String.valueOf(System.currentTimeMillis()));
         }
 
     }

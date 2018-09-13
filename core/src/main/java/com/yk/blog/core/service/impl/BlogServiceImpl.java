@@ -97,6 +97,8 @@ public class BlogServiceImpl implements BlogService {
         if(count > 0){
             try(Jedis jedis = jedisPool.getResource()){
                 jedis.srem(Utils.generatePrefix(Constant.EXIST_BLOG),String.valueOf(blogId));
+                jedis.hdel(Utils.generatePrefix(Constant.BLOG_READ_COUNT),String.valueOf(blogId));
+                jedis.hdel(Utils.generatePrefix(Constant.BLOG_COMMENT_COUNT),String.valueOf(blogId));
             }
             countService.updateBlogCount(userId,-1);
         }
