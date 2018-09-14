@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
@@ -27,6 +28,8 @@ import java.util.List;
 @RestController
 @RequestMapping("blog")
 public class BlogController {
+
+    //TODO 修改数据库的操作全部需要带token
 
     @Autowired
     BlogService blogService;
@@ -44,10 +47,10 @@ public class BlogController {
     }
 
     @ApiOperation("删除博客")
-    @DeleteMapping("{userId}/{blogId}")
-    public Result deleteBlog(@ApiParam("登录用户id") @PathVariable("userId") String userId,
-                             @ApiParam("博客id") @PathVariable("blogId") int blogId) {
-        return blogService.deleteBlog(userId, blogId);
+    @DeleteMapping("{blogId}")
+    public Result deleteBlog(@ApiParam("博客id") @PathVariable("blogId") int blogId,
+                             @ApiParam("用户的token") @RequestParam("token") String token) {
+        return blogService.deleteBlog(blogId,token);
     }
 
     @ApiOperation("更新博客内容")

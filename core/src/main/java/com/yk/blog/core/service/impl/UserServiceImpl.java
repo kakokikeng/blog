@@ -45,6 +45,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public String getUserIdByEmail(String email) {
+        return userMapper.getUserIdByEmail(email);
+    }
+
+    @Override
     public Result modifyPasswd(String email, String oldPasswd, String newPasswd) {
         try (Jedis jedis = jedisPool.getResource()) {
             String oldMD5 = Utils.generateMd5(oldPasswd);

@@ -28,6 +28,8 @@ import java.util.List;
 @RequestMapping("follower")
 public class FollowerController {
 
+    //TODO 修改数据库的操作全部需要带token
+
     @Autowired
     FollowerService followerService;
 

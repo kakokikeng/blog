@@ -15,13 +15,15 @@ public class Constant {
 
     public static final String PROJECT_NAME = "blog";
 
+    public static final String TOKEN_WITH_USER_ID = "token_with_user_id";
+
     public static final String FOLLOWED = "followed";
 
     public static final String FOLLOWER = "follower";
 
     public static final String BLOG_LIKED_COUNT = "blog_liked_count";
 
-    public static final String BLOG_LIKED_RECORD = "liked_record";
+    public static final String BLOG_LIKED_RECORD = "blog_liked_record";
 
     public static final String BLOG_READ_COUNT = "blog_read_count";
 
@@ -29,7 +31,7 @@ public class Constant {
 
     public static final String EMAIL_WITH_PASSWORD = "email_with_password";
 
-    public static final String LOGIN_TOKEN_WITH_TIMESTAMP = "login_token_with_timestamp";
+    public static final String TOKEN_WITH_TIMESTAMP = "token_with_timestamp";
 
     public static final String EMAIL_WITH_VERIFY_CODE = "email_with_verify_code";
 

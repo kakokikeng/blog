@@ -50,12 +50,12 @@ public interface BlogService {
      * 删除博客
      *
      * @param blogId 被删除博客id
-     * @param userId 登录用户id
+     * @param token 登录用户的token
      * @return
      * @Author yikang
      * @Date 2018/9/3
      */
-    Result deleteBlog(String userId, int blogId);
+    Result deleteBlog(int blogId,String token);
 
     /**
      * 更新博客内容

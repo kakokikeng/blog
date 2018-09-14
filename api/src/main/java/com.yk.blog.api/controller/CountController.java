@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("count")
 public class CountController {
 
+    //TODO 修改数据库的操作全部需要带token
+
     @Autowired
     CountService countService;
 

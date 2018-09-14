@@ -15,6 +15,16 @@ import java.util.List;
 public interface CommentService {
 
     /**
+     * 删除博客的所有评论
+     *
+     * @param blogId 被删除博客id
+     * @return
+     * @Author yikang
+     * @Date 2018/9/14
+     */
+    Result deleteCommentByBlogId(int blogId);
+
+    /**
      * 通过登录用户id、被回复用户id和博客id进行评论，直接评论被回复用户为空
      *
      * @param commentReqDTO 评论信息
@@ -35,7 +45,7 @@ public interface CommentService {
     GenericResult<List<CommentRespDTO>> getComments(int blogId);
 
     /**
-     * 删除评论
+     * 删除自己的评论
      *
      * @param userId    用户id
      * @param blogId    博客id

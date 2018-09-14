@@ -5,22 +5,22 @@ package com.yk.blog.core.dto;
  * @date 2018/9/13
  */
 
-public class LoginRespDTO {
+public class Token {
 
     private String token;
 
     @Override
     public String toString() {
-        return "LoginRespDTO{" +
+        return "Token{" +
                 "token='" + token + '\'' +
                 '}';
     }
 
-    public LoginRespDTO(){
+    public Token(){
 
     }
 
-    public LoginRespDTO(String token){
+    public Token(String token){
         this.token = token;
     }
 

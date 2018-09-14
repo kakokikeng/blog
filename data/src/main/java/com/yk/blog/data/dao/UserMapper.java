@@ -14,6 +14,15 @@ import java.util.List;
 public interface UserMapper {
 
     /**
+     *  通过邮箱获得用户id
+     * @param email 用户邮箱
+     * @return
+     *  @Author yikang
+     *  @Date 2018/9/14
+     */
+    String getUserIdByEmail(String email);
+
+    /**
      * 更新密码
      *
      * @param email     登录邮箱

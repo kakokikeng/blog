@@ -25,6 +25,8 @@ import java.util.List;
 @RequestMapping("comment")
 public class CommentController {
 
+    //TODO 修改数据库的操作全部需要带token
+
     @Autowired
     CommentService commentService;
 

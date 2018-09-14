@@ -1,7 +1,9 @@
 package com.yk.blog.core.service;
 
+import com.yk.blog.core.dto.GenericResult;
 import com.yk.blog.core.dto.LoginReqDTO;
 import com.yk.blog.core.dto.Result;
+import com.yk.blog.core.dto.Token;
 
 /**
  * @author yikang
@@ -10,7 +12,16 @@ import com.yk.blog.core.dto.Result;
 public interface AuthorityService {
 
     /**
-     * 登录操作，先检测token是否存在，不存在再验证邮箱和密码
+     * 验证token合法性
+     *
+     * @param token 用户带来的token
+     * @Author yikang
+     * @Date 2018/9/14
+     */
+    Result verifyToken(Token token);
+
+    /**
+     * 登录操作
      * 使用redis哈希存储，k为token，v为token获得时的时间戳，定时清除超过n天的token
      *
      * @param loginReqDTO 登录信息
@@ -18,7 +29,7 @@ public interface AuthorityService {
      * @Author yikang
      * @Date 2018/9/13
      */
-    Result login(LoginReqDTO loginReqDTO);
+    GenericResult<Token> login(LoginReqDTO loginReqDTO);
 
     /**
      * 注销操作，使用token进行注销

@@ -43,6 +43,16 @@ public class CommentServiceImpl implements CommentService {
     @Autowired
     JedisPool jedispool;
 
+    //TODO
+
+    @Override
+    public Result deleteCommentByBlogId(int blogId) {
+
+
+
+        return null;
+    }
+
     @Override
     public Result comment(CommentReqDTO commentReqDTO) {
         if (commentNotLegal(commentReqDTO)) {

@@ -8,6 +8,7 @@ import com.yk.blog.core.dto.BlogRespDTO;
 import com.yk.blog.core.factories.BlogReqFactory;
 import com.yk.blog.core.factories.BlogRespFactory;
 import com.yk.blog.core.service.BlogService;
+import com.yk.blog.core.service.CommentService;
 import com.yk.blog.core.service.CountService;
 import com.yk.blog.core.service.UserService;
 import com.yk.blog.core.constant.ErrorMessages;
@@ -44,6 +45,9 @@ public class BlogServiceImpl implements BlogService {
     JedisPool jedisPool;
 
     @Autowired
+    CommentService commentService;
+
+    @Autowired
     UserService userService;
 
     @Autowired
@@ -54,7 +58,7 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public void updateBlogCommentCount(int id, int count) {
-        blogMapper.updateBlogCommentCount(id,count);
+        blogMapper.updateBlogCommentCount(id, count);
     }
 
     @Override
@@ -89,20 +93,25 @@ public class BlogServiceImpl implements BlogService {
 
 
     @Override
-    public Result deleteBlog(String userId, int blogId) {
-        if (!userService.existUser(userId)) {
-            return wrongUserIdResult();
-        }
-        int count = blogMapper.deleteBlog(userId, blogId);
-        if(count > 0){
-            try(Jedis jedis = jedisPool.getResource()){
-                jedis.srem(Utils.generatePrefix(Constant.EXIST_BLOG),String.valueOf(blogId));
-                jedis.hdel(Utils.generatePrefix(Constant.BLOG_READ_COUNT),String.valueOf(blogId));
-                jedis.hdel(Utils.generatePrefix(Constant.BLOG_COMMENT_COUNT),String.valueOf(blogId));
+    public Result deleteBlog(int blogId, String token) {
+        try (Jedis jedis = jedisPool.getResource()) {
+            String userId = jedis.hget(Utils.generatePrefix(Constant.TOKEN_WITH_USER_ID), token);
+            if (userId == null) {
+                return GenericResultUtils.genericNormalResult(false, ErrorMessages.TOKEN_NOT_AVAILABLE.message);
             }
-            countService.updateBlogCount(userId,-1);
+            int count = blogMapper.deleteBlog(userId, blogId);
+            if (count > 0) {
+                jedis.srem(Utils.generatePrefix(Constant.EXIST_BLOG), String.valueOf(blogId));
+                jedis.hdel(Utils.generatePrefix(Constant.BLOG_READ_COUNT), String.valueOf(blogId));
+                jedis.hdel(Utils.generatePrefix(Constant.BLOG_COMMENT_COUNT), String.valueOf(blogId));
+                jedis.hdel((Utils.generatePrefix(Constant.BLOG_LIKED_COUNT), String.valueOf(blogId));
+                jedis.srem(Utils.generatePrefix(Constant.BLOG_LIKED_RECORD + userId), String.valueOf(blogId));
+            }
+            //TODO 删除博客还需要删除评论
+            //commentService.deleteComment()
+            countService.updateBlogCount(userId, -1);
+            return generateResultWithCount(count);
         }
-        return generateResultWithCount(count);
     }
 
     @Override
@@ -122,11 +131,11 @@ public class BlogServiceImpl implements BlogService {
         }
         Blog blog = blogReqFactory.createBlogByDto(blogReqDTO);
         int count = blogMapper.createBlog(blog);
-        if(count > 0){
-            try(Jedis jedis = jedisPool.getResource()){
-                jedis.sadd(Utils.generatePrefix(Constant.EXIST_BLOG),String.valueOf(blog.getId()));
+        if (count > 0) {
+            try (Jedis jedis = jedisPool.getResource()) {
+                jedis.sadd(Utils.generatePrefix(Constant.EXIST_BLOG), String.valueOf(blog.getId()));
             }
-            countService.updateBlogCount(blogReqDTO.getUserId(),1);
+            countService.updateBlogCount(blogReqDTO.getUserId(), 1);
         }
         return generateResultWithCount(count);
     }
