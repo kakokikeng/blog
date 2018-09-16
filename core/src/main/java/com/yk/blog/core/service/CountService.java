@@ -13,12 +13,12 @@ public interface CountService {
      * 更新用户的博客数
      *
      * @param userId      用户id
-     * @param updateCount 更新的数量，增加则为正数，删除为负数
+     * @param addCount 更新的数量，增加则为正数，删除为负数
      * @return 操作失败返回0
      * @Author yikang
      * @Date 2018/9/6
      */
-    int updateBlogCount(String userId, int updateCount);
+    int updateBlogCount(String userId, int addCount);
 
     /**
      * 通过登录用户和博客id对博客进行点赞

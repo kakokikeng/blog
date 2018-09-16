@@ -55,14 +55,16 @@ public class BlogController {
 
     @ApiOperation("更新博客内容")
     @PutMapping("")
-    public Result updateBlog(@ApiParam("博客相关信息") @Valid @RequestBody BlogReqDTO blog) {
-        return blogService.updateBlog(blog);
+    public Result updateBlog(@ApiParam("博客相关信息") @Valid @RequestBody BlogReqDTO blog,
+                             @ApiParam("用户的token") @RequestParam("token") String token) {
+        return blogService.updateBlog(blog,token);
     }
 
     @ApiOperation("新建博客")
     @PostMapping("")
-    public Result createBlog(@ApiParam("博客相关信息") @Valid @RequestBody BlogReqDTO blog) {
-        return blogService.createBlog(blog);
+    public Result createBlog(@ApiParam("博客相关信息") @Valid @RequestBody BlogReqDTO blog,
+                             @ApiParam("用户的token") @RequestParam("token") String token) {
+        return blogService.createBlog(blog,token);
     }
 
 

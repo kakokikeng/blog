@@ -14,6 +14,15 @@ import java.util.List;
 public interface CommentMapper {
 
     /**
+     * 通过博客id删除评论
+     * @author kk
+     * @date 2018/9/16
+     * @param blogId 博客id
+     * @return int
+     **/
+    int deleteCommentByBlogId(int blogId);
+
+    /**
      * 插入评论
      *
      * @param comment 评论信息

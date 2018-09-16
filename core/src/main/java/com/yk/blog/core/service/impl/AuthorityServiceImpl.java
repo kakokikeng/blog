@@ -57,19 +57,19 @@ public class AuthorityServiceImpl implements AuthorityService {
     }
 
     @Override
-    public Result verifyToken(Token token) {
-        if (token.getToken() != null) {
+    public boolean verifyToken(String token) {
+        if (token != null) {
             try(Jedis jedis = jedisPool.getResource()){
-                if (jedis.hexists(Utils.generatePrefix(Constant.TOKEN_WITH_TIMESTAMP), token.getToken())) {
+                if (jedis.hexists(Utils.generatePrefix(Constant.TOKEN_WITH_TIMESTAMP), token)) {
                     //同时刷新过期时间,即更新时间戳为当前时间
-                    jedis.hset(Utils.generatePrefix(Constant.TOKEN_WITH_TIMESTAMP), token.getToken(), String.valueOf(System.currentTimeMillis()));
-                    return GenericResultUtils.genericNormalResult(true);
+                    jedis.hset(Utils.generatePrefix(Constant.TOKEN_WITH_TIMESTAMP), token, String.valueOf(System.currentTimeMillis()));
+                    return true;
                 } else {
-                    return GenericResultUtils.genericNormalResult(false,ErrorMessages.TOKEN_NOT_AVAILABLE.message);
+                    return false;
                 }
             }
         }else {
-            return GenericResultUtils.genericNormalResult(false,ErrorMessages.TOKEN_NOT_AVAILABLE.message);
+            return false;
         }
     }
 

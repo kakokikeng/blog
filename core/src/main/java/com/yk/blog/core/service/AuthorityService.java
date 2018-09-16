@@ -18,7 +18,7 @@ public interface AuthorityService {
      * @Author yikang
      * @Date 2018/9/14
      */
-    Result verifyToken(Token token);
+    boolean verifyToken(String token);
 
     /**
      * 登录操作

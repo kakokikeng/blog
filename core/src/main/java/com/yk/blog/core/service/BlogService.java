@@ -50,31 +50,33 @@ public interface BlogService {
      * 删除博客
      *
      * @param blogId 被删除博客id
-     * @param token 登录用户的token
+     * @param token  登录用户的token
      * @return
      * @Author yikang
      * @Date 2018/9/3
      */
-    Result deleteBlog(int blogId,String token);
+    Result deleteBlog(int blogId, String token);
 
     /**
      * 更新博客内容
      *
-     * @param blog   博客更新后的内容
+     * @param blog  博客更新后的内容
+     * @param token
      * @return
      * @Author yikang
      * @Date 2018/9/3
      */
-    Result updateBlog(BlogReqDTO blog);
+    Result updateBlog(BlogReqDTO blog, String token);
 
     /**
      * 新建博客
      *
-     * @param blog 博客内容
+     * @param blog  博客内容
+     * @param token
      * @return
      * @Author yikang
      * @Date 2018/9/3
      */
-    Result createBlog(BlogReqDTO blog);
+    Result createBlog(BlogReqDTO blog, String token);
 
 }

@@ -47,10 +47,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public Result deleteCommentByBlogId(int blogId) {
-
-
-
-        return null;
+        return GenericResultUtils.generateResultWithCount(commentMapper.deleteCommentByBlogId(blogId));
     }
 
     @Override
@@ -58,11 +55,11 @@ public class CommentServiceImpl implements CommentService {
         if (commentNotLegal(commentReqDTO)) {
             return wrongUserIdGenericResult();
         }
-        try(Jedis jedis = jedispool.getResource()){
+        try (Jedis jedis = jedispool.getResource()) {
             int count = commentMapper.insertComment(commentReqDTO.changeToComment());
-            if(count > 0){
-                long commentCount = jedis.hincrBy(Utils.generatePrefix(Constant.BLOG_COMMENT_COUNT),String.valueOf(commentReqDTO.getBlogId()),1);
-                blogService.updateBlogCommentCount(commentReqDTO.getBlogId(),(int)commentCount);
+            if (count > 0) {
+                long commentCount = jedis.hincrBy(Utils.generatePrefix(Constant.BLOG_COMMENT_COUNT), String.valueOf(commentReqDTO.getBlogId()), 1);
+                blogService.updateBlogCommentCount(commentReqDTO.getBlogId(), (int) commentCount);
             }
             return generateResultWithCount(count);
         }
@@ -97,11 +94,11 @@ public class CommentServiceImpl implements CommentService {
         if (!userService.existUser(userId)) {
             GenericResultUtils.genericNormalResult(Boolean.FALSE, ErrorMessages.WRONG_USER_ID.message);
         }
-        try(Jedis jedis = jedispool.getResource()){
-            int count = commentMapper.deleteComment(userId,commentId);
-            if(count > 0){
-                long commentCount = jedis.hincrBy(Utils.generatePrefix(Constant.BLOG_COMMENT_COUNT),String.valueOf(blogId),-1);
-                blogService.updateBlogCommentCount(blogId,(int)commentCount);
+        try (Jedis jedis = jedispool.getResource()) {
+            int count = commentMapper.deleteComment(userId, commentId);
+            if (count > 0) {
+                long commentCount = jedis.hincrBy(Utils.generatePrefix(Constant.BLOG_COMMENT_COUNT), String.valueOf(blogId), -1);
+                blogService.updateBlogCommentCount(blogId, (int) commentCount);
             }
             return generateResultWithCount(count);
         }

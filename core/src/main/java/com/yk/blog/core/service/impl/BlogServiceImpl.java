@@ -7,10 +7,7 @@ import com.yk.blog.core.dto.BlogReqDTO;
 import com.yk.blog.core.dto.BlogRespDTO;
 import com.yk.blog.core.factories.BlogReqFactory;
 import com.yk.blog.core.factories.BlogRespFactory;
-import com.yk.blog.core.service.BlogService;
-import com.yk.blog.core.service.CommentService;
-import com.yk.blog.core.service.CountService;
-import com.yk.blog.core.service.UserService;
+import com.yk.blog.core.service.*;
 import com.yk.blog.core.constant.ErrorMessages;
 import com.yk.blog.core.utils.GenericResultUtils;
 import com.yk.blog.core.utils.Utils;
@@ -18,6 +15,7 @@ import com.yk.blog.data.dao.BlogMapper;
 import com.yk.blog.domain.dto.Blog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
@@ -40,6 +38,9 @@ public class BlogServiceImpl implements BlogService {
 
     @Autowired
     CountService countService;
+
+    @Autowired
+    AuthorityService authorityService;
 
     @Autowired
     JedisPool jedisPool;
@@ -91,52 +92,54 @@ public class BlogServiceImpl implements BlogService {
         }
     }
 
-
+    @Transactional
     @Override
     public Result deleteBlog(int blogId, String token) {
+        if (!authorityService.verifyToken(token)) {
+            return GenericResultUtils.genericNormalResult(false, ErrorMessages.TOKEN_NOT_AVAILABLE.message);
+        }
         try (Jedis jedis = jedisPool.getResource()) {
             String userId = jedis.hget(Utils.generatePrefix(Constant.TOKEN_WITH_USER_ID), token);
-            if (userId == null) {
-                return GenericResultUtils.genericNormalResult(false, ErrorMessages.TOKEN_NOT_AVAILABLE.message);
-            }
             int count = blogMapper.deleteBlog(userId, blogId);
             if (count > 0) {
                 jedis.srem(Utils.generatePrefix(Constant.EXIST_BLOG), String.valueOf(blogId));
                 jedis.hdel(Utils.generatePrefix(Constant.BLOG_READ_COUNT), String.valueOf(blogId));
                 jedis.hdel(Utils.generatePrefix(Constant.BLOG_COMMENT_COUNT), String.valueOf(blogId));
-                jedis.hdel((Utils.generatePrefix(Constant.BLOG_LIKED_COUNT), String.valueOf(blogId));
+                jedis.hdel(Utils.generatePrefix(Constant.BLOG_LIKED_COUNT), String.valueOf(blogId));
                 jedis.srem(Utils.generatePrefix(Constant.BLOG_LIKED_RECORD + userId), String.valueOf(blogId));
+                commentService.deleteCommentByBlogId(blogId);
             }
-            //TODO 删除博客还需要删除评论
-            //commentService.deleteComment()
             countService.updateBlogCount(userId, -1);
             return generateResultWithCount(count);
         }
     }
 
+    @Transactional
     @Override
-    public Result updateBlog(BlogReqDTO blogReqDTO) {
-        if (!userService.existUser(blogReqDTO.getUserId())) {
-            return wrongUserIdResult();
+    public Result updateBlog(BlogReqDTO blogReqDTO, String token) {
+        if (!authorityService.verifyToken(token)) {
+            return GenericResultUtils.genericNormalResult(false, ErrorMessages.TOKEN_NOT_AVAILABLE.message);
         }
         Blog updateBlog = blogReqFactory.createBlogByDto(blogReqDTO);
         int count = blogMapper.updateBlog(updateBlog);
+        //TODO 若要推送博客，更新也需要推送
         return generateResultWithCount(count);
     }
 
+    @Transactional
     @Override
-    public Result createBlog(BlogReqDTO blogReqDTO) {
-        if (!userService.existUser(blogReqDTO.getUserId())) {
-            return wrongUserIdResult();
-        }
-        Blog blog = blogReqFactory.createBlogByDto(blogReqDTO);
-        int count = blogMapper.createBlog(blog);
-        if (count > 0) {
-            try (Jedis jedis = jedisPool.getResource()) {
-                jedis.sadd(Utils.generatePrefix(Constant.EXIST_BLOG), String.valueOf(blog.getId()));
+    public Result createBlog(BlogReqDTO blogReqDTO, String token) {
+        try (Jedis jedis = jedisPool.getResource()) {
+            if (!authorityService.verifyToken(token)) {
+                return GenericResultUtils.genericNormalResult(false, ErrorMessages.TOKEN_NOT_AVAILABLE.message);
             }
-            countService.updateBlogCount(blogReqDTO.getUserId(), 1);
+            Blog blog = blogReqFactory.createBlogByDto(blogReqDTO);
+            int count = blogMapper.createBlog(blog);
+            if (count > 0) {
+                jedis.sadd(Utils.generatePrefix(Constant.EXIST_BLOG), String.valueOf(blog.getId()));
+                countService.updateBlogCount(blogReqDTO.getUserId(), 1);
+            }
+            return generateResultWithCount(count);
         }
-        return generateResultWithCount(count);
     }
 }
