@@ -7,12 +7,7 @@ import com.yk.blog.core.service.FollowerService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -28,23 +23,21 @@ import java.util.List;
 @RequestMapping("follower")
 public class FollowerController {
 
-    //TODO 修改数据库的操作全部需要带token
-
     @Autowired
     FollowerService followerService;
 
     @ApiOperation("关注某个用户")
-    @PostMapping("{followId}/{followedId}")
-    public Result follow(@ApiParam("登录用户id") @PathVariable("followId") String followId,
-                         @ApiParam("被关注的用户id") @PathVariable("followedId") String followedId) {
-        return followerService.follow(followId, followedId);
+    @PostMapping("{followedId}")
+    public Result follow(@ApiParam("被关注的用户id") @PathVariable("followedId") String followedId,
+                         @ApiParam("登陆后获得的token") @RequestParam("token") String token) {
+        return followerService.follow(followedId, token);
     }
 
     @ApiOperation("取消关注")
-    @DeleteMapping("{followId}/{followedId}")
-    public Result unfollow(@ApiParam("登录用户id") @PathVariable("followId") String followId,
-                         @ApiParam("被关注的用户id") @PathVariable("followedId") String followedId) {
-        return followerService.unfollow(followId, followedId);
+    @DeleteMapping("{followedId}")
+    public Result unfollow(@ApiParam("被关注的用户id") @PathVariable("followedId") String followedId,
+                           @ApiParam("登陆后获得的token") @RequestParam("token") String token) {
+        return followerService.unfollow(followedId, token);
     }
 
     @ApiOperation("查询所有关注我的用户")

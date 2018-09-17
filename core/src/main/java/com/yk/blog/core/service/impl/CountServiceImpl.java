@@ -2,6 +2,7 @@ package com.yk.blog.core.service.impl;
 
 import com.sun.org.apache.bcel.internal.classfile.ConstantValue;
 import com.yk.blog.core.dto.Result;
+import com.yk.blog.core.service.AuthorityService;
 import com.yk.blog.core.service.CountService;
 import com.yk.blog.core.service.UserService;
 import com.yk.blog.core.constant.Constant;
@@ -34,17 +35,21 @@ public class CountServiceImpl implements CountService {
     BlogMapper blogMapper;
 
     @Autowired
+    AuthorityService authorityService;
+
+    @Autowired
     JedisPool jedisPool;
 
     @Autowired
     UserService userService;
 
     @Override
-    public Result increaseLikeCount(String userId, int blogId) {
-        if (!userService.existUser(userId)) {
-            return wrongUserIdResult();
+    public Result increaseLikeCount(int blogId,String token) {
+        if(!authorityService.verifyToken(token)){
+            return GenericResultUtils.genericNormalResult(false,ErrorMessages.TOKEN_NOT_AVAILABLE.message);
         }
         try (Jedis jedis = jedisPool.getResource()) {
+            String userId = jedis.hget(Utils.generatePrefix(Constant.TOKEN_WITH_USER_ID),token);
             boolean liked = jedis.sismember(Utils.generatePrefix(Constant.BLOG_LIKED_RECORD + userId), String.valueOf(blogId));
             if (!liked) {
                 if(!jedis.sismember(Utils.generatePrefix(Constant.EXIST_BLOG),String.valueOf(blogId))){

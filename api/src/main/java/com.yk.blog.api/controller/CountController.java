@@ -5,10 +5,7 @@ import com.yk.blog.core.service.CountService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author yikang
@@ -18,16 +15,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("count")
 public class CountController {
 
-    //TODO 修改数据库的操作全部需要带token
-
     @Autowired
     CountService countService;
 
     @ApiOperation("通过登录用户和博客id对博客进行点赞")
-    @PutMapping("{userId}/{blogId}/laud")
-    public Result increaseLikeCount(@ApiParam("登录用户id") @PathVariable("userId") String userId,
-                                    @ApiParam("博客id") @PathVariable("blogId") int blogId) {
-        return countService.increaseLikeCount(userId, blogId);
+    @PutMapping("{blogId}/laud")
+    public Result increaseLikeCount(@ApiParam("博客id") @PathVariable("blogId") int blogId,
+                                    @ApiParam("用户的token") @RequestParam("token") String token) {
+        return countService.increaseLikeCount(blogId,token);
     }
 
 

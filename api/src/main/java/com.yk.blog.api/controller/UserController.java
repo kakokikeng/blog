@@ -28,8 +28,6 @@ import java.util.List;
 @RequestMapping("user")
 public class UserController {
 
-    //TODO 修改数据库的操作全部需要带token
-
     @Autowired
     UserService userService;
 

@@ -15,6 +15,7 @@ public interface AuthorityService {
      * 验证token合法性
      *
      * @param token 用户带来的token
+     * @return
      * @Author yikang
      * @Date 2018/9/14
      */

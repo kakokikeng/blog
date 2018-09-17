@@ -4,6 +4,7 @@ import com.yk.blog.core.dto.GenericResult;
 import com.yk.blog.core.dto.Result;
 import com.yk.blog.core.dto.CommentReqDTO;
 import com.yk.blog.core.dto.CommentRespDTO;
+import com.yk.blog.core.service.AuthorityService;
 import com.yk.blog.core.service.BlogService;
 import com.yk.blog.core.service.CommentService;
 import com.yk.blog.core.service.UserService;
@@ -35,6 +36,9 @@ public class CommentServiceImpl implements CommentService {
     CommentMapper commentMapper;
 
     @Autowired
+    AuthorityService authorityService;
+
+    @Autowired
     UserService userService;
 
     @Autowired
@@ -43,7 +47,6 @@ public class CommentServiceImpl implements CommentService {
     @Autowired
     JedisPool jedispool;
 
-    //TODO
 
     @Override
     public Result deleteCommentByBlogId(int blogId) {
@@ -51,9 +54,12 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Result comment(CommentReqDTO commentReqDTO) {
+    public Result comment(CommentReqDTO commentReqDTO, String token) {
         if (commentNotLegal(commentReqDTO)) {
             return wrongUserIdGenericResult();
+        }
+        if (!authorityService.verifyToken(token)) {
+            return GenericResultUtils.genericNormalResult(false, ErrorMessages.TOKEN_NOT_AVAILABLE.message);
         }
         try (Jedis jedis = jedispool.getResource()) {
             int count = commentMapper.insertComment(commentReqDTO.changeToComment());
@@ -90,11 +96,12 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Result deleteComment(String userId, int blogId, int commentId) {
-        if (!userService.existUser(userId)) {
-            GenericResultUtils.genericNormalResult(Boolean.FALSE, ErrorMessages.WRONG_USER_ID.message);
+    public Result deleteComment(int blogId, int commentId, String token) {
+        if (!authorityService.verifyToken(token)) {
+            return GenericResultUtils.genericNormalResult(false, ErrorMessages.TOKEN_NOT_AVAILABLE.message);
         }
         try (Jedis jedis = jedispool.getResource()) {
+            String userId = jedis.hget(Utils.generatePrefix(Constant.TOKEN_WITH_USER_ID), token);
             int count = commentMapper.deleteComment(userId, commentId);
             if (count > 0) {
                 long commentCount = jedis.hincrBy(Utils.generatePrefix(Constant.BLOG_COMMENT_COUNT), String.valueOf(blogId), -1);

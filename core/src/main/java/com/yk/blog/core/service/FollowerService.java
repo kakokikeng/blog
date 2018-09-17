@@ -15,24 +15,24 @@ public interface FollowerService {
     /**
      * 关注某个用户
      *
-     * @param followId   登录用户id
      * @param followedId 被关注用户id
+     * @param token      登录用户的token
      * @return 是否成功
      * @Author yikang
      * @Date 2018/9/4
      */
-    Result follow(String followId, String followedId);
+    Result follow(String followedId, String token);
 
     /**
      * 取消关注
      *
-     * @param followId   登录用户id
      * @param followedId 被关注用户id
+     * @param token      登录用户的token
      * @return 是否成功
      * @Author yikang
      * @Date 2018/9/4
      */
-    Result unfollow(String followId, String followedId);
+    Result unfollow(String followedId, String token);
 
     /**
      * 获得用户所有关注者

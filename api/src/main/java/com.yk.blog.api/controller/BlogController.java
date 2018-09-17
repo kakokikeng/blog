@@ -29,7 +29,6 @@ import java.util.List;
 @RequestMapping("blog")
 public class BlogController {
 
-    //TODO 修改数据库的操作全部需要带token
 
     @Autowired
     BlogService blogService;

@@ -34,7 +34,6 @@ public class AuthorityServiceImpl implements AuthorityService {
     @Autowired
     UserService userService;
 
-    //TODO 返回的token之后的每次请求都需要让浏览器带过来 否则跳转登录 修改数据库的操作全部需要带token
 
     @Override
     public GenericResult<Token> login(LoginReqDTO loginReqDTO) {

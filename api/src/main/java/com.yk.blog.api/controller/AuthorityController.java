@@ -38,7 +38,7 @@ public class AuthorityController {
 
     @ApiOperation("注销")
     @DeleteMapping("")
-    public Result logout(@RequestParam @ApiParam("登陆后获得的token") String token){
+    public Result logout(@RequestParam("token") @ApiParam("登陆后获得的token") String token){
         return authorityService.logout(token);
     }
 

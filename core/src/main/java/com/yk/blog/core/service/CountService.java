@@ -12,7 +12,7 @@ public interface CountService {
     /**
      * 更新用户的博客数
      *
-     * @param userId      用户id
+     * @param userId   用户id
      * @param addCount 更新的数量，增加则为正数，删除为负数
      * @return 操作失败返回0
      * @Author yikang
@@ -23,13 +23,13 @@ public interface CountService {
     /**
      * 通过登录用户和博客id对博客进行点赞
      *
-     * @param userId 登录用户id
      * @param blogId 当前博客id
+     * @param token  用户token
      * @return
      * @Author yikang
      * @Date 2018/9/3
      */
-    Result increaseLikeCount(String userId, int blogId);
+    Result increaseLikeCount(int blogId, String token);
 
     /**
      * 阅读量增加

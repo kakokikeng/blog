@@ -1,13 +1,16 @@
 package com.yk.blog.core.service.impl;
 
+import com.yk.blog.core.constant.Constant;
 import com.yk.blog.core.dto.GenericResult;
 import com.yk.blog.core.dto.Result;
 import com.yk.blog.core.dto.UserRespDTO;
+import com.yk.blog.core.service.AuthorityService;
 import com.yk.blog.core.service.CountService;
 import com.yk.blog.core.service.FollowerService;
 import com.yk.blog.core.service.UserService;
 import com.yk.blog.core.constant.ErrorMessages;
 import com.yk.blog.core.utils.GenericResultUtils;
+import com.yk.blog.core.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +36,9 @@ public class FollowerServiceImpl implements FollowerService {
     JedisPool jedisPool;
 
     @Autowired
+    AuthorityService authorityService;
+
+    @Autowired
     UserService userService;
 
     @Autowired
@@ -40,14 +46,18 @@ public class FollowerServiceImpl implements FollowerService {
 
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
-    public Result follow(String followId, String followedId) {
-        if (!userService.existUsers(getIdList(followedId, followId))) {
+    public Result follow(String followedId, String token) {
+        if (!authorityService.verifyToken(token)) {
+            return GenericResultUtils.genericNormalResult(false, ErrorMessages.TOKEN_NOT_AVAILABLE.message);
+        }
+        if (!userService.existUser(followedId)) {
             return GenericResultUtils.genericNormalResult(Boolean.FALSE, ErrorMessages.WRONG_USER_ID.message);
         }
-        if (followId.equals(followedId)) {
-            return GenericResultUtils.genericNormalResult(false, ErrorMessages.CAN_NOT_FOLLOW_YOURSELF.message);
-        }
         try (Jedis jedis = jedisPool.getResource()) {
+            String followId = jedis.hget(Utils.generatePrefix(Constant.TOKEN_WITH_USER_ID),token);
+            if (followId.equals(followedId)) {
+                return GenericResultUtils.genericNormalResult(false, ErrorMessages.CAN_NOT_FOLLOW_YOURSELF.message);
+            }
             long count = jedis.sadd(generatePrefix(FOLLOWED + followId), followedId);
             jedis.sadd(generatePrefix(FOLLOWER + followedId), followId);
             if (count > 0) {
@@ -63,11 +73,15 @@ public class FollowerServiceImpl implements FollowerService {
     }
 
     @Override
-    public Result unfollow(String followId, String followedId) {
-        if (!userService.existUsers(getIdList(followedId, followId))) {
+    public Result unfollow(String followedId, String token) {
+        if (!authorityService.verifyToken(token)) {
+            return GenericResultUtils.genericNormalResult(false, ErrorMessages.TOKEN_NOT_AVAILABLE.message);
+        }
+        if (!userService.existUser(followedId)) {
             return GenericResultUtils.genericNormalResult(Boolean.FALSE, ErrorMessages.WRONG_USER_ID.message);
         }
         try (Jedis jedis = jedisPool.getResource()) {
+            String followId = jedis.hget(Utils.generatePrefix(Constant.TOKEN_WITH_USER_ID),token);
             long count = jedis.srem(generatePrefix(FOLLOWED + followId), followedId);
             jedis.srem(generatePrefix(FOLLOWER + followedId), followId);
             if (count > 0) {

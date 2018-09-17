@@ -28,11 +28,12 @@ public interface CommentService {
      * 通过登录用户id、被回复用户id和博客id进行评论，直接评论被回复用户为空
      *
      * @param commentReqDTO 评论信息
+     * @param token         用户的token
      * @return 评论结果
      * @Author yikang
      * @Date 2018/9/4
      */
-    Result comment(CommentReqDTO commentReqDTO);
+    Result comment(CommentReqDTO commentReqDTO, String token);
 
     /**
      * 通过博客id获取所有评论
@@ -47,13 +48,13 @@ public interface CommentService {
     /**
      * 删除自己的评论
      *
-     * @param userId    用户id
      * @param blogId    博客id
-     * @param commentId 博客id
+     * @param commentId 评论id
+     * @param token     用户的token
      * @return 删除结果
      * @Author yikang
      * @Date 2018/9/4
      */
-    Result deleteComment(String userId, int blogId, int commentId);
+    Result deleteComment(int blogId, int commentId, String token);
 
 }
