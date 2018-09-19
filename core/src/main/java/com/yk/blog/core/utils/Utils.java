@@ -75,9 +75,9 @@ public class Utils {
 
     public static boolean noLoginInformation(LoginReqDTO loginReqDTO) {
         if (loginReqDTO.getPasswd() == null || loginReqDTO.getEmail() == null) {
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 
     public static String generateToken(String email, String passwd) {

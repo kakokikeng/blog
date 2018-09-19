@@ -92,7 +92,7 @@ public class BlogServiceImpl implements BlogService {
         }
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Result deleteBlog(int blogId, String token) {
         if (!authorityService.verifyToken(token)) {
@@ -114,7 +114,7 @@ public class BlogServiceImpl implements BlogService {
         }
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Result updateBlog(BlogReqDTO blogReqDTO, String token) {
         if (!authorityService.verifyToken(token)) {
@@ -126,18 +126,20 @@ public class BlogServiceImpl implements BlogService {
         return generateResultWithCount(count);
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Result createBlog(BlogReqDTO blogReqDTO, String token) {
         try (Jedis jedis = jedisPool.getResource()) {
             if (!authorityService.verifyToken(token)) {
                 return GenericResultUtils.genericNormalResult(false, ErrorMessages.TOKEN_NOT_AVAILABLE.message);
             }
+            String userId = jedis.hget(Utils.generatePrefix(Constant.TOKEN_WITH_USER_ID),token);
             Blog blog = blogReqFactory.createBlogByDto(blogReqDTO);
+            blog.setUserId(userId);
             int count = blogMapper.createBlog(blog);
             if (count > 0) {
                 jedis.sadd(Utils.generatePrefix(Constant.EXIST_BLOG), String.valueOf(blog.getId()));
-                countService.updateBlogCount(blogReqDTO.getUserId(), 1);
+                countService.updateBlogCount(userId, 1);
             }
             return generateResultWithCount(count);
         }

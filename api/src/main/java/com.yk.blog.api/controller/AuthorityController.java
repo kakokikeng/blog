@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
  * @date 2018/9/11
  */
 
-//TODO 扩展为单点登录
 
 @RequestMapping("authority")
 @RestController

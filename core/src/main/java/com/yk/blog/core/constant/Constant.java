@@ -33,6 +33,8 @@ public class Constant {
 
     public static final String TOKEN_WITH_TIMESTAMP = "token_with_timestamp";
 
+    public static final String EMAIL_WITH_TOKEN = "email_with_token";
+
     public static final String EMAIL_WITH_VERIFY_CODE = "email_with_verify_code";
 
     public static final String EMAIL_WITH_COUNT = "email_with_count";
@@ -49,7 +51,7 @@ public class Constant {
 
     public static final int TIME_OUT_SECONDS = 180;
 
-    public static final int EXPIRE_NOW = 0;
+    public static final int EXPIRE_NOW = -1;
 
 
 }

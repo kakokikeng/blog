@@ -42,12 +42,18 @@ public class AuthorityServiceImpl implements AuthorityService {
         }
         GenericResult<Token> result = new GenericResult<>();
         try (Jedis jedis = jedisPool.getResource()) {
-            if (loginReqDTO.getPasswd().equals(jedis.hget(Utils.generatePrefix(Constant.EMAIL_WITH_PASSWORD), loginReqDTO.getEmail()))) {
+            //已经登陆过
+            if(jedis.hget(Utils.generatePrefix(Constant.EMAIL_WITH_TOKEN),loginReqDTO.getEmail()) != null){
+                return GenericResultUtils.genericFailureResult(ErrorMessages.ALREADY_LOGIN.message,ErrorMessages.ALREADY_LOGIN.code);
+            }
+            if (Utils.generateMd5(loginReqDTO.getPasswd()).equals(jedis.hget(Utils.generatePrefix(Constant.EMAIL_WITH_PASSWORD), loginReqDTO.getEmail()))) {
                 String token = Utils.generateToken(loginReqDTO.getEmail(), loginReqDTO.getPasswd());
                 jedis.hset(Utils.generatePrefix(Constant.TOKEN_WITH_TIMESTAMP), token, String.valueOf(System.currentTimeMillis()));
+                jedis.hset(Utils.generatePrefix(Constant.EMAIL_WITH_TOKEN),loginReqDTO.getEmail(),token);
                 String userId = userService.getUserIdByEmail(loginReqDTO.getEmail());
                 jedis.hset(Utils.generatePrefix(Constant.TOKEN_WITH_USER_ID),token,userId);
                 result.setData(new Token(token));
+                result.setSuccess(true);
                 return result;
             } else {
                 return GenericResultUtils.genericFailureResult(ErrorMessages.ERROR_LOGIN_INFORMATION.message, ErrorMessages.ERROR_LOGIN_INFORMATION.code);

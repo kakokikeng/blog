@@ -1,14 +1,12 @@
 package com.yk.blog.api.controller;
 
 import com.yk.blog.core.dto.Result;
+import com.yk.blog.core.dto.UserReqDTO;
 import com.yk.blog.core.service.VerifyService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 /**
@@ -28,11 +26,12 @@ public class VerifyController {
         return verifyService.generateVerifyCode(email);
     }
 
-    @GetMapping("{email}/{verifyCode}")
+    @PostMapping("{email}/{verifyCode}")
     @ApiOperation("验证码验证")
     public Result validation(@ApiParam("接收验证码的邮箱") @PathVariable("email") String email,
-                             @ApiParam("用户输入的验证码") @PathVariable("verifyCode") String verifyCode){
-        return verifyService.validation(email,verifyCode);
+                             @ApiParam("用户输入的验证码") @PathVariable("verifyCode") String verifyCode,
+                             @ApiParam("新建用户的用户信息") @RequestBody UserReqDTO userReqDTO){
+        return verifyService.validation(email,verifyCode,userReqDTO);
     }
 
 }

@@ -31,11 +31,12 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @ApiOperation("创建用户")
+
+    /*@ApiOperation("创建用户")
     @PostMapping("")
     public Result createUser(@RequestBody UserReqDTO userReqDTO) {
         return userService.createUser(userReqDTO);
-    }
+    }*/
 
     @ApiOperation("删除用户")
     @DeleteMapping("{email}/{passwd}")

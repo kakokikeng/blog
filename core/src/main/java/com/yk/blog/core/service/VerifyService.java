@@ -1,6 +1,7 @@
 package com.yk.blog.core.service;
 
 import com.yk.blog.core.dto.Result;
+import com.yk.blog.core.dto.UserReqDTO;
 
 
 /**
@@ -25,10 +26,11 @@ public interface VerifyService {
      *
      * @param email      收到验证码的邮箱
      * @param verifyCode 输入的验证码
+     * @param userReqDTO 新建用户的信息
      * @return
      * @Author yikang
      * @Date 2018/9/11
      */
-    Result validation(String email, String verifyCode);
+    Result validation(String email, String verifyCode, UserReqDTO userReqDTO);
 
 }
