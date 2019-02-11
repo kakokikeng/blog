@@ -32,11 +32,11 @@ public class UserController {
     UserService userService;
 
 
-    /*@ApiOperation("创建用户")
+    @ApiOperation("创建用户")
     @PostMapping("")
     public Result createUser(@RequestBody UserReqDTO userReqDTO) {
         return userService.createUser(userReqDTO);
-    }*/
+    }
 
     @ApiOperation("删除用户")
     @DeleteMapping("{email}/{passwd}")
@@ -46,11 +46,11 @@ public class UserController {
     }
 
     //TODO 目前能修改的信息只有用户名
-    /*@ApiOperation("修改用户信息")
+    @ApiOperation("修改用户信息")
     @PutMapping("{userId}")
     public Result updateUser(@PathVariable("userId") String userId, @RequestBody UserReqDTO userReqDTO) {
         return userService.updateUser(userId,userReqDTO);
-    }*/
+    }
 
     @ApiOperation("修改密码")
     @PutMapping("{email}/{oldPasswd}/{newPasswd}")

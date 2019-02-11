@@ -1,9 +1,9 @@
 package com.yk.blog.api.controller;
 
-import com.yk.blog.core.dto.GenericResult;
-import com.yk.blog.core.dto.Result;
 import com.yk.blog.core.dto.CommentReqDTO;
 import com.yk.blog.core.dto.CommentRespDTO;
+import com.yk.blog.core.dto.GenericResult;
+import com.yk.blog.core.dto.Result;
 import com.yk.blog.core.service.CommentService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
