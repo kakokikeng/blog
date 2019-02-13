@@ -1,10 +1,10 @@
 package com.yk.blog.core.service.impl;
 
 
-import com.t4f.gaea.dto.Result;
+import com.yk.blog.core.dto.RecaptchaDTO;
+import com.yk.blog.core.dto.Result;
 import com.yk.blog.core.service.RecaptchaService;
-import com.yk.recaptcha.dto.RecaptchaDTO;
-import com.yk.recaptcha.utils.ValidateCode;
+import com.yk.blog.core.utils.ValidateCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.ReactiveRedisTemplate;
 import org.springframework.stereotype.Service;
