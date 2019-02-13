@@ -216,7 +216,8 @@
             <label>
                 <input type="checkbox" id="remember">记住密码
             </label>
-            <a style="margin-left: 100px" href="#">忘记密码?</a>
+            <a style="margin-left: 70px" href="forgetPasswd">忘记密码?</a>
+            <a style="margin-left: 70px" href="signUp">注册</a>
         </div>
 
         <p style="text-align: right;color: red;position: absolute" id="info"></p><br/>

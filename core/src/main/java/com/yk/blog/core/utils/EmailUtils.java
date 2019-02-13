@@ -58,7 +58,7 @@ public class EmailUtils {
             message.setSubject("注册认证");
 
             // 设置消息体
-            message.setText("您正在使用该邮箱注册博客，验证码:" + verifyCode + "\n 如果不是本人操作请忽视。");
+            message.setText("您的验证码是:" + verifyCode + "\n 如果不是本人操作请忽视。");
 
 
             // 发送消息
