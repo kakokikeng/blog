@@ -78,7 +78,7 @@ public class RecaptchaServiceImpl implements RecaptchaService {
                 .flatMap(str -> {
                     return template.opsForValue().set(getRedisKey(key), str, Duration.ofMinutes(2))
                             .then(Mono.just(key));
-                }).onErrorReturn("ERROR");
+                });
     }
 
     /**

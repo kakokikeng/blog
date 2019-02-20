@@ -22,7 +22,7 @@ public interface VerifyService {
     Result generateVerifyCode(String email);
 
     /**
-     * 输入验证码验证
+     * 输入验证码验证并创建用户
      *
      * @param email      收到验证码的邮箱
      * @param verifyCode 输入的验证码
@@ -32,5 +32,16 @@ public interface VerifyService {
      * @Date 2018/9/11
      */
     Result validation(String email, String verifyCode, UserReqDTO userReqDTO);
+
+    /**
+     * 邮件验证码进行验证
+     *
+     * @param email 请求验证码的邮箱
+     * @param verifyCode 用户输入的验证码
+     * @return Result
+     * @author yikang
+     * @date 2019/2/20
+     */
+    Result validation(String email, String verifyCode);
 
 }

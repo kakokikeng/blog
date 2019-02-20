@@ -292,7 +292,7 @@
                 dataType: "json",
                 success: function(data) {
                     if(data.success == false) {
-                        $("#info").text("提示:账号或密码错误！");
+                        $("#info").text(data.message);
                     }else if(data.success == true){
                         rememberToken(data.data);
                         if(remember){

@@ -9,55 +9,124 @@
 <html>
 <head>
     <title>忘记密码</title>
+    <script src="js/jquery-3.2.1.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/js.cookie.js"></script>
 </head>
-<body onload="getVerifyPicture()">
+<body bgcolor="#f5f5dc">
 
 <script>
-    function getVerifyPicture(){
+    var tmp = "default";
+
+    $(document).ready(getVerifyPicture());
+
+    function getVerifyPicture() {
         $.ajax({
             type: "GET",
             contentType: "application/json",
-            url: "authority",
-            data: JSON.stringify(data),
-            dataType: "json",
-            success: function(data) {
-                if(data.success == false) {
-                    $("#info").text("提示:账号或密码错误！");
-                }else if(data.success == true){
-                    rememberToken(data.data);
-                    if(remember){
-                        rememberLogin(id,passwd,remember);
-                    }else {
-                        Cookies.remove('loginStatus');
-                    }
-                    $("#info").text("提示:登陆成功，跳转中...");
-                    window.location.href="/reader_main.html";
+            url: "recaptcha/key",
+            success: function (data) {
+                tmp = data;
+                $("#imgVerifyCode").attr("src", "/recaptcha/imgValidateCode/" + data);
+            }
+        });
+    }
 
+    function getEmailVerifyCode() {
+        if(!testEmail()){
+            return;
+        }
+        var data = {"key": tmp, "verifyCode": $("#verify").val()};
+        $.ajax({
+            type: "POST",
+            contentType: "application/json",
+            url: "recaptcha/validation",
+            data: JSON.stringify(data),
+            success: function (result) {
+                if (result.success == true) {
+                    $("#imgInfo").hide();
+                    //成功即验证码正确，发送请求邮箱验证码
+                    $.ajax({
+                        type: "GET",
+                        contentType: "application/json",
+                        url: "verify/" + $("#email").val()
+                    })
+
+                } else {
+                    //验证码错误，刷新图片验证码重新验证
+                    getVerifyPicture();
+                    $("#imgInfo").text("图片验证错误，请重新输入！");
+                }
+            }
+        });
+    }
+
+    function changePasswd(){
+        $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            url: "verify/" + $("#email").val() + "/" + $("#verifyCode").val(),
+            success: function (result) {
+                if(result.success == true){
+                    $("#emailVerifyInfo").hide();
+                    window.location.href="changePasswd";
+                }else{
+                    $("#emailVerifyInfo").text(result.message);
                 }
             }
         })
+
+
     }
-    function getEmailVerifyCode() {
-        var email = document.getElementById("email").value;
-    }
-    !function () {
-        window.location.href="jsp/index.jsp";
-    }
+
+        function testEmail() {
+            var myReg = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
+            if(myReg.test($("#email").val())){
+                $("#emailInfo").hide();
+                return true;
+            }else{
+                $("#emailInfo").text("邮箱格式错误，请重新输入！");
+                return false;
+            }
+        }
+
 </script>
 
 <div class="panel-body" align="center">
-    <div class="form-group">
-        <label for="email">你的邮箱</label>
-        <input type="text" class="form-control" id="email" placeholder="请输入你的邮箱">
+    <h1>找回密码</h1>
+    <br>
+    <br>
+    <br>
+    <br>
+    <div style="size: 3px;color: #66afe9;margin-left: 10px;">
+        您的邮箱
     </div>
+    <input type="text" id="email" placeholder="请输入您的邮箱">
+    <p style="text-align: right;color: red;position: absolute" id="emailInfo"></p><br/>
+
+    <br>
+    <br>
+    <br>
+    <br>
     <div class="form-group">
-        <input type="text" class="form-control" id="verify">
+        <input type="text" placeholder="输入图片中验证码" class="form-control" id="verify" maxlength="4">
+        <a onclick="getVerifyPicture()">
+            <img id="imgVerifyCode">
+        </a>
     </div>
-    <button value="获取验证码" onclick="getEmailVerifyCode()"/>
+    <p style="text-align: right;color: red;position: absolute" id="imgInfo"></p><br/>
+    <br>
+    <br>
+
+    <p style="text-align: right;color: red;position: absolute" id="emailVerifyInfo"></p><br/>
+    <button onclick="getEmailVerifyCode()">获取验证码</button>
+    <br>
+    <br>
     <div class="form-group">
-        <label for="verifyCode">请输入验证码</label>
-        <input type="password" class="form-control" id="verifyCode">
+        <input type="text" class="form-control" id="verifyCode" maxlength="4">
     </div>
+    <br>
+    <button onclick="changePasswd()">提交</button>
 
 
 

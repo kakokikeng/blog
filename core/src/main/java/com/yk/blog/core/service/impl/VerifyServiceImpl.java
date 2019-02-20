@@ -72,4 +72,19 @@ public class VerifyServiceImpl implements VerifyService {
             }
         }
     }
+
+    @Override
+    public Result validation(String email, String verifyCode) {
+        try (Jedis jedis = jedisPool.getResource()) {
+            String trueCode = jedis.get(Utils.generatePrefix(Constant.EMAIL_WITH_VERIFY_CODE + email));
+            if (trueCode == null) {
+                return GenericResultUtils.genericNormalResult(false, ErrorMessages.VERIFY_CODE_NOT_EXIST.message);
+            } else if (!trueCode.equalsIgnoreCase(verifyCode)) {
+                return GenericResultUtils.genericNormalResult(false, ErrorMessages.VERIFY_CODE_ERROR.message);
+            } else {
+                jedis.expire(Utils.generatePrefix(Constant.EMAIL_WITH_VERIFY_CODE + email), Constant.EXPIRE_NOW);
+                return GenericResultUtils.genericNormalResult(true);
+            }
+        }
+    }
 }

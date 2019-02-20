@@ -1,6 +1,7 @@
 package com.yk.blog.api.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -12,6 +13,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping
 @Controller
 public class JspController {
+    @GetMapping("/")
+    public String homePage(){
+        return "index";
+    }
+
+    @GetMapping("404")
+    public String notFound(){
+        return "404";
+    }
+
     @RequestMapping("index")
     public String turnIndex(){
         return "index";
@@ -25,5 +36,20 @@ public class JspController {
     @RequestMapping("signUp")
     public String turnSignUp(){
         return "signUp";
+    }
+
+    @RequestMapping("success")
+    public String success(){
+        return "success";
+    }
+
+    @RequestMapping("failure")
+    public String failure(){
+        return "failure";
+    }
+
+    @RequestMapping("changePasswd")
+    public String changePasswd(){
+        return "changePasswd";
     }
 }

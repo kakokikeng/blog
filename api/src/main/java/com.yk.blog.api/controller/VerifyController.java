@@ -27,11 +27,20 @@ public class VerifyController {
     }
 
     @PostMapping("{email}/{verifyCode}")
-    @ApiOperation("验证码验证")
+    @ApiOperation("验证码验证并新建用户")
     public Result validation(@ApiParam("接收验证码的邮箱") @PathVariable("email") String email,
                              @ApiParam("用户输入的验证码") @PathVariable("verifyCode") String verifyCode,
                              @ApiParam("新建用户的用户信息") @RequestBody UserReqDTO userReqDTO){
         return verifyService.validation(email,verifyCode,userReqDTO);
     }
+
+    @GetMapping("{email}/{verifyCode}")
+    @ApiOperation("验证码验证")
+    public Result validation(@ApiParam("接收验证码的邮箱") @PathVariable("email") String email,
+                             @ApiParam("用户输入的验证码") @PathVariable("verifyCode") String verifyCode){
+        return verifyService.validation(email,verifyCode);
+    }
+
+
 
 }

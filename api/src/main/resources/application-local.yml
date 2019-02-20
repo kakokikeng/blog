@@ -24,3 +24,7 @@ email:
 logging:
   level:
     com.yk.blog.data: debug
+
+validate-code:
+  type: 2
+  length: 4

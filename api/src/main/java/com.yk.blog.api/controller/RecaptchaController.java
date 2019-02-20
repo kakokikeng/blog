@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 
@@ -23,7 +22,7 @@ import reactor.core.publisher.Mono;
 */
 
 @RestController
-@RequestMapping
+@RequestMapping("recaptcha")
 public class RecaptchaController {
     @Autowired
     RecaptchaService recaptchaService;
@@ -69,7 +68,7 @@ public class RecaptchaController {
     //@ApiOperation("传入获得的key，获得验证码图片")
     //@ApiImplicitParams(@ApiImplicitParam(name = "keyId",value = "之前请求的key",dataType = "String",required = true))
     @GetMapping(value = "/imgValidateCode/{keyId}")
-    public Mono<ResponseEntity<byte[]>> imageValidateCode(@PathVariable("keyId") String keyId,ServerWebExchange exchange) {
+    public Mono<ResponseEntity<byte[]>> imageValidateCode(@PathVariable("keyId") String keyId) {
         return recaptchaService.imageValidateCode(keyId).map(b -> {
             return ResponseEntity.ok().header("content-type",MediaType.IMAGE_JPEG_VALUE).body(b);
         });
