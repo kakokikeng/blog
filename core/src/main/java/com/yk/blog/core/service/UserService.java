@@ -35,6 +35,19 @@ public interface UserService {
     Result modifyPasswd(String email,String oldPasswd,String newPasswd);
 
     /**
+     * 更新密码
+     *
+     * @param email     登录邮箱
+     * @param newPasswd 新密码
+     * @param
+     * @return
+     * @author yikang
+     * @date 2019/2/21
+     */
+    Result modifyPasswd(String email, String newPasswd);
+
+
+    /**
      *  更新用户的粉丝数量
      * @param userId 用户id
      * @param fansCount 粉丝数量

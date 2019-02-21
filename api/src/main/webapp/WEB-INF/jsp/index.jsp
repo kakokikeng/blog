@@ -227,12 +227,12 @@
 </div>
 <script>
     $("#id").keyup(
-        function () {
-            if(isNaN($("#id").val())){
-                $("#info").text("提示:账号只能为数字");
-            }
-            else {
+        function testEmail() {
+            var myReg = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
+            if(myReg.test($("#id").val())){
                 $("#info").text("");
+            }else{
+                $("#info").text("用户名格式错误，请重新输入！");
             }
         }
     )

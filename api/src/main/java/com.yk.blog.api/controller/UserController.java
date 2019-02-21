@@ -60,6 +60,13 @@ public class UserController {
         return userService.modifyPasswd(email,oldPasswd,newPasswd);
     }
 
+    @ApiOperation("修改密码")
+    @PostMapping("{email}/{newPasswd}")
+    public Result modifyPasswd(@ApiParam("登录邮箱") @PathVariable("email") String email,
+                               @ApiParam("新的密码") @PathVariable("newPasswd") String newPasswd){
+        return userService.modifyPasswd(email,newPasswd);
+    }
+
 
     @ApiOperation("搜索用户列表")
     @GetMapping("users")

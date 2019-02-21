@@ -7,7 +7,7 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/blog?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull
     driver-class-name: com.mysql.jdbc.Driver
     username: root
-    password: Wyy19970704
+    password: 123
   mvc:
     view:
       prefix: /WEB-INF/jsp/

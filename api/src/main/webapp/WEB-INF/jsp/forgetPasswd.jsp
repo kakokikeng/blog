@@ -61,14 +61,15 @@
         });
     }
 
-    function changePasswd(){
+    function verifyEamil(){
         $.ajax({
             type: "GET",
             contentType: "application/json",
             url: "verify/" + $("#email").val() + "/" + $("#verifyCode").val(),
             success: function (result) {
                 if(result.success == true){
-                    $("#emailVerifyInfo").hide();
+                    $("#emailVerifyInfo").text("");
+                    Cookies.set('loginEmail',$("#email").val());
                     window.location.href="changePasswd";
                 }else{
                     $("#emailVerifyInfo").text(result.message);
@@ -126,7 +127,7 @@
         <input type="text" class="form-control" id="verifyCode" maxlength="4">
     </div>
     <br>
-    <button onclick="changePasswd()">提交</button>
+    <button onclick="verifyEamil()">提交</button>
 
 
 

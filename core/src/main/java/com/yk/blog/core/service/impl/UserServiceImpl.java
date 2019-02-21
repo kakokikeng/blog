@@ -1,12 +1,12 @@
 package com.yk.blog.core.service.impl;
 
+import com.yk.blog.core.constant.Constant;
+import com.yk.blog.core.constant.ErrorMessages;
 import com.yk.blog.core.dto.GenericResult;
 import com.yk.blog.core.dto.Result;
 import com.yk.blog.core.dto.UserReqDTO;
 import com.yk.blog.core.dto.UserRespDTO;
 import com.yk.blog.core.service.UserService;
-import com.yk.blog.core.constant.Constant;
-import com.yk.blog.core.constant.ErrorMessages;
 import com.yk.blog.core.utils.GenericResultUtils;
 import com.yk.blog.core.utils.UserUtils;
 import com.yk.blog.core.utils.Utils;
@@ -63,6 +63,18 @@ public class UserServiceImpl implements UserService {
             } else {
                 return GenericResultUtils.genericNormalResult(false, ErrorMessages.ERROR_PASSWORD.message);
             }
+        }
+    }
+
+    @Override
+    public Result modifyPasswd(String email, String newPasswd) {
+        try (Jedis jedis = jedisPool.getResource()) {
+            String newMD5 = Utils.generateMd5(newPasswd);
+            int count = userMapper.updatePasswd(email, newMD5);
+            if (count > 0) {
+                jedis.hset(Utils.generatePrefix(Constant.EMAIL_WITH_PASSWORD), email, newMD5);
+            }
+            return GenericResultUtils.generateResultWithCount(count, ErrorMessages.UPDATE_FAILED.message);
         }
     }
 
