@@ -1,10 +1,4 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: 君行天下
-  Date: 2017/7/23
-  Time: 16:56
-  To change this template use File | Settings | File Templates.
---%>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
@@ -45,7 +39,7 @@
         });
     </script>
 </head>
-<body>
+<body bgcolor="#f5f5dc">
 <c:if test="${!empty error}">
     <script>
         alert("${error}");
@@ -59,7 +53,7 @@
      * Copyright (c) 2016 hustcc
      * License: MIT
      * Version: %%GULP_INJECT_VERSION%%
-     * GitHub: https://github.com/hustcc/canvas-nest.js
+     * GitHub: https://github.com/hustcc/1-nest.js
      **/
     ! function() {
         //封装方法，压缩之后减少文件大小
