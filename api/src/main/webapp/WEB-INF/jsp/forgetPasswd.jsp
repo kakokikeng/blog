@@ -226,7 +226,7 @@
         您的邮箱
     </div>
     <input type="text" id="email" placeholder="请输入您的邮箱">
-    <p style="text-align: right;color: red;position: absolute" id="emailInfo"></p><br/>
+    <p align="center" style="color: red;" id="emailInfo"></p><br/>
 
     <br>
     <br>
@@ -234,15 +234,15 @@
     <br>
     <div class="form-group">
         <input type="text" placeholder="输入图片中验证码" class="form-control" id="verify" maxlength="4">
-        <a onclick="getVerifyPicture()">
-            <img id="imgVerifyCode">
-        </a>
     </div>
-    <p style="text-align: right;color: red;position: absolute" id="imgInfo"></p><br/>
     <br>
+    <a onclick="getVerifyPicture()">
+        <img id="imgVerifyCode">
+    </a>
+    <p align="center" style="color: red;" id="imgInfo"></p><br/>
     <br>
 
-    <p style="text-align: right;color: red;position: absolute" id="emailVerifyInfo"></p><br/>
+    <p align="center" style="color: red;" id="emailVerifyInfo"></p><br/>
     <button onclick="getEmailVerifyCode()">获取验证码</button>
     <br>
     <br>

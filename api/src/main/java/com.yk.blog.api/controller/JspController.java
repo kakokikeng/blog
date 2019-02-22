@@ -3,7 +3,6 @@ package com.yk.blog.api.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  *
@@ -15,7 +14,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class JspController {
     @GetMapping("/")
     public String homePage(){
-        return "index";
+        return "login";
+    }
+
+    @GetMapping("login")
+    public String login(){
+        return "login";
     }
 
     @GetMapping("404")

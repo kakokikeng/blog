@@ -9,6 +9,23 @@
 <html>
 <head>
     <title>注册</title>
+    <script src="js/jquery-3.2.1.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/js.cookie.js"></script>
+    <style>
+        #login {
+            float: left;
+            height: 40%;
+            width: 40%;
+            margin-left: 40%;
+            display: inline;
+            z-index: 999;
+        }
+
+        * {
+            padding: 0;
+        }
+    </style>
 </head>
 <body bgcolor="#f5f5dc">
 <script>
@@ -131,6 +148,147 @@
         }, 100);
     }();
 </script>
+
+
+<script>
+    var tmp = "default";
+
+    $(document).ready(getVerifyPicture());
+
+    function getVerifyPicture() {
+        $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            url: "recaptcha/key",
+            success: function (data) {
+                tmp = data;
+                $("#imgVerifyCode").attr("src", "/recaptcha/imgValidateCode/" + data);
+            }
+        });
+    }
+
+    function getEmailVerifyCode() {
+        if (!(testEmail() && testPasswd())) {
+            return;
+        }
+
+        var data = {"key": tmp, "verifyCode": $("#verify").val()};
+        $.ajax({
+            type: "POST",
+            contentType: "application/json",
+            url: "recaptcha/validation",
+            data: JSON.stringify(data),
+            success: function (result) {
+                if (result.success == true) {
+                    $("#imgInfo").hide();
+                    //成功即验证码正确，发送请求邮箱验证码
+                    $.ajax({
+                        type: "GET",
+                        contentType: "application/json",
+                        url: "verify/" + $("#email").val()
+                    })
+
+                } else {
+                    //验证码错误，刷新图片验证码重新验证
+                    getVerifyPicture();
+                    $("#imgInfo").text("图片验证错误，请重新输入！");
+                }
+            }
+        });
+    }
+
+    function testPasswd(){
+        if($("#passwd").val().length < 6){
+            $("#passwdInfo").text("密码长度必须大于六位！");
+            return false;
+        }else{
+            $("#passwdInfo").text("");
+            return true;
+        }
+    }
+
+    function testEmail() {
+        var myReg = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
+        if (myReg.test($("#email").val())) {
+            $("#emailInfo").hide();
+            return true;
+        } else {
+            $("#emailInfo").text("邮箱格式错误，请重新输入！");
+            return false;
+        }
+    }
+
+    function signUp() {
+        var data = {
+            "email": $("#email").val(),
+            "passwd": $("#passwd").val(),
+            "userName": $("#name").val(),
+            "createTime": (new Date()).getTime()
+        };
+        $.ajax({
+            type: "POST",
+            contentType: "application/json",
+            url: "verify/" + $("#email").val() + "/" + $("#verifyCode").val(),
+            data: JSON.stringify(data),
+            success: function (result) {
+                if (result.success == true) {
+                    $("#emailVerifyInfo").text("");
+                    window.location.href = "login";
+                } else {
+                    if(result.message != null){
+                        $("#emailVerifyInfo").text(result.message);
+                    }else{
+                        $("#emailVerifyInfo").text("注册失败");
+                    }
+                }
+            }
+
+        })
+    }
+</script>
+
+
+<div class="panel panel-default" id="login">
+    <div>
+        <h1>新用户注册</h1>
+    </div>
+    <br><br><br>
+    <div class="panel-body">
+        <label for="email">邮箱</label>
+        <div class="form-group">
+            <input type="text" class="form-control" id="email" placeholder="请输入邮箱">
+        </div>
+        <p align="left" style="color: red;" id="emailInfo"></p>
+        <br>
+        <label for="passwd">密码</label>
+        <div class="form-group">
+            <input type="password" class="form-control" id="passwd" placeholder="请输入密码" maxlength="16">
+        </div>
+        <p align="left" style="color: red;" id="passwdInfo"></p>
+        <br>
+        <label for="name">用户名</label>
+        <div class="form-group">
+            <input type="text" class="form-control" id="name" placeholder="请输入用户名" maxlength="10">
+        </div>
+        <br>
+        <div class="form-group">
+            <input type="text" placeholder="输入图片中验证码" class="form-control" id="verify" maxlength="4">
+            <a onclick="getVerifyPicture()">
+                <img id="imgVerifyCode">
+            </a>
+        </div>
+        <p align="left" style="color: red;" id="imgInfo"></p>
+        <br>
+        <div class="form-group">
+            <input type="text" class="form-control" id="verifyCode" maxlength="4" placeholder="请输入邮箱的验证码">
+            <button onclick="getEmailVerifyCode()">获取验证码</button>
+        </div>
+        <p align="left" style="color: red;" id="emailVerifyInfo"></p>
+        <br>
+        <button id="loginButton" onclick="signUp()" style="margin-left:40px;width: 60px;height: 30px;">注册
+        </button>
+    </div>
+</div>
 
 </body>
 </html>

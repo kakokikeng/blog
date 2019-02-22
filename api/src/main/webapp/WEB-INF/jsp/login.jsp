@@ -3,7 +3,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>博客平台首页</title>
+    <title>登录博客平台</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <script src="js/jquery-3.2.1.js"></script>
     <script src="js/bootstrap.min.js" ></script>
@@ -40,12 +40,7 @@
     </script>
 </head>
 <body bgcolor="#f5f5dc">
-<c:if test="${!empty error}">
-    <script>
-        alert("${error}");
-        window.location.href="login.html";
-    </script>
-</c:if>
+
 <h2 style="text-align: center;font-family: 'Adobe 楷体 Std R';color: palevioletred">欢迎来到博客</h2>
 <div style="float:right;" id="github_iframe"></div>
 <script>
@@ -199,8 +194,8 @@
     </div>
     <div class="panel-body">
         <div class="form-group">
-            <label for="id">用户名</label>
-            <input type="text" class="form-control" id="id" placeholder="请输入用户名">
+            <label for="id">邮箱</label>
+            <input type="text" class="form-control" id="id" placeholder="请输入邮箱">
         </div>
         <div class="form-group">
             <label for="passwd">密码</label>
