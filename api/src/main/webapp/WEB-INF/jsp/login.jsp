@@ -290,7 +290,15 @@
                             Cookies.remove('loginStatus');
                         }
                         $("#info").text("提示:登陆成功，跳转中...");
-                        window.location.href="/reader_main.html";
+                        $.ajax({
+                            type: "GET",
+                            contentType: "application/json",
+                            url: "user/" + id,
+                            success: function (result) {
+                                Cookies.set('loginUserName',result.userName);
+                            }
+                        });
+                        window.location.href="/index";
 
                     }
                 }

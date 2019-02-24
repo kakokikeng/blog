@@ -1,9 +1,6 @@
 package com.yk.blog.api.controller;
 
-import com.yk.blog.core.dto.GenericResult;
-import com.yk.blog.core.dto.Result;
-import com.yk.blog.core.dto.UserReqDTO;
-import com.yk.blog.core.dto.UserRespDTO;
+import com.yk.blog.core.dto.*;
 import com.yk.blog.core.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -43,6 +40,12 @@ public class UserController {
     public Result deleteUser(@ApiParam("登录邮箱") @PathVariable("email") String email,
                              @ApiParam("登录密码") @PathVariable("passwd") String passwd) {
         return userService.deleteUser(email,passwd);
+    }
+
+    @ApiOperation("获取用户信息")
+    @GetMapping("{email}")
+    public UserBaseDTO getUserMessage(@ApiParam("登录邮箱") @PathVariable("email") String email){
+        return userService.getUserMessageByEmail(email);
     }
 
     //TODO 目前能修改的信息只有用户名

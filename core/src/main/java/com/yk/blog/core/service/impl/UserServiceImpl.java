@@ -2,10 +2,7 @@ package com.yk.blog.core.service.impl;
 
 import com.yk.blog.core.constant.Constant;
 import com.yk.blog.core.constant.ErrorMessages;
-import com.yk.blog.core.dto.GenericResult;
-import com.yk.blog.core.dto.Result;
-import com.yk.blog.core.dto.UserReqDTO;
-import com.yk.blog.core.dto.UserRespDTO;
+import com.yk.blog.core.dto.*;
 import com.yk.blog.core.service.UserService;
 import com.yk.blog.core.utils.GenericResultUtils;
 import com.yk.blog.core.utils.UserUtils;
@@ -34,6 +31,12 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     JedisPool jedisPool;
+
+    @Override
+    public UserRespDTO getUserMessageByEmail(String email) {
+        User user = userMapper.getUserByEmail(email);
+        return new UserRespDTO(user);
+    }
 
     @Override
     public boolean existUser(String userId) {

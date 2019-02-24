@@ -8,7 +8,7 @@ package com.yk.blog.core.constant;
 public enum ErrorMessages {
     WRONG_USER_ID("用户名错误！", ""),
     CAN_NOT_FOLLOW_YOURSELF("不能关注自己！",""),
-    ERROR_LOGIN_INFORMATION("登录信息错误！",""),
+    ERROR_LOGIN_INFORMATION("账号或密码错误！",""),
     TOKEN_NOT_AVAILABLE("TOKEN NOT AVAILABLE",""),
     ALREADY_FOLLOWED("已经关注该用户！",""),
     ALREADY_LOGIN("用户已经登录！",""),

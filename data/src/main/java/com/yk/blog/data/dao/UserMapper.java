@@ -97,6 +97,15 @@ public interface UserMapper {
     List<User> getUserListByIdList(List<String> userIds);
 
     /**
+     *  通过邮箱获取用户信息
+     *  @author  yikang
+     *  @date  2019/2/24
+     *  @param
+     *  @return
+     */
+    User getUserByEmail(String email);
+
+    /**
      * 通过用户id查询用户是否存在
      *
      * @param id 用户id

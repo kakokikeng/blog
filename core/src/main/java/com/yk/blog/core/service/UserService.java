@@ -1,9 +1,6 @@
 package com.yk.blog.core.service;
 
-import com.yk.blog.core.dto.GenericResult;
-import com.yk.blog.core.dto.Result;
-import com.yk.blog.core.dto.UserReqDTO;
-import com.yk.blog.core.dto.UserRespDTO;
+import com.yk.blog.core.dto.*;
 
 import java.util.List;
 
@@ -13,6 +10,15 @@ import java.util.List;
  */
 
 public interface UserService {
+
+    /**
+     *  通过邮箱获取用户基本信息
+     *  @author  yikang
+     *  @date  2019/2/24
+     *  @param  email 被查询用户的邮箱
+     *  @return  用户基本信息
+     */
+    UserRespDTO getUserMessageByEmail(String email);
 
     /**
      *  通过邮箱获得用户id

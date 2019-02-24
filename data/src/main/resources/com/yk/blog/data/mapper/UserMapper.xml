@@ -91,6 +91,10 @@
         </foreach>
     </select>
 
+    <select id="getUserByEmail" parameterType="java.lang.String" resultMap="user">
+        select * from user where email = #{email};
+    </select>
+
     <select id="existUser" parameterType="java.lang.String" resultType="java.lang.String">
         select id from user where id = #{id};
     </select>

@@ -42,10 +42,6 @@ public class AuthorityServiceImpl implements AuthorityService {
         }
         GenericResult<Token> result = new GenericResult<>();
         try (Jedis jedis = jedisPool.getResource()) {
-            //已经登陆过
-            if(jedis.hget(Utils.generatePrefix(Constant.EMAIL_WITH_TOKEN),loginReqDTO.getEmail()) != null){
-                return GenericResultUtils.genericFailureResult(ErrorMessages.ALREADY_LOGIN.message,ErrorMessages.ALREADY_LOGIN.code);
-            }
             if (Utils.generateMd5(loginReqDTO.getPasswd()).equals(jedis.hget(Utils.generatePrefix(Constant.EMAIL_WITH_PASSWORD), loginReqDTO.getEmail()))) {
                 String token = Utils.generateToken(loginReqDTO.getEmail(), loginReqDTO.getPasswd());
                 jedis.hset(Utils.generatePrefix(Constant.TOKEN_WITH_TIMESTAMP), token, String.valueOf(System.currentTimeMillis()));
