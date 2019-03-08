@@ -3,6 +3,7 @@ package com.yk.blog.api.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  *
@@ -28,7 +29,7 @@ public class JspController {
     }
 
     @GetMapping("blogPage")
-    public String blogPage(){
+    public String blogPage(@RequestParam("blogId") int id){
         return "blogPage";
     }
 

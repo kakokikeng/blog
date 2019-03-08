@@ -137,17 +137,19 @@
 
 <h1>这是博客内容页！</h1>
 <div id="content"></div>
+
+<input type="hidden" value="<%=request.getAttribute("blogId")%>" id="blogId"/>
 </body>
 <script>
 
     $(document).ready(getContent());
 
     function getContent(){
-        var blogId = request.getParameter("blogId");
+        var blogId = document.getElementById("blogId");
         $.ajax({
             type : "GET",
             contentType: "application/json",
-            url: "blog/" + blogId,
+            url: "blog/" + JSON.parse(blogId),
             dataType: "json",
             success: function(result){
                 var div = document.createElement("div");

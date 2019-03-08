@@ -174,8 +174,10 @@
             success: function(result){
                 var div = document.createElement("div");
                 for(var i = 0; i < result.data.length; i ++){
-                    div.innerHTML = '<a href="localhost:8080/blogPage?blogId=' + result.data.get(i).getId() + '">' + result.data.get(i) + "</a>" + '<br>';
+                    div.innerHTML += '<h2><a style="color: coral;text-decoration:none;"' +
+                        ' href="http://localhost:8080/blogPage?blogId=' + result.data[i].id + '">' + result.data[i].title + "</a></h2>";
                 }
+                document.getElementById("top10").appendChild(div);
             }
         });
     }
