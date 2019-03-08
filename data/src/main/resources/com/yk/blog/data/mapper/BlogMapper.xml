@@ -13,6 +13,10 @@
         <result column="comment_count" property="commentCount"/>
     </resultMap>
 
+    <select id="getMostInterviewedBlogList" resultMap="blog">
+        select * from blog order by read_count desc limit 10
+    </select>
+
     <delete id="deleteCommentByBlogId" parameterType="int">
         delete from comment where blog_id = #{blogId}
     </delete>

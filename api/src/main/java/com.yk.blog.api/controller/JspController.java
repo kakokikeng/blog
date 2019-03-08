@@ -27,6 +27,11 @@ public class JspController {
         return "404";
     }
 
+    @GetMapping("blogPage")
+    public String blogPage(){
+        return "blogPage";
+    }
+
     @RequestMapping("index")
     public String turnIndex(){
         return "index";

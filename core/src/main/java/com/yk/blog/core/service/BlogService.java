@@ -16,6 +16,15 @@ import java.util.List;
 public interface BlogService {
 
     /**
+     *  获取博客阅读量最多的十个博客
+     *  @author  yikang
+     *  @date  2019/2/25
+     *  @param
+     *  @return
+     */
+    GenericResult<List<BlogRespDTO>> getMostInterviewedBlogList();
+
+    /**
      * 更新博客的评论数目
      *
      * @param id    博客id

@@ -21,6 +21,18 @@ public class BlogRespDTO extends BlogBaseDTO{
 
     public BlogRespDTO(){}
 
+    public BlogRespDTO(Blog blog){
+        setTitle(blog.getTitle());
+        setContent(blog.getContent());
+        setUserId(blog.getUserId());
+        setId(blog.getId());
+        setCreateTime(blog.getCreateTime().getTime());
+        setReadCount(blog.getReadCount());
+        setLikeCount(blog.getLikeCount());
+        setCommentCount(blog.getCommentCount());
+    }
+
+
 
     @Override
     public String toString() {

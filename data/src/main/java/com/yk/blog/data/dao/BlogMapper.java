@@ -15,6 +15,15 @@ import java.util.Map;
 public interface BlogMapper {
 
     /**
+     *  获得阅读量最多的十个博客，降序排序
+     *  @author  yikang
+     *  @date  2019/2/25
+     *  @param
+     *  @return
+     */
+    List<Blog> getMostInterviewedBlogList();
+
+    /**
      * 更新博客的评论数量
      *
      * @param id    博客id

@@ -1,14 +1,14 @@
 package com.yk.blog.core.service.impl;
 
 import com.yk.blog.core.constant.Constant;
-import com.yk.blog.core.dto.GenericResult;
-import com.yk.blog.core.dto.Result;
+import com.yk.blog.core.constant.ErrorMessages;
 import com.yk.blog.core.dto.BlogReqDTO;
 import com.yk.blog.core.dto.BlogRespDTO;
+import com.yk.blog.core.dto.GenericResult;
+import com.yk.blog.core.dto.Result;
 import com.yk.blog.core.factories.BlogReqFactory;
 import com.yk.blog.core.factories.BlogRespFactory;
 import com.yk.blog.core.service.*;
-import com.yk.blog.core.constant.ErrorMessages;
 import com.yk.blog.core.utils.GenericResultUtils;
 import com.yk.blog.core.utils.Utils;
 import com.yk.blog.data.dao.BlogMapper;
@@ -24,7 +24,6 @@ import java.util.List;
 
 import static com.yk.blog.core.utils.GenericResultUtils.generateResultWithCount;
 import static com.yk.blog.core.utils.UserUtils.wrongUserIdGenericResult;
-import static com.yk.blog.core.utils.UserUtils.wrongUserIdResult;
 
 /**
  * @author yikang
@@ -56,6 +55,17 @@ public class BlogServiceImpl implements BlogService {
 
     @Autowired
     BlogReqFactory blogReqFactory;
+
+    @Override
+    public GenericResult<List<BlogRespDTO>> getMostInterviewedBlogList() {
+        List<Blog> blogs = blogMapper.getMostInterviewedBlogList();
+        List<BlogRespDTO> data = new ArrayList<>(blogs.size());
+        for (Blog blog : blogs
+        ) {
+            data.add(new BlogRespDTO(blog));
+        }
+        return GenericResultUtils.genericResult(true, data);
+    }
 
     @Override
     public void updateBlogCommentCount(int id, int count) {

@@ -134,12 +134,55 @@
 </script>
 
 
+
+<div id="slogan" align="left" style="width: 50%;height: 25px;float: left;color: #888888;">
+    Modesty helps one to go forward.
+</div>
+<div id="userName"></div>
+<div>
+    <hr color="#D1D1D1">
+</div>
+
+<div style="width: 32%;height: 100%;padding: 1% 1% 1% 1%;margin-left:2%;margin-top: 1%;margin-bottom:1%;float: left;border: #D1D1D1 2px solid;">
+    <div style="width: 100%">
+        <h2 align="center" style="color: coral">浏览量TOP 10</h2>
+        <div id="top10" style="width: 90%;padding-left: 5%;padding-right: 5%;"></div>
+    </div>
+
+</div>
+<div style="width: 58%;height: 100%;padding: 1% 1% 1% 1%;margin-top: 1%;margin-bottom:1%;margin-right:1%;float: right;border: #D1D1D1 2px solid;">
+    hello 2
+</div>
+
+
+</body>
+
 <script>
-    $(document).ready(getLoginUserName());
+    $(document).ready(init());
+
+    function init(){
+        getLoginUserName();
+        getTop10();
+    }
+
+    function getTop10() {
+        $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            url: "blog/mostInterviewed",
+            dataType: "json",
+            success: function(result){
+                var div = document.createElement("div");
+                for(var i = 0; i < result.data.length; i ++){
+                    div.innerHTML = '<a href="localhost:8080/blogPage?blogId=' + result.data.get(i).getId() + '">' + result.data.get(i) + "</a>" + '<br>';
+                }
+            }
+        });
+    }
 
     function getLoginUserName() {
         var loginUserName = Cookies.get("loginUserName");
-        var div = document.createElement('div');
+        var div = document.createElement("div");
         div.innerHTML = '<a href="login">登录</a>\n' +
             '    <a href="signUp">注册</a>';
         div.style.width = "50%";
@@ -150,28 +193,11 @@
         if (loginUserName != null) {
             div.innerHTML = Cookies.get("loginUserName");
         }
-        var bo = document.body;//获取body对象.
-        //动态插入到body中
-        bo.insertBefore(div, bo.lastChild);
+        document.getElementById("userName").appendChild(div);
+
     }
 
 </script>
 
 
-<div align="left" style="width: 50%;height: 25px;float: left;color: #888888;">
-    Modesty helps one to go forward.
-</div>
-<div>
-    <hr color="#D1D1D1">
-</div>
-
-<div style="width: 32%;height: 100%;padding: 1% 1% 1% 1%;margin-left:2%;margin-top: 1%;margin-bottom:1%;float: left;border: #D1D1D1 2px solid;">
-    hello 1
-</div>
-<div style="width: 58%;height: 100%;padding: 1% 1% 1% 1%;margin-top: 1%;margin-bottom:1%;margin-right:1%;float: right;border: #D1D1D1 2px solid;">
-    hello 2
-</div>
-
-
-</body>
 </html>

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,6 +33,12 @@ public class BlogController {
 
     @Autowired
     BlogService blogService;
+
+    @ApiOperation("获取浏览量前十的博客标题列表，降序排序")
+    @GetMapping("mostInterviewed")
+    public GenericResult<List<BlogRespDTO>> getMostInterviewedBlogList(){
+        return blogService.getMostInterviewedBlogList();
+    }
 
     @ApiOperation("通过用户id获取博客列表")
     @GetMapping("{userId}/blogs")
