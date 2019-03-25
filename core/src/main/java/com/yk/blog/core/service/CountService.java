@@ -10,6 +10,15 @@ import com.yk.blog.core.dto.Result;
 public interface CountService {
 
     /**
+     *
+     *  @author  yikang
+     *  @date  2019/3/25
+     *  @param
+     *  @return
+     */
+    int updateFollows(String followId);
+
+    /**
      * 更新用户的博客数
      *
      * @param userId   用户id

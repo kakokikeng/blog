@@ -24,6 +24,11 @@
         update user set fans = #{fansCount} where id = #{id};
     </update>
 
+    <update id="updateFollows">
+        update user set follows = #{followCount} where id = #{id};
+    </update>
+
+
     <update id="updateBlogCountByUserId">
         update user set blogs = blogs + #{addCount} where id = #{id};
     </update>

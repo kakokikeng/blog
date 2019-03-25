@@ -87,6 +87,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public int updateFollows(String userId, int followCount) {
+        return userMapper.updateFollows(userId,followCount);
+    }
+
+    @Override
     public int updateBlogCount(String userId, int updateCount) {
         return userMapper.updateBlogCountByUserId(userId, updateCount);
     }

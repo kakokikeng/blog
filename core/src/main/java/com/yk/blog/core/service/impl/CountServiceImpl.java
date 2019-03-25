@@ -43,6 +43,7 @@ public class CountServiceImpl implements CountService {
     @Autowired
     UserService userService;
 
+
     @Override
     public Result increaseLikeCount(int blogId,String token) {
         if(!authorityService.verifyToken(token)){
@@ -99,7 +100,6 @@ public class CountServiceImpl implements CountService {
             }
             //更新最近一次的更新时间
             jedis.set(Utils.generatePrefix(Constant.LATEST_UPDATE_TIME),String.valueOf(System.currentTimeMillis()));
-            //TODO hgetall -> hscan
             Map<String, String> map = jedis.hgetAll(Utils.generatePrefix(Constant.BLOG_READ_COUNT));
             if(map == null || map.size() == 0){
                 System.out.println("map is null...");
@@ -125,6 +125,15 @@ public class CountServiceImpl implements CountService {
             return userService.updateFans(userId, (int) fansCount);
         }
     }
+
+    @Override
+    public int updateFollows(String followId) {
+        try (Jedis jedis = jedisPool.getResource()) {
+            long followCount = jedis.scard(Utils.generatePrefix(Constant.FOLLOWED + followId));
+            return userService.updateFollows(followId, (int) followCount);
+        }
+    }
+
 
     @Override
     public int getReadCount(int blogId) {

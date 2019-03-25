@@ -61,7 +61,8 @@ public class FollowerServiceImpl implements FollowerService {
             long count = jedis.sadd(generatePrefix(FOLLOWED + followId), followedId);
             jedis.sadd(generatePrefix(FOLLOWER + followedId), followId);
             if (count > 0) {
-                if (countService.updateFans(followedId) > 0) {
+                if (countService.updateFans(followedId) > 0 && countService.updateFollows(followId) > 0
+                ) {
                     return generateResultWithCount(count);
                 } else {
                     throw new RuntimeException(ErrorMessages.ERROR_INCREASE_FANS.message);

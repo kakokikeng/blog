@@ -45,6 +45,15 @@ public interface UserMapper {
     int updateFans(@Param("id") String id, @Param("fansCount") int fansCount);
 
     /**
+     *  更新关注人数
+     *  @author  yikang
+     *  @date  2019/3/25
+     *  @param
+     *  @return
+     */
+    int updateFollows(@Param("id") String id, @Param("followCount") int followCount);
+
+    /**
      * 更新用户的博客数
      *
      * @param id       用户id

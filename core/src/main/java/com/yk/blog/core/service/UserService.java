@@ -64,6 +64,15 @@ public interface UserService {
     int updateFans(String userId,int fansCount);
 
     /**
+     *
+     *  @author  yikang
+     *  @date  2019/3/25
+     *  @param
+     *  @return
+     */
+    int updateFollows(String userId,int followCount);
+
+    /**
      * 更新用户的博客数
      *
      * @param userId      用户id

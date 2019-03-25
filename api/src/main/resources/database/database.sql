@@ -1,8 +1,32 @@
 create schema blog;
 use blog;
 
+create table liked
+(
+  id      int         not null
+    primary key,
+  user_id varchar(32) null,
+  blog_id int         null,
+  constraint liked_blog_id_fk
+  foreign key (blog_id) references blog (id),
+  constraint liked_user_id_fk
+  foreign key (user_id) references user (id)
+)
+  comment '点赞相关';
 
 
+create table follow
+(
+  id               int         not null
+    primary key,
+  user_id          varchar(32) null,
+  followed_user_id varchar(32) null,
+  constraint follow_user_id_fk
+  foreign key (user_id) references user (id),
+  constraint follow_user_id_fk_2
+  foreign key (followed_user_id) references user (id)
+)
+  comment '关注相关';
 
 create table user
 (
@@ -20,14 +44,16 @@ create table user
   create_time timestamp       not null
   comment '用户创建时间
 ',
-  passwd      varchar(32)     not null
+  passwd      varchar(40)     not null
   comment 'MD5加密后的密码',
+  follows     int             null,
   constraint email_user_name_key
   unique (email, user_name),
   constraint user_email_uindex
   unique (email)
 )
   comment '存储博客用户相关信息';
+
 
 create table blog
 (
