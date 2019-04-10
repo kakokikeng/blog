@@ -10,7 +10,6 @@ import io.swagger.annotations.ApiModelProperty;
  */
 @ApiModel
 public class CommentBaseDTO {
-    @NotNull
     @ApiModelProperty("用户id")
     private String userId;
     @ApiModelProperty("被回复用户id 没有则为空")

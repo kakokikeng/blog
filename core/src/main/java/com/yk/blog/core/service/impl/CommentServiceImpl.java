@@ -62,10 +62,12 @@ public class CommentServiceImpl implements CommentService {
             return GenericResultUtils.genericNormalResult(false, ErrorMessages.TOKEN_NOT_AVAILABLE.message);
         }
         try (Jedis jedis = jedispool.getResource()) {
+            commentReqDTO.setUserId(jedis.hget(Utils.generatePrefix(Constant.TOKEN_WITH_USER_ID),token));
             int count = commentMapper.insertComment(commentReqDTO.changeToComment());
             if (count > 0) {
                 long commentCount = jedis.hincrBy(Utils.generatePrefix(Constant.BLOG_COMMENT_COUNT), String.valueOf(commentReqDTO.getBlogId()), 1);
                 blogService.updateBlogCommentCount(commentReqDTO.getBlogId(), (int) commentCount);
+                // TODO 被回复用户消息推送
             }
             return generateResultWithCount(count);
         }

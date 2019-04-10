@@ -46,7 +46,7 @@ public class FollowerServiceImpl implements FollowerService {
 
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
-    public Result follow(String followedId, String token) {
+    public Result follow(String followedId, String token,boolean messagePush) {
         if (!authorityService.verifyToken(token)) {
             return GenericResultUtils.genericNormalResult(false, ErrorMessages.TOKEN_NOT_AVAILABLE.message);
         }
@@ -63,6 +63,9 @@ public class FollowerServiceImpl implements FollowerService {
             if (count > 0) {
                 if (countService.updateFans(followedId) > 0 && countService.updateFollows(followId) > 0
                 ) {
+                    if(messagePush){
+                        //todo 加入消息推送队列
+                    }
                     return generateResultWithCount(count);
                 } else {
                     throw new RuntimeException(ErrorMessages.ERROR_INCREASE_FANS.message);
@@ -87,6 +90,8 @@ public class FollowerServiceImpl implements FollowerService {
             jedis.srem(generatePrefix(FOLLOWER + followedId), followId);
             if (count > 0) {
                 countService.updateFans(followedId);
+                countService.updateFollows(followId);
+                //todo 取消消息推送
                 return generateResultWithCount(count);
             } else {
                 return GenericResultUtils.genericNormalResult(Boolean.FALSE, ErrorMessages.NOT_FOLLOWED.message);

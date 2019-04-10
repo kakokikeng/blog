@@ -21,7 +21,7 @@ public interface FollowerService {
      * @Author yikang
      * @Date 2018/9/4
      */
-    Result follow(String followedId, String token);
+    Result follow(String followedId, String token,boolean messagePush);
 
     /**
      * 取消关注

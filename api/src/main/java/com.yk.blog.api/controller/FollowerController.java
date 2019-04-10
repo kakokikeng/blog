@@ -29,8 +29,9 @@ public class FollowerController {
     @ApiOperation("关注某个用户")
     @PostMapping("{followedId}")
     public Result follow(@ApiParam("被关注的用户id") @PathVariable("followedId") String followedId,
-                         @ApiParam("登陆后获得的token") @RequestParam("token") String token) {
-        return followerService.follow(followedId, token);
+                         @ApiParam("登陆后获得的token") @RequestParam("token") String token,
+                         @ApiParam("是否接收消息的推送") @RequestParam("messagePush") boolean messagePush) {
+        return followerService.follow(followedId, token, messagePush);
     }
 
     @ApiOperation("取消关注")

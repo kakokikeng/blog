@@ -18,6 +18,11 @@ public class JspController {
         return "login";
     }
 
+    @GetMapping("userPage")
+    public String userPage(){
+        return "userPage";
+    }
+
     @GetMapping("login")
     public String login(){
         return "login";

@@ -167,6 +167,25 @@
         });
     }
 
+    var wait = 30;
+    function time(obj) {
+        if (wait == 0) {
+            obj.className='btnCode';
+            obj.removeAttribute("disabled");
+            obj.value="获取验证码";
+            wait = 30;
+        } else {
+            obj.className='btnCodeDisabled';//按钮变灰，不可点击
+            obj.setAttribute("disabled", true);
+            obj.value="重新发送("+ wait +")";
+            wait--;
+            setTimeout(function() {
+                    time(obj)
+                },
+                1000)
+        }
+    }
+
     function getEmailVerifyCode() {
         if (!(testEmail() && testPasswd())) {
             return;
@@ -187,6 +206,7 @@
                         contentType: "application/json",
                         url: "verify/" + $("#email").val()
                     })
+                    time(document.getElementById("getCode"));
 
                 } else {
                     //验证码错误，刷新图片验证码重新验证
@@ -281,7 +301,7 @@
         <br>
         <div class="form-group">
             <input type="text" class="form-control" id="verifyCode" maxlength="4" placeholder="请输入邮箱的验证码">
-            <button onclick="getEmailVerifyCode()">获取验证码</button>
+            <input type="button" id="getCode" name="" value="获取验证码" onclick="getEmailVerifyCode()" class="btnCode"/>
         </div>
         <p align="left" style="color: red;" id="emailVerifyInfo"></p>
         <br>

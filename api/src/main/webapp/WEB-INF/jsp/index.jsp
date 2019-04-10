@@ -138,10 +138,24 @@
 <div id="slogan" align="left" style="width: 50%;height: 25px;float: left;color: #888888;">
     Modesty helps one to go forward.
 </div>
-<div id="userName"></div>
+<a id="userName" href="userPage"></a>
 <div>
     <hr color="#D1D1D1">
 </div>
+
+
+<div align="center" class="container">
+
+    <div id="search">
+
+        <input id="searchContent" type="text">
+
+        <input class="button" type="submit" value="Search" onclick="search()">
+
+    </div>
+
+</div>
+
 
 <div style="width: 32%;height: 100%;padding: 1% 1% 1% 1%;margin-left:2%;margin-top: 1%;margin-bottom:1%;float: left;border: #D1D1D1 2px solid;">
     <div style="width: 100%">
@@ -163,6 +177,10 @@
     function init(){
         getLoginUserName();
         getTop10();
+    }
+
+    function search() {
+
     }
 
     function getTop10() {
