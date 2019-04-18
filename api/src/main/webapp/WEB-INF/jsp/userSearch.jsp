@@ -10,7 +10,7 @@
 <head>
     <title>Title</title>
 </head>
-<body>
+<body bgcolor="#f5f5dc">
 
 </body>
 </html>

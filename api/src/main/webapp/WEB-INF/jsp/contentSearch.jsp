@@ -10,7 +10,7 @@
 <head>
     <title>搜索</title>
 </head>
-<body>
+<body bgcolor="#f5f5dc">
 
 </body>
 </html>
