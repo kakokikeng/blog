@@ -44,12 +44,7 @@
 <h2 style="text-align: center;font-family: 'Adobe 楷体 Std R';color: palevioletred">欢迎来到博客</h2>
 <div style="float:right;" id="github_iframe"></div>
 <script>
-    /**
-     * Copyright (c) 2016 hustcc
-     * License: MIT
-     * Version: %%GULP_INJECT_VERSION%%
-     * GitHub: https://github.com/hustcc/1-nest.js
-     **/
+
     ! function() {
         //封装方法，压缩之后减少文件大小
         function get_attribute(node, attr, default_value) {

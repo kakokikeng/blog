@@ -159,7 +159,7 @@
 
 <div style="width: 32%;height: 100%;padding: 1% 1% 1% 1%;margin-left:2%;margin-top: 1%;margin-bottom:1%;float: left;border: #D1D1D1 2px solid;">
     <div style="width: 100%">
-        <h2 align="center" style="color: coral">浏览量TOP 10</h2>
+        <h2 align="center" style="color: coral">最受欢迎TOP 10</h2>
         <div id="top10" style="width: 90%;padding-left: 5%;padding-right: 5%;"></div>
     </div>
 
