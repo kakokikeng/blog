@@ -12,6 +12,15 @@ import java.util.List;
 public interface UserService {
 
     /**
+     *  获取登录用户信息
+     *  @author  yikang
+     *  @date  2019/4/22
+     *  @param
+     *  @return
+     */
+    UserRespDTO getLoginUserInfo(String token);
+
+    /**
      *  通过邮箱获取用户基本信息
      *  @author  yikang
      *  @date  2019/2/24

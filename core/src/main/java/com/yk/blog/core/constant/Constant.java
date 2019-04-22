@@ -35,6 +35,8 @@ public class Constant {
 
     public static final String EMAIL_WITH_TOKEN = "email_with_token";
 
+    public static final String TOKEN_WITH_EMAIL = "token_with_email";
+
     public static final String EMAIL_WITH_VERIFY_CODE = "email_with_verify_code";
 
     public static final String EMAIL_WITH_COUNT = "email_with_count";

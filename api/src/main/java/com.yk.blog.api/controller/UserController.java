@@ -44,8 +44,14 @@ public class UserController {
 
     @ApiOperation("获取用户信息")
     @GetMapping("{email}")
-    public UserBaseDTO getUserMessage(@ApiParam("登录邮箱") @PathVariable("email") String email){
+    public UserRespDTO getUserMessage(@ApiParam("登录邮箱") @PathVariable("email") String email){
         return userService.getUserMessageByEmail(email);
+    }
+
+    @ApiOperation("获取登录用户信息")
+    @GetMapping("/login/{token}")
+    public UserRespDTO getLoginUserInfo(@ApiParam("token") @PathVariable("token") String token){
+        return userService.getLoginUserInfo(token);
     }
 
     //TODO 目前能修改的信息只有用户名

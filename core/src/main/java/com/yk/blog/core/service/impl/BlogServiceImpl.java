@@ -151,6 +151,7 @@ public class BlogServiceImpl implements BlogService {
                 jedis.sadd(Utils.generatePrefix(Constant.EXIST_BLOG), String.valueOf(blog.getId()));
                 countService.updateBlogCount(userId, 1);
             }
+            //todo 对所有关注该用户的用户生成一条消息
             return generateResultWithCount(count);
         }
     }

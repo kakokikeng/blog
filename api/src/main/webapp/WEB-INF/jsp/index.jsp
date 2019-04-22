@@ -165,7 +165,7 @@
 
 </div>
 <div style="width: 58%;height: 100%;padding: 1% 1% 1% 1%;margin-top: 1%;margin-bottom:1%;margin-right:1%;float: right;border: #D1D1D1 2px solid;">
-    hello 2
+    <h2 align="center" style="color: coral;">为你推荐</h2>
 </div>
 
 

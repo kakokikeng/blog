@@ -16,6 +16,7 @@ public class User {
     private Integer blogs;
     private Date createTime;
     private String passwd;
+    private Integer follows;
 
     @Override
     public String toString() {
@@ -28,6 +29,14 @@ public class User {
                 ", createTime=" + createTime +
                 ", passwd='" + passwd + '\'' +
                 '}';
+    }
+
+    public Integer getFollows() {
+        return follows;
+    }
+
+    public void setFollows(Integer follows) {
+        this.follows = follows;
     }
 
     public String getPasswd() {

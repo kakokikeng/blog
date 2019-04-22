@@ -19,6 +19,9 @@ public class UserRespDTO extends UserBaseDTO{
     private Integer fans;
     @ApiModelProperty("博客数量")
     private Integer blogs;
+    @ApiModelProperty("关注数量")
+    private Integer follows;
+
 
     public UserRespDTO(){}
 
@@ -29,6 +32,7 @@ public class UserRespDTO extends UserBaseDTO{
         setId(user.getId());
         setFans(user.getFans());
         setBlogs(user.getBlogs());
+        setFollows(user.getFollows());
     }
 
 
@@ -39,6 +43,14 @@ public class UserRespDTO extends UserBaseDTO{
                 ", fans=" + fans +
                 ", blogs=" + blogs +
                 '}';
+    }
+
+    public Integer getFollows() {
+        return follows;
+    }
+
+    public void setFollows(Integer follows) {
+        this.follows = follows;
     }
 
     public String getId() {

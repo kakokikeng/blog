@@ -33,6 +33,14 @@ public class UserServiceImpl implements UserService {
     JedisPool jedisPool;
 
     @Override
+    public UserRespDTO getLoginUserInfo(String token) {
+        try(Jedis jedis = jedisPool.getResource()){
+            String email = jedis.hget(Utils.generatePrefix(Constant.TOKEN_WITH_EMAIL),token);
+            return getUserMessageByEmail(email);
+        }
+    }
+
+    @Override
     public UserRespDTO getUserMessageByEmail(String email) {
         User user = userMapper.getUserByEmail(email);
         return new UserRespDTO(user);

@@ -10,6 +10,8 @@
         <result column="blogs" property="blogs"/>
         <result column="create_time" property="createTime"/>
         <result column="passwd" property="passwd"/>
+        <result column="follows" property="follows"/>
+
     </resultMap>
 
     <select id="getUserIdByEmail" parameterType="java.lang.String" resultType="java.lang.String">

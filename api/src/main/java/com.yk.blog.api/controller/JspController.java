@@ -18,6 +18,36 @@ public class JspController {
         return "login";
     }
 
+    @GetMapping("modifyInfo")
+    public String modifyInfo() {
+        return "modifyInfo";
+    }
+
+    @GetMapping("createBlog")
+    public String createBlog(){
+        return "createBlog";
+    }
+
+    @GetMapping("message")
+    public String message(){
+        return "message";
+    }
+
+    @GetMapping("myBlogs")
+    public String myBlogs() {
+        return "myBlogs";
+    }
+
+    @GetMapping("myFllows")
+    public String myFllows() {
+        return "myFllows";
+    }
+
+    @GetMapping("myFollowers")
+    public String myFollowers() {
+        return "myFollowers";
+    }
+
     @GetMapping("userPage")
     public String userPage(){
         return "userPage";

@@ -66,6 +66,10 @@ public class FollowerServiceImpl implements FollowerService {
                     if(messagePush){
                         //todo 加入消息推送队列
                     }
+
+                    //todo 生成消息中心实体存入数据库
+
+
                     return generateResultWithCount(count);
                 } else {
                     throw new RuntimeException(ErrorMessages.ERROR_INCREASE_FANS.message);
@@ -92,6 +96,7 @@ public class FollowerServiceImpl implements FollowerService {
                 countService.updateFans(followedId);
                 countService.updateFollows(followId);
                 //todo 取消消息推送
+                //todo 生成消息中心实体存入数据库
                 return generateResultWithCount(count);
             } else {
                 return GenericResultUtils.genericNormalResult(Boolean.FALSE, ErrorMessages.NOT_FOLLOWED.message);

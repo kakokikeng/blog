@@ -46,6 +46,7 @@ public class AuthorityServiceImpl implements AuthorityService {
                 String token = Utils.generateToken(loginReqDTO.getEmail(), loginReqDTO.getPasswd());
                 jedis.hset(Utils.generatePrefix(Constant.TOKEN_WITH_TIMESTAMP), token, String.valueOf(System.currentTimeMillis()));
                 jedis.hset(Utils.generatePrefix(Constant.EMAIL_WITH_TOKEN),loginReqDTO.getEmail(),token);
+                jedis.hset(Utils.generatePrefix(Constant.TOKEN_WITH_EMAIL),token,loginReqDTO.getEmail());
                 String userId = userService.getUserIdByEmail(loginReqDTO.getEmail());
                 jedis.hset(Utils.generatePrefix(Constant.TOKEN_WITH_USER_ID),token,userId);
                 result.setData(new Token(token));
