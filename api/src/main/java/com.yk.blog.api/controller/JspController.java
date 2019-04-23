@@ -64,7 +64,7 @@ public class JspController {
     }
 
     @GetMapping("blogPage")
-    public String blogPage(@RequestParam("blogId") int id){
+    public String blogPage(){
         return "blogPage";
     }
 

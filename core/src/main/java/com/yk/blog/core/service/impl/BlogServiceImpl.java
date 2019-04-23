@@ -138,21 +138,21 @@ public class BlogServiceImpl implements BlogService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public Result createBlog(BlogReqDTO blogReqDTO, String token) {
+    public GenericResult<Integer> createBlog(BlogReqDTO blogReqDTO, String token) {
         try (Jedis jedis = jedisPool.getResource()) {
             if (!authorityService.verifyToken(token)) {
-                return GenericResultUtils.genericNormalResult(false, ErrorMessages.TOKEN_NOT_AVAILABLE.message);
+                return GenericResultUtils.genericFailureResult(ErrorMessages.TOKEN_NOT_AVAILABLE.message);
             }
             String userId = jedis.hget(Utils.generatePrefix(Constant.TOKEN_WITH_USER_ID),token);
+            blogReqDTO.setUserId(userId);
             Blog blog = blogReqFactory.createBlogByDto(blogReqDTO);
-            blog.setUserId(userId);
             int count = blogMapper.createBlog(blog);
             if (count > 0) {
                 jedis.sadd(Utils.generatePrefix(Constant.EXIST_BLOG), String.valueOf(blog.getId()));
                 countService.updateBlogCount(userId, 1);
             }
             //todo 对所有关注该用户的用户生成一条消息
-            return generateResultWithCount(count);
+            return GenericResultUtils.genericResult(true,blog.getId());
         }
     }
 }

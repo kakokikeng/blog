@@ -138,14 +138,14 @@
 <h1>这是博客内容页！</h1>
 <div id="content"></div>
 
-<input type="hidden" value="<%=request.getAttribute("blogId")%>" id="blogId"/>
+
 </body>
 <script>
 
     $(document).ready(getContent());
 
     function getContent(){
-        var blogId = document.getElementById("blogId");
+        var blogId = Cookies.get("blogId");
         $.ajax({
             type : "GET",
             contentType: "application/json",

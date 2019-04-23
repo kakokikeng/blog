@@ -16,7 +16,6 @@ public class BlogBaseDTO {
     @NotNull
     @ApiModelProperty(name = "content",value = "博客内容")
     private String content;
-    @NotNull
     @ApiModelProperty(name = "userId",value = "所属用户id")
     private String userId;
     @ApiModelProperty(name = "id",value = "博客id")

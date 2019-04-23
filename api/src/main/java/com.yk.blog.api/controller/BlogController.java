@@ -1,25 +1,16 @@
 package com.yk.blog.api.controller;
 
-import com.yk.blog.core.dto.GenericResult;
-import com.yk.blog.core.dto.Result;
 import com.yk.blog.core.dto.BlogReqDTO;
 import com.yk.blog.core.dto.BlogRespDTO;
+import com.yk.blog.core.dto.GenericResult;
+import com.yk.blog.core.dto.Result;
 import com.yk.blog.core.service.BlogService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -68,8 +59,8 @@ public class BlogController {
 
     @ApiOperation("新建博客")
     @PostMapping("")
-    public Result createBlog(@ApiParam("博客相关信息") @Valid @RequestBody BlogReqDTO blog,
-                             @ApiParam("用户的token") @RequestParam("token") String token) {
+    public GenericResult<Integer> createBlog(@ApiParam("用户的token") @RequestParam("token") String token,
+                                             @ApiParam("博客相关信息") @Valid @RequestBody BlogReqDTO blog) {
         return blogService.createBlog(blog,token);
     }
 

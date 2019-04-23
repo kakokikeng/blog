@@ -4,6 +4,7 @@ import com.yk.blog.core.dto.BlogBaseDTO;
 import com.yk.blog.domain.dto.Blog;
 import org.springframework.stereotype.Component;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 /**
@@ -18,7 +19,7 @@ public class BlogReqFactory{
         result.setId(blogBaseDTO.getId());
         result.setTitle(blogBaseDTO.getTitle());
         result.setContent(blogBaseDTO.getContent());
-        result.setCreateTime(new Date(System.currentTimeMillis()));
+        result.setCreateTime(new Timestamp(System.currentTimeMillis()));
         result.setUserId(blogBaseDTO.getUserId());
         return result;
     }

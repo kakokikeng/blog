@@ -1,5 +1,6 @@
 package com.yk.blog.domain.dto;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 /**
@@ -10,7 +11,7 @@ import java.util.Date;
 public class Blog {
 
     private Integer id;
-    private Date createTime;
+    private Timestamp createTime;
     private Integer readCount;
     private String userId;
     private String title;
@@ -40,11 +41,11 @@ public class Blog {
         this.id = id;
     }
 
-    public Date getCreateTime() {
+    public Timestamp getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(Timestamp createTime) {
         this.createTime = createTime;
     }
 

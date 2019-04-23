@@ -2,6 +2,8 @@ package com.yk.blog.core.dto;
 
 import io.swagger.annotations.ApiModel;
 
+import java.util.List;
+
 /**
  * @author yikang
  * @date 2018/8/31
@@ -11,6 +13,7 @@ public class BlogReqDTO extends BlogBaseDTO{
 
     @Override
     public String toString() {
+
         return super.toString();
     }
 

@@ -86,6 +86,6 @@ public interface BlogService {
      * @Author yikang
      * @Date 2018/9/3
      */
-    Result createBlog(BlogReqDTO blog, String token);
+    GenericResult<Integer> createBlog(BlogReqDTO blog, String token);
 
 }
