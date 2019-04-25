@@ -31,6 +31,12 @@ public class BlogController {
         return blogService.getMostInterviewedBlogList();
     }
 
+    @ApiOperation("获取推荐博文")
+    @GetMapping("recommend")
+    public GenericResult<List<BlogRespDTO>> getRecommendBlog(String token){
+        return blogService.getRecommendBlog(token);
+    }
+
     @ApiOperation("通过用户id获取博客列表")
     @GetMapping("{userId}/blogs")
     public GenericResult<List<BlogRespDTO>> getBlogsByUserId(@ApiParam("用户id") @PathVariable("userId") String userId) {

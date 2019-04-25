@@ -192,12 +192,17 @@
             success: function(result){
                 var div = document.createElement("div");
                 for(var i = 0; i < result.data.length; i ++){
-                    div.innerHTML += '<h2><a style="color: coral;text-decoration:none;"' +
-                        ' href="http://localhost:8080/blogPage?blogId=' + result.data[i].id + '">' + result.data[i].title + "</a></h2>";
+                    div.innerHTML += '<h2><a style="color: coral;text-decoration:none;"' + "href=\"#\"" +
+                        "onclick=\"turnBlogPage(" + result.data[i].id + ")\">"  + result.data[i].title + "</a></h2>";
                 }
                 document.getElementById("top10").appendChild(div);
             }
         });
+    }
+
+    function turnBlogPage(id){
+        Cookies.set("blogId",id);
+        window.location.href="blogPage";
     }
 
     function getLoginUserName() {

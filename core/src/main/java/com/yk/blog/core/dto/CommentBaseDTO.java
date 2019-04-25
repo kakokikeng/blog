@@ -14,6 +14,10 @@ public class CommentBaseDTO {
     private String userId;
     @ApiModelProperty("被回复用户id 没有则为空")
     private String attachedId;
+    @ApiModelProperty("用户昵称")
+    private String userName;
+    @ApiModelProperty("被回复用户昵称")
+    private String attachedUserName;
     @NotNull
     @ApiModelProperty("评论内容")
     private String content;
@@ -33,6 +37,22 @@ public class CommentBaseDTO {
                 ", createTime=" + createTime +
                 ", blogId=" + blogId +
                 '}';
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getAttachedUserName() {
+        return attachedUserName;
+    }
+
+    public void setAttachedUserName(String attachedUserName) {
+        this.attachedUserName = attachedUserName;
     }
 
     public Integer getBlogId() {

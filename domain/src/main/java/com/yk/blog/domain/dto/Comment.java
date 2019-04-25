@@ -8,6 +8,8 @@ package com.yk.blog.domain.dto;
 public class Comment {
 
     private Integer id;
+    private String userName;
+    private String attachedUserName;
     private String userId;
     private String attachedUserId;
     private Long createTime;
@@ -24,6 +26,22 @@ public class Comment {
                 ", blogId=" + blogId +
                 ", content='" + content + '\'' +
                 '}';
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getAttachedUserName() {
+        return attachedUserName;
+    }
+
+    public void setAttachedUserName(String attachedUserName) {
+        this.attachedUserName = attachedUserName;
     }
 
     public Integer getId() {

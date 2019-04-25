@@ -9,6 +9,8 @@
         <result column="create_time" property="createTime"/>
         <result column="blog_id" property="blogId"/>
         <result column="content" property="content"/>
+        <result column="user_name" property="userName"/>
+        <result column="attached_user_name" property="attachedUserName"/>
     </resultMap>
 
     <insert id="insertComment" parameterType="com.yk.blog.domain.dto.Comment">
@@ -29,6 +31,12 @@
             <if test="content != null">
                 content,
             </if>
+            <if test="userName != null">
+                user_name,
+            </if>
+            <if test="attachedUserName != null">
+                attached_user_name,
+            </if>
         </trim>
          values
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -46,6 +54,12 @@
             </if>
             <if test="content != null">
                 #{content},
+            </if>
+            <if test="userName != null">
+                #{userName},
+            </if>
+            <if test="attachedUserName != null">
+                #{attachedUserName},
             </if>
         </trim>
     </insert>

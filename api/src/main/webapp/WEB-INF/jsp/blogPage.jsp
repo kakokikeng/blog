@@ -134,9 +134,13 @@
     }();
 </script>
 
+<div id="box" style="width: 80%;padding-top: 50px;padding-left: 10%;">
+    <div id="title"></div>
+    <div id="readCount" align="center"></div>
+    <div id="content" style="border: #cccccc solid;"></div>
+    <div id="comment" style="padding-top: 50px;border: #cccccc solid;"></div>
+</div>
 
-<h1>这是博客内容页！</h1>
-<div id="content"></div>
 
 
 </body>
@@ -149,14 +153,45 @@
         $.ajax({
             type : "GET",
             contentType: "application/json",
-            url: "blog/" + JSON.parse(blogId),
+            url: "blog/" + blogId,
             dataType: "json",
             success: function(result){
-                var div = document.createElement("div");
-                div.innerHTML = result;
-                document.getElementById("content").appendChild(div);
+                var title = document.createElement("div");
+                var readCount = document.createElement("div");
+                var content = document.createElement("div");
+                var comment = document.createElement("div");
+                title.innerHTML = "<h1 align='center'>" + result.data.title + "</h1>";
+                readCount.innerHTML = "<span style='margin-right: 15px;'>" + getTime(result.data.createTime) + "</span><span>" + "阅读量：" + result.data.readCount + "</span>";
+                content.innerHTML = result.data.content;
+                comment.innerHTML = "评论区<br>";
+                $.ajax({
+                    type : "GET",
+                    contentType: "application/json",
+                    url: "comment/" + blogId + "/comments",
+                    success: function (comments) {
+                        for(var i = 0; i < comments.data.length; i ++){
+                            comment.innerHTML += "onclick=\"turnBlogPage(" + comments.data[i].id + ")\">"  + comments.data[i].title + "</a></h2>";
+                        }
+                    }
+                })
+
+                document.getElementById("title").appendChild(title);
+                document.getElementById("readCount").appendChild(readCount);
+                document.getElementById("content").appendChild(content);
             }
         });
+    }
+
+
+    function getTime(data) {
+        var date = new Date(data);
+        var Y = date.getFullYear() + '-';
+        var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+        var D = (date.getDate() < 10 ? '0' + date.getDate() : date.getDate()) + ' ';
+        var h = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) + ':';
+        var m = (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()) + ':';
+        var s = (date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds());
+        return Y + M + D + h + m + s
     }
 </script>
 </html>

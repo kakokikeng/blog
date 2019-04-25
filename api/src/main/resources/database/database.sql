@@ -57,19 +57,21 @@ create table blog
 
 create table comment
 (
-  id               int auto_increment
+  id                 int auto_increment
     primary key,
-  user_id          varchar(32)                         not null
+  user_id            varchar(32)                         not null
   comment '发表评论用户id',
-  attached_user_id varchar(32)                         null
+  attached_user_id   varchar(32)                         null
   comment '被评论用户id',
-  create_time      timestamp default CURRENT_TIMESTAMP not null
+  create_time        timestamp default CURRENT_TIMESTAMP not null
   comment '评论时间',
-  blog_id          int                                 not null
+  blog_id            int                                 not null
   comment '关联博客id
 ',
-  content          text                                not null
+  content            text                                not null
   comment '评论内容',
+  user_name          varchar(32)                         null,
+  attached_user_name varchar(32)                         null,
   constraint comment_blog_id_pk
   unique (blog_id),
   constraint comment_user_id_blog_id_pk

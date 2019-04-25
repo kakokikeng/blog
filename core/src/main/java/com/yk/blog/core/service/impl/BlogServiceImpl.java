@@ -57,6 +57,14 @@ public class BlogServiceImpl implements BlogService {
     BlogReqFactory blogReqFactory;
 
     @Override
+    public GenericResult<List<BlogRespDTO>> getRecommendBlog(String token) {
+
+
+
+        return null;
+    }
+
+    @Override
     public GenericResult<List<BlogRespDTO>> getMostInterviewedBlogList() {
         List<Blog> blogs = blogMapper.getMostInterviewedBlogList();
         List<BlogRespDTO> data = new ArrayList<>(blogs.size());
