@@ -72,10 +72,6 @@ create table comment
   comment '评论内容',
   user_name          varchar(32)                         null,
   attached_user_name varchar(32)                         null,
-  constraint comment_blog_id_pk
-  unique (blog_id),
-  constraint comment_user_id_blog_id_pk
-  unique (user_id, blog_id),
   constraint comment_blog_id_fk
   foreign key (blog_id) references blog (id),
   constraint comment_user_id_fk

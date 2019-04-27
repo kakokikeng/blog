@@ -55,14 +55,17 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public Result comment(CommentReqDTO commentReqDTO, String token) {
-        if (commentNotLegal(commentReqDTO)) {
+        /*if (commentNotLegal(commentReqDTO)) {
             return wrongUserIdGenericResult();
-        }
+        }*/
         if (!authorityService.verifyToken(token)) {
             return GenericResultUtils.genericNormalResult(false, ErrorMessages.TOKEN_NOT_AVAILABLE.message);
         }
         try (Jedis jedis = jedispool.getResource()) {
             commentReqDTO.setUserId(jedis.hget(Utils.generatePrefix(Constant.TOKEN_WITH_USER_ID),token));
+            List<String> userIds = new ArrayList<>();
+            userIds.add(commentReqDTO.getUserId());
+            commentReqDTO.setUserName(userService.getUserListByIdList(userIds).get(0).getUserName());
             int count = commentMapper.insertComment(commentReqDTO.changeToComment());
             if (count > 0) {
                 long commentCount = jedis.hincrBy(Utils.generatePrefix(Constant.BLOG_COMMENT_COUNT), String.valueOf(commentReqDTO.getBlogId()), 1);

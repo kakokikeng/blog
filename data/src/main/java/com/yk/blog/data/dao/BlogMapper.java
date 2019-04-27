@@ -31,7 +31,7 @@ public interface BlogMapper {
      * @Author yikang
      * @Date 2018/9/10
      */
-    void updateBlogCommentCount(int id, int commentCount);
+    void updateBlogCommentCount(@Param("id")int id,@Param("commentCount") int commentCount);
 
     /**
      * 通过 博客id -> 阅读量总量 的键值对进行阅读量的批量更新

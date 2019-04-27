@@ -17,6 +17,7 @@ public class CommentRespDTO extends CommentBaseDTO{
 
     public CommentRespDTO(Comment comment){
         setId(comment.getId());
+        setUserName(comment.getUserName());
         setAttachedId(comment.getAttachedUserId());
         setBlogId(comment.getBlogId());
         setUserId(comment.getUserId());

@@ -134,11 +134,45 @@
     }();
 </script>
 
-<div id="box" style="width: 80%;padding-top: 50px;padding-left: 10%;">
+<div id="slogan" align="left" style="width: 50%;height: 25px;float: left;color: #888888;">
+    Modesty helps one to go forward.
+</div>
+<a id="userName" href="userPage"></a>
+<div>
+    <hr color="#D1D1D1">
+</div>
+
+<div id="box" style="width: 80%;margin-top: 50px;margin-left: 10%;border: #cccccc solid;">
     <div id="title"></div>
     <div id="readCount" align="center"></div>
-    <div id="content" style="border: #cccccc solid;"></div>
-    <div id="comment" style="padding-top: 50px;border: #cccccc solid;"></div>
+    <div id="content" style="padding-left: 15px;padding-right: 15px;">
+    </div>
+</div>
+<div id="menu-list" style="width:80%;height:150px;margin-left:10%;margin-top: 50px;border: #cccccc solid;">
+    <div id="thumbs-up" align="center"
+         style="height:100px;width:100px;margin-top: 30px;margin-left: 100px;float: left;">
+        <img id="thumbs-pic" href="#" style="background-color: transparent;" height="80px" width="80px" src="images/thumbsUp.jpg"
+             onclick="thumbsUp()">
+        <br>
+        <span id="thumbs-number"></span>
+    </div>
+    <div id="collect" style="height:100px;width:100px;margin-top: 30px;margin-left: 100px;float: left;">
+        <img id="collect-pic" href="#" style="background-color: transparent;" height="80px" width="80px" src="images/collect.jpg"
+             onclick="collection()">
+        <span style="margin-left:15px;margin-right: 15px;">收</span><span>藏</span>
+    </div>
+    <div id="follow" style="height:100px;width:100px;margin-top: 30px;margin-left: 100px;float: left;">
+        <button id="follow-author" style="height: 80px;width: 80px;" onclick="followAuthor()">关注作者</button>
+    </div>
+    <div style="height:100px;width:100px;margin-top: 30px;margin-left: 100px;float: left;">
+        <button id="back" style="height: 80px;width: 80px;" onclick="back()">返回上级页面</button>
+    </div>
+</div>
+<div id="comment"
+     style="padding-top:5px;padding-left:5px;padding-right:5px;width:80%;margin-left:10%;margin-bottom:50px;margin-top: 50px;border: #cccccc solid;">
+    <div id="comment_title" style="margin-top: 10px;margin-left: 10px;">评论区</div>
+    <div id="comment_content" style="margin-top: 40px;margin-left: 10px;"></div>
+    <div id="comment_create" style="margin-top: 40px;margin-left: 10px;"></div>
 </div>
 
 
@@ -147,6 +181,33 @@
 <script>
 
     $(document).ready(getContent());
+
+    function thumbsUp() {
+        var blogId = Cookies.get("blogId");
+        var token = JSON.parse(Cookies.get("token"));
+        $.ajax({
+            type : "GET",
+            contentType: "application/json",
+            url: "count/" + blogId + "/laud?token=" + token.token.token,
+            success:function (result) {
+                if(result.success == true){
+                    document.getElementById("thumbs-number").innerHTML = parseInt(document.getElementById("thumbs-number").val()) + 1;
+                }
+            }
+        })
+    }
+
+    function back(){
+        window.history.back();
+    }
+
+    function followAuthor() {
+        var token = JSON.parse(Cookies.get("token"));
+    }
+
+    function collection() {
+
+    }
 
     function getContent(){
         var blogId = Cookies.get("blogId");
@@ -159,25 +220,85 @@
                 var title = document.createElement("div");
                 var readCount = document.createElement("div");
                 var content = document.createElement("div");
-                var comment = document.createElement("div");
+
                 title.innerHTML = "<h1 align='center'>" + result.data.title + "</h1>";
-                readCount.innerHTML = "<span style='margin-right: 15px;'>" + getTime(result.data.createTime) + "</span><span>" + "阅读量：" + result.data.readCount + "</span>";
-                content.innerHTML = result.data.content;
-                comment.innerHTML = "评论区<br>";
-                $.ajax({
-                    type : "GET",
-                    contentType: "application/json",
-                    url: "comment/" + blogId + "/comments",
-                    success: function (comments) {
-                        for(var i = 0; i < comments.data.length; i ++){
-                            comment.innerHTML += "onclick=\"turnBlogPage(" + comments.data[i].id + ")\">"  + comments.data[i].title + "</a></h2>";
-                        }
-                    }
-                })
+                readCount.innerHTML = "<span style='margin-right: 15px;'>" + getTime(result.data.createTime) + "</span><span>" + "阅读量：" + result.data.readCount + "</span><br><br>";
+                content.innerHTML = result.data.content + "<br><br><br><br>";
+
 
                 document.getElementById("title").appendChild(title);
                 document.getElementById("readCount").appendChild(readCount);
                 document.getElementById("content").appendChild(content);
+                document.getElementById("thumbs-number").innerHTML = result.data.likeCount;
+                getComment();
+
+                var loginUserName = Cookies.get("loginUserName");
+                var userName = document.createElement("div");
+                userName.innerHTML = '<a href="login">登录</a>\n' +
+                    '    <a href="signUp">注册</a>';
+                userName.style.width = "50%";
+                userName.style.height = "25px";
+                userName.style.cssFloat = "right";
+                userName.align = "right";
+
+                if (loginUserName != null) {
+                    userName.innerHTML = Cookies.get("loginUserName");
+                }
+                document.getElementById("userName").appendChild(userName);
+            }
+        });
+    }
+
+    function getComment() {
+        var blogId = Cookies.get("blogId");
+        var comment_content = document.createElement("div");
+        var comment_create = document.createElement("div");
+        $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            url: "comment/" + blogId,
+            success: function (comments) {
+                if (comments.data.length == 0) {
+                    comment_content.innerHTML = "暂无评论<br>";
+                } else {
+                    for (var i = 0; i < comments.data.length; i++) {
+                        if (comments.data[i].attachedUserName == null) {
+                            comment_content.innerHTML += '<span>' + comments.data[i].userName + ":";
+                        } else {
+                            comments.innerHTML += '<span>' + comments.data[i].userName + "回复" + comments.data[i].attachedUserName + ":";
+                        }
+                        comment_content.innerHTML += comments.data[i].content + "</span><br>";
+                    }
+                }
+                comment_create.innerHTML += '<br><br><br><div style="margin-right: 20px;"><textarea id="newComment" placeholder="发表评论" style="width:100%;height: 80px;"></textarea>' + "</div>";
+                comment_create.innerHTML += '<br><br><div align="center"><button style="height: 40px;width: 80px;" onclick="submitComment()">发表评论</button></div><br><br>';
+            }
+        });
+        document.getElementById("comment_content").appendChild(comment_content);
+        document.getElementById("comment_create").appendChild(comment_create);
+    }
+
+    function appendComment(content) {
+        var append = document.createElement("span");
+        append.innerHTML = '<span>' + Cookies.get("loginUserName") + ":" + content + '</span><br>';
+        document.getElementById("comment_content").appendChild(append);
+    }
+
+    function submitComment() {
+        var comment = $("#newComment").val();
+        var data = {"blogId": Cookies.get("blogId"), "content": comment};
+        var token = JSON.parse(Cookies.get("token"));
+        $.ajax({
+            type: "POST",
+            contentType: "application/json",
+            url: "comment?token=" + token.token.token,
+            dataType: "json",
+            data: JSON.stringify(data),
+            success: function (result) {
+                if (result.success == true) {
+                    appendComment(comment);
+                    document.getElementById('newComment').value = "";
+                }
             }
         });
     }

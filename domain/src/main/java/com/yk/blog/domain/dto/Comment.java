@@ -1,5 +1,7 @@
 package com.yk.blog.domain.dto;
 
+import java.sql.Timestamp;
+
 /**
  * @author yikang
  * @date 2018/8/29
@@ -12,7 +14,7 @@ public class Comment {
     private String attachedUserName;
     private String userId;
     private String attachedUserId;
-    private Long createTime;
+    private Timestamp createTime;
     private Integer blogId;
     private String content;
 
@@ -68,11 +70,11 @@ public class Comment {
         this.attachedUserId = attachedUserId;
     }
 
-    public Long getCreateTime() {
+    public Timestamp getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Long createTime) {
+    public void setCreateTime(Timestamp createTime) {
         this.createTime = createTime;
     }
 

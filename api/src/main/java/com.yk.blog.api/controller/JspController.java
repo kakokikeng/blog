@@ -88,11 +88,6 @@ public class JspController {
         return "success";
     }
 
-    @RequestMapping("failure")
-    public String failure(){
-        return "failure";
-    }
-
     @RequestMapping("changePasswd")
     public String changePasswd(){
         return "changePasswd";

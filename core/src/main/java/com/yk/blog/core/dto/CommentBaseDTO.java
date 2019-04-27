@@ -4,6 +4,8 @@ import com.sun.istack.internal.NotNull;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+import java.sql.Timestamp;
+
 /**
  * @author yikang
  * @date 2018/8/31
@@ -23,7 +25,7 @@ public class CommentBaseDTO {
     private String content;
     @NotNull
     @ApiModelProperty("创建时间")
-    private Long createTime;
+    private Timestamp createTime;
     @NotNull
     @ApiModelProperty("博客id")
     private Integer blogId;
@@ -87,11 +89,11 @@ public class CommentBaseDTO {
         this.content = content;
     }
 
-    public Long getCreateTime() {
+    public Timestamp getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Long createTime) {
+    public void setCreateTime(Timestamp createTime) {
         this.createTime = createTime;
     }
 }

@@ -31,7 +31,7 @@ public class CommentController {
     }
 
     @ApiOperation("通过博客id获取所有评论")
-    @GetMapping("{blogId}/comments")
+    @GetMapping("{blogId}")
     public GenericResult<List<CommentRespDTO>> getComments(@ApiParam("博客id") @PathVariable("blogId") int blogId) {
         return commentService.getComments(blogId);
     }

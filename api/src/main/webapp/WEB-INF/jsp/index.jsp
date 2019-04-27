@@ -138,7 +138,7 @@
 <div id="slogan" align="left" style="width: 50%;height: 25px;float: left;color: #888888;">
     Modesty helps one to go forward.
 </div>
-<a id="userName" href="userPage"></a>
+<a id="userName"></a>
 <div>
     <hr color="#D1D1D1">
 </div>
@@ -207,18 +207,18 @@
 
     function getLoginUserName() {
         var loginUserName = Cookies.get("loginUserName");
-        var div = document.createElement("div");
-        div.innerHTML = '<a href="login">登录</a>\n' +
+        var userName = document.createElement("div");
+        userName.innerHTML = '<a href="createBlog" style="margin-right:15px;text-decoration: none;">新建博文</a> <a href="login">登录</a>\n' +
             '    <a href="signUp">注册</a>';
-        div.style.width = "50%";
-        div.style.height = "25px";
-        div.style.cssFloat = "right";
-        div.align = "right";
+        userName.style.width = "50%";
+        userName.style.height = "25px";
+        userName.style.cssFloat = "right";
+        userName.align = "right";
 
         if (loginUserName != null) {
-            div.innerHTML = Cookies.get("loginUserName");
+            userName.innerHTML = '<a href="createBlog" style="margin-right:100px;text-decoration: none;">新建博文</a> ' + '<a  href="userPage"  style="text-decoration: none;"> ' + Cookies.get("loginUserName") + '</a>';
         }
-        document.getElementById("userName").appendChild(div);
+        document.getElementById("userName").appendChild(userName);
 
     }
 
