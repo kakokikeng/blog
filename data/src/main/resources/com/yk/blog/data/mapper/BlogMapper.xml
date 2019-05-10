@@ -25,6 +25,14 @@
         update blog set comment_count = #{commentCount} where id = #{id};
     </update>
 
+    <select id="searchBlogs" resultMap="blog">
+        select * from blog where title like '${content}'
+    </select>
+
+    <select id="getOwnerIdByBlogId" resultType="String">
+        select user_id from blog where id = #{id};
+    </select>
+
     <update id="updateReadCountByMap" parameterType="java.util.Map">
         update blog set read_count =
         <trim prefix="case" suffix="end" suffixOverrides=",">

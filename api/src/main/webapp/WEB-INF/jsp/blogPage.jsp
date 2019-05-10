@@ -162,10 +162,12 @@
         <span style="margin-left:15px;margin-right: 15px;">收</span><span>藏</span>
     </div>
     <div id="follow" style="height:100px;width:100px;margin-top: 30px;margin-left: 100px;float: left;">
-        <button id="follow-author" style="height: 80px;width: 80px;" onclick="followAuthor()">关注作者</button>
+        <button id="follow-author" style="height: 80px;width: 80px;" onclick="followAuthor()"></button>
     </div>
     <div style="height:100px;width:100px;margin-top: 30px;margin-left: 100px;float: left;">
         <button id="back" style="height: 80px;width: 80px;" onclick="back()">返回上级页面</button>
+    </div>
+    <div id="owner-msg" style="height: 100%;width: 250px;float:left;margin-left: 100px;border-left: #c0a16b solid;">
     </div>
 </div>
 <div id="comment"
@@ -180,18 +182,62 @@
 </body>
 <script>
 
-    $(document).ready(getContent());
+    $(document).ready(init());
+
+    function init() {
+        getOwnerMessage();
+        getContent();
+        getFollowButton();
+    }
+
+    function getFollowButton() {
+        var authorId = Cookies.get("ownerId");
+        var token = JSON.parse(Cookies.get("token"));
+        $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            url: "follower/" + authorId + "?token=" + token.token.token,
+            success: function (result) {
+                if (result.success == true) {
+                    document.getElementById("follow-author").innerText = "取消关注";
+                } else {
+                    if(result.message == "被关注对象是自己"){
+                        document.getElementById("follow-author").innerText = "嫑关注自己";
+                        document.getElementById("follow-author").setAttribute("disabled",true);
+                    }else{
+                        document.getElementById("follow-author").innerText = "关注作者";
+                    }
+                }
+            }
+        });
+    }
+
+    function getOwnerMessage() {
+        var blogId = Cookies.get("blogId");
+        $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            url: "blog/" + blogId + "/owner",
+            success: function (result) {
+                Cookies.set("ownerId", result.data.id);
+                document.getElementById("owner-msg").innerHTML =
+                    '<br><span href="" style="margin-left:15px;">作者：' + result.data.userName + '</span><br><br>'
+                    + '<span style="margin-left:15px;">粉丝数：' + result.data.fans + '</span><br><br>'
+                    + '<span style="margin-left:15px;">文章数：' + result.data.blogs + '</span>';
+            }
+        });
+    }
 
     function thumbsUp() {
         var blogId = Cookies.get("blogId");
         var token = JSON.parse(Cookies.get("token"));
         $.ajax({
-            type : "GET",
+            type: "PUT",
             contentType: "application/json",
             url: "count/" + blogId + "/laud?token=" + token.token.token,
             success:function (result) {
                 if(result.success == true){
-                    document.getElementById("thumbs-number").innerHTML = parseInt(document.getElementById("thumbs-number").val()) + 1;
+                    document.getElementById("thumbs-number").innerHTML = parseInt($("#thumbs-number").val()) + 1;
                 }
             }
         })
@@ -202,7 +248,32 @@
     }
 
     function followAuthor() {
+        var authorId = Cookies.get("ownerId");
         var token = JSON.parse(Cookies.get("token"));
+        if (document.getElementById("follow-author").innerText == "关注作者") {
+            $.ajax({
+                type: "POST",
+                contentType: "application/json",
+                url: "follower/" + authorId + "?token=" + token.token.token + "&messagePush=true",
+                success: function (result) {
+                    if (result.success == true) {
+                        document.getElementById("follow-author").innerText = "取消关注";
+                    }
+                }
+            });
+        } else {
+            $.ajax({
+                type: "DELETE",
+                contentType: "application/json",
+                url: "follower/" + authorId + "?token=" + token.token.token,
+                success: function (result) {
+                    if (result.success == true) {
+                        document.getElementById("follow-author").innerText = "关注作者";
+                    }
+                }
+            });
+        }
+
     }
 
     function collection() {

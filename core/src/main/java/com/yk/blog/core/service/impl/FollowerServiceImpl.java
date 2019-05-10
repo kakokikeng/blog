@@ -1,6 +1,7 @@
 package com.yk.blog.core.service.impl;
 
 import com.yk.blog.core.constant.Constant;
+import com.yk.blog.core.constant.ErrorMessages;
 import com.yk.blog.core.dto.GenericResult;
 import com.yk.blog.core.dto.Result;
 import com.yk.blog.core.dto.UserRespDTO;
@@ -8,7 +9,6 @@ import com.yk.blog.core.service.AuthorityService;
 import com.yk.blog.core.service.CountService;
 import com.yk.blog.core.service.FollowerService;
 import com.yk.blog.core.service.UserService;
-import com.yk.blog.core.constant.ErrorMessages;
 import com.yk.blog.core.utils.GenericResultUtils;
 import com.yk.blog.core.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +20,9 @@ import redis.clients.jedis.JedisPool;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.yk.blog.core.constant.Constant.*;
+import static com.yk.blog.core.constant.Constant.FOLLOWED;
+import static com.yk.blog.core.constant.Constant.FOLLOWER;
 import static com.yk.blog.core.utils.GenericResultUtils.generateResultWithCount;
-import static com.yk.blog.core.utils.UserUtils.getIdList;
 import static com.yk.blog.core.utils.Utils.generatePrefix;
 
 /**
@@ -43,6 +43,21 @@ public class FollowerServiceImpl implements FollowerService {
 
     @Autowired
     CountService countService;
+
+    @Override
+    public Result getIfFollowed(String followedId, String token) {
+        try (Jedis jedis = jedisPool.getResource()) {
+            String userId = jedis.hget(Utils.generatePrefix(Constant.TOKEN_WITH_USER_ID), token);
+            if(userId.equals(followedId)){
+                return GenericResultUtils.genericNormalResult(false,"被关注对象是自己");
+            }
+            if (jedis.sismember(Utils.generatePrefix(FOLLOWED + userId), followedId)) {
+                return GenericResultUtils.genericNormalResult(true);
+            } else {
+                return GenericResultUtils.genericNormalResult(false);
+            }
+        }
+    }
 
     @Transactional(rollbackFor = RuntimeException.class)
     @Override

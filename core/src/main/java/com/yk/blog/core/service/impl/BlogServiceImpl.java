@@ -2,10 +2,7 @@ package com.yk.blog.core.service.impl;
 
 import com.yk.blog.core.constant.Constant;
 import com.yk.blog.core.constant.ErrorMessages;
-import com.yk.blog.core.dto.BlogReqDTO;
-import com.yk.blog.core.dto.BlogRespDTO;
-import com.yk.blog.core.dto.GenericResult;
-import com.yk.blog.core.dto.Result;
+import com.yk.blog.core.dto.*;
 import com.yk.blog.core.factories.BlogReqFactory;
 import com.yk.blog.core.factories.BlogRespFactory;
 import com.yk.blog.core.service.*;
@@ -57,11 +54,36 @@ public class BlogServiceImpl implements BlogService {
     BlogReqFactory blogReqFactory;
 
     @Override
+    public GenericResult<List<BlogRespDTO>> searchBlogs(String searchContent) {
+        String newString = "%";
+        char [] chars = searchContent.toCharArray();
+        for (int i = 0; i < chars.length; i++) {
+            newString += chars[i] + "%";
+        }
+        List<Blog> blogs = blogMapper.searchBlogs(newString);
+        List<BlogRespDTO> data = new ArrayList<>();
+        for (int i = 0; i < blogs.size(); i++) {
+           data.add(new BlogRespDTO(blogs.get(i)));
+        }
+        return GenericResultUtils.genericResult(true,data);
+    }
+
+    @Override
     public GenericResult<List<BlogRespDTO>> getRecommendBlog(String token) {
 
 
 
         return null;
+    }
+
+    @Override
+    public GenericResult<UserRespDTO> getOwnerByBlogId(int blogId) {
+
+        String ownerId = blogMapper.getOwnerIdByBlogId(blogId);
+        List<String> userIds = new ArrayList<>();
+        userIds.add(ownerId);
+        List<UserRespDTO> user = userService.getUserListByIdList(userIds);
+        return GenericResultUtils.genericResult(true,user.get(0));
     }
 
     @Override

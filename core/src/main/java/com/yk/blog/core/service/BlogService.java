@@ -1,10 +1,7 @@
 package com.yk.blog.core.service;
 
 
-import com.yk.blog.core.dto.GenericResult;
-import com.yk.blog.core.dto.Result;
-import com.yk.blog.core.dto.BlogReqDTO;
-import com.yk.blog.core.dto.BlogRespDTO;
+import com.yk.blog.core.dto.*;
 
 import java.util.List;
 
@@ -14,6 +11,24 @@ import java.util.List;
  */
 
 public interface BlogService {
+
+    /**
+     *  搜索文章
+     *  @author  yikang
+     *  @date  2019/5/10
+     *  @param
+     *  @return
+     */
+    GenericResult<List<BlogRespDTO>> searchBlogs(String searchContent);
+
+    /**
+     *  获取指定文章id的作者信息
+     *  @author  yikang
+     *  @date  2019/4/28
+     *  @param
+     *  @return
+     */
+    GenericResult<UserRespDTO> getOwnerByBlogId(int blogId);
 
     /**
      *  获取推荐文章

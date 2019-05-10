@@ -1,9 +1,6 @@
 package com.yk.blog.api.controller;
 
-import com.yk.blog.core.dto.BlogReqDTO;
-import com.yk.blog.core.dto.BlogRespDTO;
-import com.yk.blog.core.dto.GenericResult;
-import com.yk.blog.core.dto.Result;
+import com.yk.blog.core.dto.*;
 import com.yk.blog.core.service.BlogService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -68,6 +65,18 @@ public class BlogController {
     public GenericResult<Integer> createBlog(@ApiParam("用户的token") @RequestParam("token") String token,
                                              @ApiParam("博客相关信息") @Valid @RequestBody BlogReqDTO blog) {
         return blogService.createBlog(blog,token);
+    }
+
+    @ApiOperation("获取指定文章id的作者信息")
+    @GetMapping("{blogId}/owner")
+    public GenericResult<UserRespDTO> getOwnerByBlogId(@ApiParam("文章id") @PathVariable("blogId") int blogId){
+        return blogService.getOwnerByBlogId(blogId);
+    }
+
+    @ApiOperation("根据标题搜索文章")
+    @GetMapping("search")
+    public GenericResult<List<BlogRespDTO>> searchBlogs(@RequestParam("searchContent") String searchContent){
+        return blogService.searchBlogs(searchContent);
     }
 
 

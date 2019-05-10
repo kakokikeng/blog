@@ -15,6 +15,24 @@ import java.util.Map;
 public interface BlogMapper {
 
     /**
+     *  搜索文章
+     *  @author  yikang
+     *  @date  2019/5/10
+     *  @param
+     *  @return
+     */
+    List<Blog> searchBlogs(@Param("content") String content);
+
+    /**
+     *  通过文章id获取作者id
+     *  @author  yikang
+     *  @date  2019/4/28
+     *  @param  blogId 文章id
+     *  @return  java.lang.String
+     */
+    String getOwnerIdByBlogId(int blogId);
+
+    /**
      *  获得阅读量最多的十个博客，降序排序
      *  @author  yikang
      *  @date  2019/2/25

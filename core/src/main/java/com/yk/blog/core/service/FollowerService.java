@@ -13,6 +13,15 @@ import java.util.List;
 public interface FollowerService {
 
     /**
+     *  判断登录用户是否关注某用户
+     *  @author  yikang
+     *  @date  2019/4/28
+     *  @param
+     *  @return
+     */
+    Result getIfFollowed(String followedId,String token);
+
+    /**
      * 关注某个用户
      *
      * @param followedId 被关注用户id

@@ -68,6 +68,12 @@ public class JspController {
         return "blogPage";
     }
 
+    @GetMapping("search")
+    public String search(){
+        return "search";
+    }
+
+
     @RequestMapping("index")
     public String turnIndex(){
         return "index";

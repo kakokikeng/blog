@@ -1,14 +1,14 @@
 <%--
   Created by IntelliJ IDEA.
   User: yikang
-  Date: 2019/2/24
-  Time: 14:32
+  Date: 2019/5/10
+  Time: 19:44
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>博客主页</title>
+    <title>搜索</title>
     <script src="js/jquery-3.2.1.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/js.cookie.js"></script>
@@ -133,41 +133,14 @@
     }();
 </script>
 
-
-
-<div id="slogan" align="left" style="width: 50%;height: 25px;float: left;color: #888888;">
-    Modesty helps one to go forward.
-</div>
-<a id="userName"></a>
-<div>
-    <hr color="#D1D1D1">
-</div>
-
-
-<div align="center" class="container">
-
-    <div id="search">
-
+<div style="width: 80%;margin-left: 10%;">
+    <div id="search" style="width: 50%;height: 100px;" align="left">
         <input id="searchContent" type="text">
-
         <input class="button" type="submit" value="Search" onclick="search()">
-
     </div>
-
-</div>
-
-
-<div style="width: 32%;height: 100%;padding: 1% 1% 1% 1%;margin-left:2%;margin-top: 1%;margin-bottom:1%;float: left;border: #D1D1D1 2px solid;">
-    <div style="width: 100%">
-        <h2 align="center" style="color: coral">最受欢迎TOP 10</h2>
-        <div id="top10" style="width: 90%;padding-left: 5%;padding-right: 5%;"></div>
+    <div id="content">
     </div>
-
 </div>
-<div style="width: 58%;height: 100%;padding: 1% 1% 1% 1%;margin-top: 1%;margin-bottom:1%;margin-right:1%;float: right;border: #D1D1D1 2px solid;">
-    <h2 align="center" style="color: coral;">为你推荐</h2>
-</div>
-
 
 </body>
 
@@ -175,55 +148,39 @@
     $(document).ready(init());
 
     function init(){
-        getLoginUserName();
-        getTop10();
+        document.getElementById("searchContent").value = Cookies.get("searchContent");
+        search();
     }
 
     function search() {
-        Cookies.set("searchContent",$("#searchContent").val());
-        window.location.href="search";
-    }
-
-    function getTop10() {
         $.ajax({
             type: "GET",
             contentType: "application/json",
-            url: "blog/mostInterviewed",
+            url: "blog/search?searchContent=" + $("#searchContent").val(),
             dataType: "json",
-            success: function(result){
-                var div = document.createElement("div");
-                for(var i = 0; i < result.data.length; i ++){
-                    div.innerHTML += '<h2><a style="color: coral;text-decoration:none;"' + "href=\"#\"" +
-                        "onclick=\"turnBlogPage(" + result.data[i].id + ")\">"  + result.data[i].title + "</a></h2>";
+            success: function (result) {
+                //把之前所有孩子节点都删除
+                var p = document.getElementById("content");
+                while(p.hasChildNodes()){
+                    p.removeChild(p.firstChild);
                 }
-                document.getElementById("top10").appendChild(div);
+                //添加搜索结果到孩子节点
+                var searchResult = document.createElement("div");
+                for(var i = 0; i < result.data.length; i ++){
+                    searchResult.innerHTML += "<a href='#' style='text-decoration:none;' onclick='turnBlog(" + result.data[i].id + ")'>" + result.data[i].title + "</a><br>";
+                }
+                if(result.data.length == 0){
+                    searchResult.innerHTML = "很抱歉，没有找到相关搜索结果";
+                }
+                document.getElementById("content").appendChild(searchResult);
             }
-        });
+        })
     }
 
-    function turnBlogPage(id){
-        Cookies.set("blogId",id);
+    function turnBlog(blogId) {
+        Cookies.set("blogId",blogId);
         window.location.href="blogPage";
     }
-
-    function getLoginUserName() {
-        var loginUserName = Cookies.get("loginUserName");
-        var userName = document.createElement("div");
-        userName.innerHTML = '<a href="createBlog" style="margin-right:15px;text-decoration: none;">新建博文</a> <a href="login">登录</a>\n' +
-            '    <a href="signUp">注册</a>';
-        userName.style.width = "50%";
-        userName.style.height = "25px";
-        userName.style.cssFloat = "right";
-        userName.align = "right";
-
-        if (loginUserName != null) {
-            userName.innerHTML = '<a href="createBlog" style="margin-right:100px;text-decoration: none;">新建博文</a> ' + '<a  href="userPage"  style="text-decoration: none;"> ' + Cookies.get("loginUserName") + '</a>';
-        }
-        document.getElementById("userName").appendChild(userName);
-
-    }
-
 </script>
-
 
 </html>

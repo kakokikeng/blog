@@ -185,7 +185,7 @@
         if (!(testEmail() && testPasswd())) {
             return;
         }
-
+        getVerifyPicture();
         var data = {"key": tmp, "verifyCode": $("#verify").val()};
         $.ajax({
             type: "POST",

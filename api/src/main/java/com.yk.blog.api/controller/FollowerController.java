@@ -34,6 +34,13 @@ public class FollowerController {
         return followerService.follow(followedId, token, messagePush);
     }
 
+    @ApiOperation("查询登录用户是否关注B用户")
+    @GetMapping("{followedId}")
+    public Result getIfFollowed(@ApiParam("被关注的用户id") @PathVariable("followedId") String followedId,
+                                @ApiParam("登陆后获得的token") @RequestParam("token") String token) {
+        return followerService.getIfFollowed(followedId, token);
+    }
+
     @ApiOperation("取消关注")
     @DeleteMapping("{followedId}")
     public Result unfollow(@ApiParam("被关注的用户id") @PathVariable("followedId") String followedId,
