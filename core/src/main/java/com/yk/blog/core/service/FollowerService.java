@@ -13,6 +13,15 @@ import java.util.List;
 public interface FollowerService {
 
     /**
+     *  获取登录用户的粉丝列表
+     *  @author  yikang
+     *  @date  2019/5/12
+     *  @param  token
+     *  @return  com.yk.blog.core.dto.GenericResult<java.util.List<com.yk.blog.core.dto.UserRespDTO>>
+     */
+    GenericResult<List<UserRespDTO>> getLoginFans(String token);
+
+    /**
      *  获取登录用户的关注列表
      *  @author  yikang
      *  @date  2019/5/11

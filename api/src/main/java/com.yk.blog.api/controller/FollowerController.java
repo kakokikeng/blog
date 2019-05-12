@@ -54,13 +54,19 @@ public class FollowerController {
         return followerService.getFollowers(userId);
     }
 
+    @ApiOperation("获取登录用户的粉丝")
+    @GetMapping("fans")
+    public GenericResult<List<UserRespDTO>> getLoginFans(@RequestParam("token") String token) {
+        return followerService.getLoginFans(token);
+    }
+
     @ApiOperation("获取用户所关注的用户")
     @GetMapping("{userId}/follows")
     public GenericResult<List<UserRespDTO>> getFolloweders(@PathVariable("userId") @ApiParam("被查询用户ID") @NotNull String userId) {
         return followerService.getFolloweders(userId);
     }
 
-    @ApiOperation("获取所有登录用户关注的用户")
+    @ApiOperation("获取登录用户关注的用户")
     @GetMapping("follows")
     public GenericResult<List<UserRespDTO>> getLoginFolloweders(@RequestParam("token") String token) {
         return followerService.getLoginFolloweders(token);

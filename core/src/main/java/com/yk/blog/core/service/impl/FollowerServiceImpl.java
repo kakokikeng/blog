@@ -45,6 +45,14 @@ public class FollowerServiceImpl implements FollowerService {
     CountService countService;
 
     @Override
+    public GenericResult<List<UserRespDTO>> getLoginFans(String token) {
+        try(Jedis jedis = jedisPool.getResource()){
+            String userId = jedis.hget(Utils.generatePrefix(Constant.TOKEN_WITH_USER_ID),token);
+            return getFollowers(userId);
+        }
+    }
+
+    @Override
     public GenericResult<List<UserRespDTO>> getLoginFolloweders(String token) {
         try(Jedis jedis = jedisPool.getResource()){
             String userId = jedis.hget(Utils.generatePrefix(Constant.TOKEN_WITH_USER_ID),token);
