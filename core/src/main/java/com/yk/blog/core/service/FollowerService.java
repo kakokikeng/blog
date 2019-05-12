@@ -13,6 +13,15 @@ import java.util.List;
 public interface FollowerService {
 
     /**
+     *  获取登录用户的关注列表
+     *  @author  yikang
+     *  @date  2019/5/11
+     *  @param
+     *  @return
+     */
+    GenericResult<List<UserRespDTO>> getLoginFolloweders(String token);
+
+    /**
      *  判断登录用户是否关注某用户
      *  @author  yikang
      *  @date  2019/4/28

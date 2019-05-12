@@ -137,6 +137,7 @@
 <div id="slogan" align="left" style="width: 50%;height: 25px;float: left;color: #888888;">
     Modesty helps one to go forward.
 </div>
+<a href="index" style="text-decoration: none;">返回主页</a>
 <a id="userName" href="userPage"></a>
 <div>
     <hr color="#D1D1D1">
@@ -307,7 +308,8 @@
                 var userName = document.createElement("div");
                 userName.innerHTML = '<a href="login">登录</a>\n' +
                     '    <a href="signUp">注册</a>';
-                userName.style.width = "50%";
+                userName.style.width = "30%";
+                userName.style.marginRight = "100px";
                 userName.style.height = "25px";
                 userName.style.cssFloat = "right";
                 userName.align = "right";

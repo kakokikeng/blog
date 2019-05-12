@@ -133,13 +133,26 @@
     }();
 </script>
 
-<div style="width: 80%;margin-left: 10%;">
+<div id="slogan" align="left" style="width: 50%;height: 25px;float: left;color: #888888;">
+    Modesty helps one to go forward.
+</div>
+<a href="index" style="text-decoration: none;">返回主页</a>
+<a id="userName"></a>
+<div>
+    <hr color="#D1D1D1">
+</div>
+
+<div style="width: 80%;margin-left: 5%;margin-top: 50px;">
     <div id="search" style="width: 50%;height: 100px;" align="left">
         <input id="searchContent" type="text">
         <input class="button" type="submit" value="Search" onclick="search()">
     </div>
-    <div id="content">
-    </div>
+</div>
+
+<div align="left" style="width: 80%;margin-left: 5%;">
+    搜索结果
+</div>
+<div id="content" style="width: 80%;margin-left: 5%;margin-top: 5px;border: #cccccc solid;padding-left:50px;padding-top:50px;padding-bottom:100px;">
 </div>
 
 </body>
@@ -148,8 +161,27 @@
     $(document).ready(init());
 
     function init(){
+        getLoginUserName();
         document.getElementById("searchContent").value = Cookies.get("searchContent");
         search();
+    }
+
+    function getLoginUserName() {
+        var loginUserName = Cookies.get("loginUserName");
+        var userName = document.createElement("div");
+        userName.innerHTML = '<a href="createBlog" style="margin-right:15px;text-decoration: none;">新建博文</a> <a href="login">登录</a>\n' +
+            '    <a href="signUp">注册</a>';
+        userName.style.width = "30%";
+        userName.style.marginRight = "100px";
+        userName.style.height = "25px";
+        userName.style.cssFloat = "right";
+        userName.align = "right";
+
+        if (loginUserName != null) {
+            userName.innerHTML = '<a href="createBlog" style="margin-right:100px;text-decoration: none;">新建博文</a> ' + '<a  href="userPage"  style="text-decoration: none;"> ' + Cookies.get("loginUserName") + '</a>';
+        }
+        document.getElementById("userName").appendChild(userName);
+
     }
 
     function search() {

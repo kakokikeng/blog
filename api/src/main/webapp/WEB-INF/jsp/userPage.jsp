@@ -135,6 +135,15 @@
     }();
 </script>
 
+<div id="slogan" align="left" style="width: 50%;height: 25px;float: left;color: #888888;">
+    Modesty helps one to go forward.
+</div>
+<a href="index" style="text-decoration: none;">返回主页</a>
+<a id="userName" ></a>
+<div>
+    <hr color="#D1D1D1">
+</div>
+
 <div id="menu" align="center" style="width: 20%;height: 50%;padding-top: 110px;float: left;padding-left: 10%;">
     <div id="information" style="background: #c0a16b; height: 60px;border: #adadad solid;">
         <br>
@@ -176,6 +185,9 @@
     $(document).ready(init);
 
     function init() {
+
+        getLoginUserName();
+
         var token = JSON.parse(Cookies.get("token"));
         $.ajax(
             {
@@ -202,6 +214,24 @@
 
                 }
             });
+    }
+
+    function getLoginUserName() {
+        var loginUserName = Cookies.get("loginUserName");
+        var userName = document.createElement("div");
+        userName.innerHTML = '<a href="createBlog" style="margin-right:15px;text-decoration: none;">新建博文</a> <a href="login">登录</a>\n' +
+            '    <a href="signUp">注册</a>';
+        userName.style.width = "30%";
+        userName.style.marginRight = "100px";
+        userName.style.height = "25px";
+        userName.style.cssFloat = "right";
+        userName.align = "right";
+
+        if (loginUserName != null) {
+            userName.innerHTML = '<a href="createBlog" style="margin-right:100px;text-decoration: none;">新建博文</a> ' + '<a  href="userPage"  style="text-decoration: none;"> ' + Cookies.get("loginUserName") + '</a>';
+        }
+        document.getElementById("userName").appendChild(userName);
+
     }
 
 
