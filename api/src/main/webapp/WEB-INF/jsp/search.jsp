@@ -152,7 +152,7 @@
 <div align="left" style="width: 80%;margin-left: 5%;">
     搜索结果
 </div>
-<div id="content" style="width: 80%;margin-left: 5%;margin-top: 5px;border: #cccccc solid;padding-left:50px;padding-top:50px;padding-bottom:100px;">
+<div id="content" style="width: 80%;margin-left: 5%;margin-top: 5px;padding-bottom:100px;">
 </div>
 
 </body>
@@ -197,14 +197,23 @@
                     p.removeChild(p.firstChild);
                 }
                 //添加搜索结果到孩子节点
-                var searchResult = document.createElement("div");
+
                 for(var i = 0; i < result.data.length; i ++){
-                    searchResult.innerHTML += "<a href='#' style='text-decoration:none;' onclick='turnBlog(" + result.data[i].id + ")'>" + result.data[i].title + "</a><br>";
+                    var content = document.createElement("div");
+                    content.style.height = "100px";
+                    content.style.border = "#cccccc solid";
+                    content.style.paddingLeft = "10px";
+                    content.innerHTML = '<h2><a style="color: coral;text-decoration:none;"' + "href=\"#\"" +
+                        "onclick=\"turnBlogPage(" + result.data[i].id + ")\">" + result.data[i].title + "</a></h2>"
+                        + '<span>阅读量：' + result.data[i].readCount + '</span><span style="margin-left: 15px;">点赞：' + result.data[i].likeCount
+                        + '</span><span style="margin-left: 15px;">评论数：' + result.data[i].commentCount;
+                    document.getElementById("content").appendChild(content);
                 }
                 if(result.data.length == 0){
+                    var searchResult = document.createElement("div");
                     searchResult.innerHTML = "很抱歉，没有找到相关搜索结果";
+                    document.getElementById("content").appendChild(searchResult);
                 }
-                document.getElementById("content").appendChild(searchResult);
             }
         })
     }
