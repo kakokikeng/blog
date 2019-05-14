@@ -14,7 +14,7 @@ import java.util.Date;
 
 public class UserReqDTO extends UserBaseDTO{
 
-    @NotNull
+
     @ApiModelProperty("密码")
     private String passwd;
 
@@ -43,7 +43,9 @@ public class UserReqDTO extends UserBaseDTO{
         }
         result.setUserName(getUserName());
         result.setEmail(getEmail());
-        result.setCreateTime(new Date(getCreateTime()));
+        if(getCreateTime() != null){
+            result.setCreateTime(new Date(getCreateTime()));
+        }
         return result;
     }
 

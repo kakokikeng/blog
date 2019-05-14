@@ -61,6 +61,12 @@ public class UserController {
         return userService.updateUser(userId,userReqDTO);
     }
 
+    @ApiOperation("修改用户信息")
+    @PutMapping("")
+    public Result updateUserByToken(@RequestParam("token") String token, @RequestBody UserReqDTO userReqDTO) {
+        return userService.updateUserByToken(token,userReqDTO);
+    }
+
     @ApiOperation("修改密码")
     @PutMapping("{email}/{oldPasswd}/{newPasswd}")
     public Result modifyPasswd(@ApiParam("登录邮箱") @PathVariable("email") String email,

@@ -17,13 +17,13 @@ import java.util.logging.SimpleFormatter;
  */
 @ApiModel
 public class UserBaseDTO {
-    @NotNull
+
     @ApiModelProperty("用户名")
     private String userName;
-    @NotNull
+
     @ApiModelProperty("创建时间")
     private Long createTime;
-    @NotNull
+
     @ApiModelProperty("用户邮箱")
     private String email;
 

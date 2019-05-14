@@ -138,6 +138,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Result updateUserByToken(String token, UserReqDTO userReqDTO) {
+        try(Jedis jedis = jedisPool.getResource()){
+            String userId = jedis.hget(Utils.generatePrefix(Constant.TOKEN_WITH_USER_ID),token);
+            return updateUser(userId,userReqDTO);
+        }
+    }
+
+    @Override
     public Result updateUser(String userId, UserReqDTO userReqDTO) {
         int count = userMapper.updateUser(userId, userReqDTO.changeToUser(userId));
         return GenericResultUtils.generateResultWithCount(count);

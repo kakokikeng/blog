@@ -1,6 +1,9 @@
 package com.yk.blog.core.service;
 
-import com.yk.blog.core.dto.*;
+import com.yk.blog.core.dto.GenericResult;
+import com.yk.blog.core.dto.Result;
+import com.yk.blog.core.dto.UserReqDTO;
+import com.yk.blog.core.dto.UserRespDTO;
 
 import java.util.List;
 
@@ -10,6 +13,14 @@ import java.util.List;
  */
 
 public interface UserService {
+
+    /**
+     * @param
+     * @return
+     * @author yikang
+     * @date 2019/5/14
+     */
+    Result updateUserByToken(String token, UserReqDTO userReqDTO);
 
     /**
      *  获取登录用户信息

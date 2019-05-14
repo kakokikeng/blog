@@ -81,11 +81,11 @@
     <update id="updateUser">
         update user
         <set>
-            <if test="userName != null">
-                user_name = #{userName},
+            <if test="user.userName != null">
+                user_name = #{user.userName},
             </if>
-            <if test="email != null">
-                email = #{email},
+            <if test="user.email != null">
+                email = #{user.email},
             </if>
         </set>
         where id = #{id}
