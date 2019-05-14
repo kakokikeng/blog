@@ -166,11 +166,11 @@
             dataType: "json",
             success: function (result) {
                 if(result.data.length == 0){
-                    var searchResult = document.createElement("div");
+                    var content = document.createElement("div");
                     content.style.marginTop = "10%";
                     content.align = "center";
-                    searchResult.innerHTML = "您未发布任何文章";
-                    document.getElementById("content").appendChild(searchResult);
+                    content.innerHTML = "您未发布任何文章";
+                    document.getElementById("content").appendChild(content);
                 }
                 for(var i = 0; i < result.data.length; i ++){
                     var content = document.createElement("div");
@@ -186,6 +186,10 @@
 
             }
         })
+    }
+
+    function back(){
+        window.history.back();
     }
     
     function getLoginUserName() {
