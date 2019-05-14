@@ -103,6 +103,14 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
+    public GenericResult<List<BlogRespDTO>> getBlogsByToken(String token) {
+        try(Jedis jedis = jedisPool.getResource()){
+            String userId = jedis.hget(Utils.generatePrefix(Constant.TOKEN_WITH_USER_ID), token);
+            return getBlogsByUserId(userId);
+        }
+    }
+
+    @Override
     public GenericResult<List<BlogRespDTO>> getBlogsByUserId(String userId) {
         if (!userService.existUser(userId)) {
             return wrongUserIdGenericResult();

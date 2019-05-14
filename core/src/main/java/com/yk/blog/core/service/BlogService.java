@@ -13,6 +13,15 @@ import java.util.List;
 public interface BlogService {
 
     /**
+     *
+     *  @author yikang
+     *  @date 2019/5/14
+     *  @param
+     *  @return
+     */
+    GenericResult<List<BlogRespDTO>> getBlogsByToken(String token);
+
+    /**
      *  搜索文章
      *  @author  yikang
      *  @date  2019/5/10

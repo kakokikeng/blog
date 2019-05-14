@@ -40,6 +40,12 @@ public class BlogController {
         return blogService.getBlogsByUserId(userId);
     }
 
+    @ApiOperation("获取登录用户博客文章列表")
+    @GetMapping("")
+    public GenericResult<List<BlogRespDTO>> getBlogsByToken(@RequestParam("token") String token) {
+        return blogService.getBlogsByToken(token);
+    }
+
     @ApiOperation("获得用户的特定博客")
     @GetMapping("{blogId}")
     public GenericResult<BlogRespDTO> getBlogById(@ApiParam("博客id") @PathVariable("blogId") int blogId) {

@@ -238,7 +238,9 @@
             url: "count/" + blogId + "/laud?token=" + token.token.token,
             success:function (result) {
                 if(result.success == true){
-                    document.getElementById("thumbs-number").innerHTML = parseInt($("#thumbs-number").val()) + 1;
+                    var a=document.getElementById("thumbs-number").innerHTML;
+                    var b=(a-0)+1;
+                    document.getElementById("thumbs-number").innerHTML=b;
                 }
             }
         })

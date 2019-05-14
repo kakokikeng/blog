@@ -218,7 +218,7 @@
         })
     }
 
-    function turnBlog(blogId) {
+    function turnBlogPage(blogId) {
         Cookies.set("blogId",blogId);
         window.location.href="blogPage";
     }
