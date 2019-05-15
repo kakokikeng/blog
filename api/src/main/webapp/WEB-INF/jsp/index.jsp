@@ -167,6 +167,7 @@
 </div>
 <div style="width: 58%;height: 100%;padding: 1% 1% 1% 1%;margin-top: 1%;margin-bottom:1%;margin-right:1%;float: right;border: #D1D1D1 2px solid;">
     <h2 align="center" style="color: coral;">为你推荐</h2>
+    <div id="recommend" style="width: 90%;padding-left: 5%;padding-right: 5%;"></div>
 </div>
 
 
@@ -178,6 +179,25 @@
     function init(){
         getLoginUserName();
         getTop10();
+        getRecommend();
+    }
+
+    function getRecommend(){
+        var token = JSON.parse(Cookies.get("token"));
+        $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            url: "blog/recommend?token=" + token.token.token,
+            dataType: "json",
+            success: function(result){
+                var div = document.createElement("div");
+                for(var i = 0; i < result.data.length; i ++){
+                    div.innerHTML += '<h2><a style="color: coral;text-decoration:none;"' + "href=\"#\"" +
+                        "onclick=\"turnBlogPage(" + result.data[i].id + ")\">"  + result.data[i].title + "</a></h2>";
+                }
+                document.getElementById("recommend").appendChild(div);
+            }
+        });
     }
 
     function search() {

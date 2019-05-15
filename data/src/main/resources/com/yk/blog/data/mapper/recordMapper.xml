@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yk.blog.data.dao.RecordMapper">
+
+    <resultMap id="record" type="com.yk.blog.domain.dto.Record">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="blog_id" property="blogId"/>
+        <result column="score" property="score"/>
+    </resultMap>
+
+    <insert id="insertRecord">
+        INSERT INTO record(user_id, blog_id, score)  VALUES(#{record.userId},#{record.blogId},#{record.score});
+    </insert>
+
+    <select id="ifExistRecord">
+        select * from record where user_id = #{userId} and blog_id = #{blogId};
+    </select>
+
+</mapper>

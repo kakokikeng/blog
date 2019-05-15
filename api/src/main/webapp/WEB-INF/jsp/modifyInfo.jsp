@@ -160,7 +160,9 @@
     <div align="center" style="border: #cccccc solid; height: 400px;padding-left: 20px;padding-top: 20px;">
         <span>昵称</span><input type="text" id="user_name" style="margin-left: 15px;"><br>
     </div>
-    <button onclick="submmit()">提交修改</button>
+    <div align="center" style="margin-top: 20px;">
+        <button onclick="submmit()">提交修改</button>
+    </div>
 </div>
 
 </body>
