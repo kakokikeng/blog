@@ -123,5 +123,17 @@ create table messages
   foreign key (user_id) references user (id)
 );
 
+create table record
+(
+  id      int auto_increment
+    primary key,
+  user_id varchar(32) not null,
+  blog_id int         not null,
+  score   int         null
+  comment '1 阅读过
+2 评论过或点赞过
+3 收藏过'
+);
+
 
 
