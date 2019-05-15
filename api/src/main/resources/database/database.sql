@@ -132,7 +132,9 @@ create table record
   score   int         null
   comment '1 阅读过
 2 评论过或点赞过
-3 收藏过'
+3 收藏过',
+  constraint record_pk
+  unique (user_id, blog_id)
 );
 
 
