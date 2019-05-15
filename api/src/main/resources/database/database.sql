@@ -137,5 +137,13 @@ create table record
   unique (user_id, blog_id)
 );
 
+create table collection
+(
+  id      int auto_increment
+    primary key,
+  user_id varchar(32) not null,
+  blog_id int         not null
+);
+
 
 
