@@ -13,7 +13,7 @@
         INSERT INTO record(user_id, blog_id, score)  VALUES(#{record.userId},#{record.blogId},#{record.score});
     </insert>
 
-    <select id="ifExistRecord">
+    <select id="getRecord">
         select * from record where user_id = #{userId} and blog_id = #{blogId};
     </select>
 

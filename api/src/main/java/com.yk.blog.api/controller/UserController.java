@@ -54,7 +54,7 @@ public class UserController {
         return userService.getLoginUserInfo(token);
     }
 
-    //TODO 目前能修改的信息只有用户名
+
     @ApiOperation("修改用户信息")
     @PutMapping("{userId}")
     public Result updateUser(@PathVariable("userId") String userId, @RequestBody UserReqDTO userReqDTO) {

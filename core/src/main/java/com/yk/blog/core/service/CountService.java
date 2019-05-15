@@ -48,7 +48,7 @@ public interface CountService {
      * @Author yikang
      * @Date 2018/9/4
      */
-    Result increaseReadCount(int blogId);
+    Result increaseReadCount(int blogId,String token);
 
     /**
      * 获取阅读量

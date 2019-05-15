@@ -1,12 +1,12 @@
 package com.yk.blog.core.service.impl;
 
-import com.sun.org.apache.bcel.internal.classfile.ConstantValue;
+import com.yk.blog.core.constant.Constant;
+import com.yk.blog.core.constant.ErrorMessages;
 import com.yk.blog.core.dto.Result;
 import com.yk.blog.core.service.AuthorityService;
 import com.yk.blog.core.service.CountService;
+import com.yk.blog.core.service.RecordService;
 import com.yk.blog.core.service.UserService;
-import com.yk.blog.core.constant.Constant;
-import com.yk.blog.core.constant.ErrorMessages;
 import com.yk.blog.core.utils.GenericResultUtils;
 import com.yk.blog.core.utils.Utils;
 import com.yk.blog.data.dao.BlogMapper;
@@ -21,7 +21,6 @@ import java.util.Map;
 
 import static com.yk.blog.core.utils.GenericResultUtils.generateResultWithCount;
 import static com.yk.blog.core.utils.GenericResultUtils.genericNormalResult;
-import static com.yk.blog.core.utils.UserUtils.wrongUserIdResult;
 
 /**
  * @author yikang
@@ -43,6 +42,9 @@ public class CountServiceImpl implements CountService {
     @Autowired
     UserService userService;
 
+    @Autowired
+    RecordService recordService;
+
 
     @Override
     public Result increaseLikeCount(int blogId,String token) {
@@ -51,6 +53,7 @@ public class CountServiceImpl implements CountService {
         }
         try (Jedis jedis = jedisPool.getResource()) {
             String userId = jedis.hget(Utils.generatePrefix(Constant.TOKEN_WITH_USER_ID),token);
+            recordService.insertRecord(userId,blogId,Constant.SCORE_LIKE_OR_COMMENT);
             boolean liked = jedis.sismember(Utils.generatePrefix(Constant.BLOG_LIKED_RECORD + userId), String.valueOf(blogId));
             if (!liked) {
                 if(!jedis.sismember(Utils.generatePrefix(Constant.EXIST_BLOG),String.valueOf(blogId))){
@@ -68,9 +71,13 @@ public class CountServiceImpl implements CountService {
     }
 
     @Override
-    public Result increaseReadCount(int blogId) {
+    public Result increaseReadCount(int blogId, String token) {
 
         try (Jedis jedis = jedisPool.getResource()) {
+            if (token != null) {
+                String userId = jedis.hget(Utils.generatePrefix(Constant.TOKEN_WITH_USER_ID), token);
+                recordService.insertRecord(userId,blogId,Constant.SCORE_READ);
+            }
             if(!jedis.sismember(Utils.generatePrefix(Constant.EXIST_BLOG),String.valueOf(blogId))){
                 return GenericResultUtils.genericNormalResult(false,ErrorMessages.BLOG_NOT_EXIST.message);
             }

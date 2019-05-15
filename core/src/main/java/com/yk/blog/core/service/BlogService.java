@@ -13,6 +13,16 @@ import java.util.List;
 public interface BlogService {
 
     /**
+     * 收藏文章
+     *
+     * @param
+     * @return
+     * @author yikang
+     * @date 2019/5/15
+     */
+    Result collectBlog(int blogId, String token);
+
+    /**
      *
      *  @author yikang
      *  @date 2019/5/14

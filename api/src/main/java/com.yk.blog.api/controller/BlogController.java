@@ -85,5 +85,11 @@ public class BlogController {
         return blogService.searchBlogs(searchContent);
     }
 
+    @ApiOperation("收藏文章")
+    @PutMapping("collection/{blogId}")
+    public Result collectBlog(@PathVariable("blogId")int blogId,@RequestParam("token")String token){
+        return blogService.collectBlog(blogId,token);
+    }
+
 
 }

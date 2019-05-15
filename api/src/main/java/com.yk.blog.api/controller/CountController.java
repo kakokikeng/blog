@@ -28,8 +28,9 @@ public class CountController {
 
     @ApiOperation("阅读量增加")
     @PutMapping("{blogId}/count/up")
-    public Result increaseReadCount(@ApiParam("博客id") @PathVariable("blogId") int blogId){
-        return countService.increaseReadCount(blogId);
+    public Result increaseReadCount(@ApiParam("博客id") @PathVariable("blogId") int blogId
+            , @RequestParam(value = "token", required = false) String token) {
+        return countService.increaseReadCount(blogId,token);
     }
 
 

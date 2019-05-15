@@ -55,5 +55,12 @@ public class Constant {
 
     public static final int EXPIRE_NOW = -1;
 
+    public static final int SCORE_READ = 1;
+
+    public static final int SCORE_LIKE_OR_COMMENT = 2;
+
+    public static final int SCORE_COLLECTION_ = 3;
+
+
 
 }

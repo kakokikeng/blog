@@ -53,6 +53,12 @@ public class BlogServiceImpl implements BlogService {
     @Autowired
     BlogReqFactory blogReqFactory;
 
+    //todo 收藏文章
+    @Override
+    public Result collectBlog(int blogId, String token) {
+        return null;
+    }
+
     @Override
     public GenericResult<List<BlogRespDTO>> searchBlogs(String searchContent) {
         String newString = "%";
