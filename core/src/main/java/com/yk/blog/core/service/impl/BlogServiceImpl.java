@@ -10,6 +10,7 @@ import com.yk.blog.core.utils.GenericResultUtils;
 import com.yk.blog.core.utils.Utils;
 import com.yk.blog.data.dao.BlogMapper;
 import com.yk.blog.domain.dto.Blog;
+import com.yk.blog.domain.dto.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -82,6 +83,24 @@ public class BlogServiceImpl implements BlogService {
              }
          }
 
+    }
+
+    @Override
+    public GenericResult<List<BlogRespDTO>> getCollectionByToken(String token) {
+        try (Jedis jedis = jedisPool.getResource()) {
+            String userId = jedis.hget(Utils.generatePrefix(Constant.TOKEN_WITH_USER_ID), token);
+            List<Collection> collections = collectionService.getCollection(userId);
+            List<Integer> blogIds = new ArrayList<>();
+            for (int i = 0; i < collections.size(); i++) {
+                blogIds.add(collections.get(i).getBlogId());
+            }
+            List<Blog> blogs = blogMapper.getBlogsByIds(blogIds);
+            List<BlogRespDTO> data = new ArrayList<>(blogs.size());
+            for (int i = 0; i < blogs.size(); i++) {
+                data.add(new BlogRespDTO(blogs.get(i)));
+            }
+            return GenericResultUtils.genericResult(true,data);
+        }
     }
 
     @Override

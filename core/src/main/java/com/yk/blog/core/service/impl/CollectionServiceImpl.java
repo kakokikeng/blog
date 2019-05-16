@@ -8,6 +8,8 @@ import com.yk.blog.domain.dto.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author yikang
  * @date 2019/5/16
@@ -42,5 +44,10 @@ public class CollectionServiceImpl implements CollectionService {
     @Override
     public Collection getCollection(String userId, int blogId) {
         return collectionMapper.getCollection(userId, blogId);
+    }
+
+    @Override
+    public List<Collection> getCollection(String userId) {
+        return collectionMapper.getCollectionByUserId(userId);
     }
 }

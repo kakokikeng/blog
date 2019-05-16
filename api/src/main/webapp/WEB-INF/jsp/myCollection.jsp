@@ -1,22 +1,20 @@
 <%--
   Created by IntelliJ IDEA.
   User: yikang
-  Date: 2019/4/10
-  Time: 15:07
+  Date: 2019/4/22
+  Time: 19:02
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>个人中心</title>
+    <title>我的收藏</title>
     <script src="js/jquery-3.2.1.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/js.cookie.js"></script>
-    <link type="text/css" href="../../css/scratch.css">
 </head>
 <body bgcolor="#f5f5dc">
 <script>
-
     !function () {
         //封装方法，压缩之后减少文件大小
         function get_attribute(node, attr, default_value) {
@@ -139,85 +137,60 @@
     Modesty helps one to go forward.
 </div>
 <a href="index" style="text-decoration: none;">返回主页</a>
-<a id="userName" ></a>
+<a id="userName"></a>
 <div>
     <hr color="#D1D1D1">
 </div>
 
-<div id="menu" align="center" style="width: 20%;height: 50%;padding-top: 110px;float: left;padding-left: 10%;">
-    <div id="information" style="background: #c0a16b; height: 60px;border: #adadad solid;">
-        <br>
-        <a href="userPage" style="text-decoration: none;">个人信息</a>
-    </div>
-    <div id="message" style="height: 60px;border: #adadad solid;">
-        <br>
-        <a href="message" style="text-decoration: none;">消息中心</a>
-    </div>
-    <div id="createBlog" style="height: 60px;border: #adadad solid;">
-        <br>
-        <a href="createBlog" style="text-decoration: none;">新建博文</a>
-    </div>
-</div>
-<div id="box" align="left" style="width: 45%;padding-top: 100px; float: left;padding-left: 5%;">
-    <hr color="#D1D1D1">
-    <br>
-    <div id="email" style="width:50%;float: left;" align="left"></div>
-    <div style="width: 50%;float: right" align="right">
-        <a id="modifyInfo" href="modifyInfo" style="text-decoration: underline;color: #66afe9">修改资料</a>
-    </div>
-    <br><br>
-    <div id="user_name"></div>
-    <br><br>
-    <a id="blogs" href="myBlogs" style="text-decoration: none;color: #66afe9;padding-right: 40px;"></a>
-    <a id="follows" href="myFllows" style="text-decoration: none;color: #66afe9;padding-right: 40px;"></a>
-    <a id="fans" href="myFollowers" style="text-decoration: none;color: #66afe9;padding-right: 40px;"></a>
-    <a id="collection" href="myCollection" style="text-decoration: none;color: #66afe9;padding-right: 40px;"></a>
-
-    <hr color="#D1D1D1">
-
-
+<h1 align="center">我的收藏</h1>
+<div id="content" style="width: 80%;margin-left: 5%;margin-top: 5px;padding-bottom:100px;">
 </div>
 
 </body>
 
-
 <script>
 
-    $(document).ready(init);
+    $(document).ready(init());
 
     function init() {
-
         getLoginUserName();
+        getBlogs();
+    }
 
+    //修改为获取收藏文章
+    function getBlogs() {
         var token = JSON.parse(Cookies.get("token"));
-        $.ajax(
-            {
-                type: "GET",
-                contentType: "application/json",
-                url: "user/login/" + token.token.token,
-                dataType: "json",
-                success: function (result) {
-                    var email = document.createElement("span");
-                    var user_name = document.createElement("span");
-                    var blogs = document.createElement("span");
-                    var follows = document.createElement("span");
-                    var fans = document.createElement("span");
-                    var collection = document.createElement("span");
-                    email.innerHTML = '邮箱：' + result.email;
-                    collection.innerHTML = '我的收藏';
-                    user_name.innerHTML = '用户名：' + result.userName;
-                    blogs.innerHTML = '我的博文 ' + result.blogs;
-                    follows.innerHTML = '我的关注 ' + result.follows;
-                    fans.innerHTML = '我的粉丝 ' + result.fans + '   ';
-                    document.getElementById("email").appendChild(email);
-                    document.getElementById("collection").appendChild(collection);
-                    document.getElementById("user_name").appendChild(user_name);
-                    document.getElementById("blogs").appendChild(blogs);
-                    document.getElementById("follows").appendChild(follows);
-                    document.getElementById("fans").appendChild(fans);
-
+        $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            url: "blog/collection?token=" + token.token.token,
+            dataType: "json",
+            success: function (result) {
+                if(result.data.length == 0){
+                    var content = document.createElement("div");
+                    content.style.marginTop = "10%";
+                    content.align = "center";
+                    content.innerHTML = "您未发布任何文章";
+                    document.getElementById("content").appendChild(content);
                 }
-            });
+                for(var i = 0; i < result.data.length; i ++){
+                    var content = document.createElement("div");
+                    content.style.height = "100px";
+                    content.style.border = "#cccccc solid";
+                    content.style.paddingLeft = "10px";
+                    content.innerHTML = '<h2><a style="color: coral;text-decoration:none;"' + "href=\"#\"" +
+                        "onclick=\"turnBlogPage(" + result.data[i].id + ")\">" + result.data[i].title + "</a></h2>"
+                        + '<span>阅读量：' + result.data[i].readCount + '</span><span style="margin-left: 15px;">点赞：' + result.data[i].likeCount
+                        + '</span><span style="margin-left: 15px;">评论数：' + result.data[i].commentCount;
+                    document.getElementById("content").appendChild(content);
+                }
+
+            }
+        })
+    }
+
+    function back(){
+        window.history.back();
     }
 
     function getLoginUserName() {
@@ -237,7 +210,6 @@
         document.getElementById("userName").appendChild(userName);
 
     }
-
 
 </script>
 

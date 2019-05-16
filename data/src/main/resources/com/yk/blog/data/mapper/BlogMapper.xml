@@ -17,6 +17,13 @@
         select * from blog order by read_count desc limit 10
     </select>
 
+    <select id="getBlogsByIds" resultMap="blog">
+        select * from blog where id in
+        <foreach collection="list" item="ids" open="(" separator="," close=")">
+            #{ids}
+        </foreach>
+    </select>
+
     <delete id="deleteCommentByBlogId" parameterType="int">
         delete from comment where blog_id = #{blogId}
     </delete>

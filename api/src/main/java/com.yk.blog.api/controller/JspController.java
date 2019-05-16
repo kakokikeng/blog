@@ -17,6 +17,11 @@ public class JspController {
         return "login";
     }
 
+    @GetMapping("myCollection")
+    public String myCollection(){
+        return "myCollection";
+    }
+
     @GetMapping("modifyInfo")
     public String modifyInfo() {
         return "modifyInfo";

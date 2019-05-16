@@ -123,5 +123,14 @@ public interface BlogMapper {
      */
     int createBlog(Blog blog);
 
+    /**
+     *  通过id list获取文章列表
+     *  @author  yikang
+     *  @date  2019/5/16
+     *  @param
+     *  @return
+     */
+    List<Blog> getBlogsByIds(List<Integer> ids);
+
 
 }

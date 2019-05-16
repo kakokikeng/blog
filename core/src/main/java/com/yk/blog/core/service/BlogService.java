@@ -13,6 +13,15 @@ import java.util.List;
 public interface BlogService {
 
     /**
+     *  获取登录用户的收藏文章
+     *  @author  yikang
+     *  @date  2019/5/16
+     *  @param
+     *  @return
+     */
+    GenericResult<List<BlogRespDTO>> getCollectionByToken(String token);
+
+    /**
      * 收藏文章
      *
      * @param

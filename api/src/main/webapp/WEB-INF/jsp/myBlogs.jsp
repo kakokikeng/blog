@@ -188,6 +188,11 @@
         })
     }
 
+    function turnBlogPage(id){
+        Cookies.set("blogId",id);
+        window.location.href="blogPage";
+    }
+
     function back(){
         window.history.back();
     }

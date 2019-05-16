@@ -47,6 +47,12 @@ public class BlogController {
         return blogService.getBlogsByToken(token);
     }
 
+    @ApiOperation("获取登录用户的收藏文章列表")
+    @GetMapping("collection")
+    public GenericResult<List<BlogRespDTO>> getCollectionByToken(@RequestParam("token") String token) {
+        return blogService.getCollectionByToken(token);
+    }
+
     @ApiOperation("获得用户的特定博客")
     @GetMapping("{blogId}")
     public GenericResult<BlogRespDTO> getBlogById(@ApiParam("博客id") @PathVariable("blogId") int blogId) {

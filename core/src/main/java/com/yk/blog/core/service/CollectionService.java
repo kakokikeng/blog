@@ -2,6 +2,8 @@ package com.yk.blog.core.service;
 
 import com.yk.blog.domain.dto.Collection;
 
+import java.util.List;
+
 
 public interface CollectionService {
 
@@ -33,5 +35,15 @@ public interface CollectionService {
      * @date 2019/5/16
      */
     Collection getCollection(String userId, int blogId);
+
+    /**
+     * 通过userId获取记录
+     *
+     * @param
+     * @return
+     * @author yikang
+     * @date 2019/5/16
+     */
+    List<Collection> getCollection(String userId);
 
 }

@@ -21,4 +21,9 @@
         select * from collection where user_id = #{userId} and blog_id = #{blogId};
     </select>
 
+    <select id="getCollectionByUserId" resultMap="collection">
+        select * from collection where user_id = #{userId};
+    </select>
+
+
 </mapper>
