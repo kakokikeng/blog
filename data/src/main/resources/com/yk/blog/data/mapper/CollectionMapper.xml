@@ -12,6 +12,11 @@
         INSERT INTO record(user_id, blog_id)  VALUES(#{record.userId},#{record.blogId});
     </insert>
 
+
+    <delete id="cancelCollect">
+        delete from collection where user_id = #{userId} and blog_id = #{blogId};
+    </delete>
+
     <select id="getRecord" resultMap="collection">
         select * from record where user_id = #{userId} and blog_id = #{blogId};
     </select>

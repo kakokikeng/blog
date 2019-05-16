@@ -9,6 +9,8 @@ public interface CollectionMapper {
 
     int createCollection(Collection collection);
 
+    int cancelCollect(@Param("userId") String userId, @Param("blogId") int blogId);
+
     Collection getCollection(@Param("userId") String userId,@Param("blogId") int blogId);
 
 }

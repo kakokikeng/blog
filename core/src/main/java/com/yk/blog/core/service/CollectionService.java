@@ -16,6 +16,15 @@ public interface CollectionService {
     int createCollection(String userId, int blogId);
 
     /**
+     *  取消收藏
+     *  @author  yikang
+     *  @date  2019/5/16
+     *  @param
+     *  @return
+     */
+    int cancelCollect(String userId,int blogId);
+
+    /**
      * 通过userId和blogId获取记录
      *
      * @param

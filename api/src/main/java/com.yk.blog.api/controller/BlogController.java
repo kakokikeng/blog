@@ -2,6 +2,7 @@ package com.yk.blog.api.controller;
 
 import com.yk.blog.core.dto.*;
 import com.yk.blog.core.service.BlogService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,6 +90,12 @@ public class BlogController {
     @PutMapping("collection/{blogId}")
     public Result collectBlog(@PathVariable("blogId")int blogId,@RequestParam("token")String token){
         return blogService.collectBlog(blogId,token);
+    }
+
+    @ApiOperation("取消收藏")
+    @DeleteMapping("collection/{blogId}")
+    public GenericResult<Boolean> cancelCollect(@PathVariable("blogId")int blogId,@RequestParam("token")String token){
+        return blogService.cancelCollect(blogId,token);
     }
 
     @ApiOperation("获取是否已收藏")

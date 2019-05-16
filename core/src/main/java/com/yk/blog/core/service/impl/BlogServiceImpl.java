@@ -63,11 +63,24 @@ public class BlogServiceImpl implements BlogService {
         try (Jedis jedis = jedisPool.getResource()) {
             String userId = jedis.hget(Utils.generatePrefix(Constant.TOKEN_WITH_USER_ID), token);
             if (collectionService.getCollection(userId, blogId) == null) {
-                return GenericResultUtils.genericResult(false);
+                return GenericResultUtils.genericResult(true,false);
             } else {
-                return GenericResultUtils.genericResult(true);
+                return GenericResultUtils.genericResult(true,true);
             }
         }
+
+    }
+
+    @Override
+    public GenericResult<Boolean> cancelCollect(int blogId, String token) {
+         try(Jedis jedis = jedisPool.getResource()){
+             String userId = jedis.hget(Utils.generatePrefix(Constant.TOKEN_WITH_USER_ID), token);
+             if(collectionService.cancelCollect(userId,blogId) > 0){
+                 return GenericResultUtils.genericResult(true,true);
+             }else{
+                 return GenericResultUtils.genericResult(true,false);
+             }
+         }
 
     }
 

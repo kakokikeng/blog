@@ -35,6 +35,11 @@ public class CollectionServiceImpl implements CollectionService {
     }
 
     @Override
+    public int cancelCollect(String userId, int blogId) {
+        return collectionMapper.cancelCollect(userId, blogId);
+    }
+
+    @Override
     public Collection getCollection(String userId, int blogId) {
         return collectionMapper.getCollection(userId, blogId);
     }
