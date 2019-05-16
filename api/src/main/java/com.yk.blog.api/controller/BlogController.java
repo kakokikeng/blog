@@ -91,5 +91,12 @@ public class BlogController {
         return blogService.collectBlog(blogId,token);
     }
 
+    @ApiOperation("获取是否已收藏")
+    @GetMapping("collected/{blogId}")
+    public GenericResult<Boolean> ifCollected(@PathVariable("blogId")int blogId,@RequestParam("token")String token){
+        return blogService.ifCollected(blogId,token);
+    }
+
+
 
 }

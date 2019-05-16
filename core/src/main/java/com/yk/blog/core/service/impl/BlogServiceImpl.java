@@ -53,10 +53,30 @@ public class BlogServiceImpl implements BlogService {
     @Autowired
     BlogReqFactory blogReqFactory;
 
-    //todo 收藏文章
+    @Autowired
+    CollectionService collectionService;
+
+
+    @Override
+    public GenericResult<Boolean> ifCollected(int blogId, String token) {
+
+        try (Jedis jedis = jedisPool.getResource()) {
+            String userId = jedis.hget(Utils.generatePrefix(Constant.TOKEN_WITH_USER_ID), token);
+            if (collectionService.getCollection(userId, blogId) == null) {
+                return GenericResultUtils.genericResult(false);
+            } else {
+                return GenericResultUtils.genericResult(true);
+            }
+        }
+
+    }
+
     @Override
     public Result collectBlog(int blogId, String token) {
-        return null;
+        try (Jedis jedis = jedisPool.getResource()) {
+            String userId = jedis.hget(Utils.generatePrefix(Constant.TOKEN_WITH_USER_ID), token);
+            return GenericResultUtils.generateResultWithCount(collectionService.createCollection(userId, blogId));
+        }
     }
 
     @Override

@@ -23,6 +23,15 @@ public interface BlogService {
     Result collectBlog(int blogId, String token);
 
     /**
+     * 判断是否已经收藏
+     * @param
+     * @return
+     * @author yikang
+     * @date 2019/5/16
+     */
+    GenericResult<Boolean> ifCollected(int blogId, String token);
+
+    /**
      *
      *  @author yikang
      *  @date 2019/5/14
