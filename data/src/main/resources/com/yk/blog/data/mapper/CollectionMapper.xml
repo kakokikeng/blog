@@ -9,7 +9,7 @@
     </resultMap>
 
     <insert id="createCollection">
-        INSERT INTO record(user_id, blog_id)  VALUES(#{record.userId},#{record.blogId});
+        INSERT INTO collection(user_id, blog_id)  VALUES(#{collection.userId},#{collection.blogId});
     </insert>
 
 
@@ -17,8 +17,8 @@
         delete from collection where user_id = #{userId} and blog_id = #{blogId};
     </delete>
 
-    <select id="getRecord" resultMap="collection">
-        select * from record where user_id = #{userId} and blog_id = #{blogId};
+    <select id="getCollection" resultMap="collection">
+        select * from collection where user_id = #{userId} and blog_id = #{blogId};
     </select>
 
 </mapper>

@@ -17,4 +17,8 @@
         select * from record where user_id = #{userId} and blog_id = #{blogId};
     </select>
 
+    <update id="updataRecord">
+        update record set score = #{record.score} where user_id = #{record.userId} and blog_id = #{record.blogId};
+    </update>
+
 </mapper>

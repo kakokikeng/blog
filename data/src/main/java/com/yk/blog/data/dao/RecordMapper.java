@@ -7,9 +7,9 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface RecordMapper {
 
-    int updataRecord(Record record);
+    int updataRecord(@Param("record") Record record);
 
-    int insertRecord(Record record);
+    int insertRecord(@Param("record") Record record);
 
     Record getRecord(@Param("userId") String userId, @Param("blogId") int blogId);
 

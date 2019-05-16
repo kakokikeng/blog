@@ -157,10 +157,10 @@
         <br>
         <span id="thumbs-number"></span>
     </div>
-    <div id="collect" style="height:100px;width:100px;margin-top: 30px;margin-left: 100px;float: left;">
+    <div style="height:100px;width:100px;margin-top: 30px;margin-left: 100px;float: left;">
         <img id="collect-pic" href="#" style="background-color: transparent;" height="80px" width="80px" src="images/collect.jpg"
              onclick="collection()">
-        <span style="margin-left:15px;margin-right: 15px;">收</span><span>藏</span>
+        <span id="collect"></span>
     </div>
     <div id="follow" style="height:100px;width:100px;margin-top: 30px;margin-left: 100px;float: left;">
         <button id="follow-author" style="height: 80px;width: 80px;" onclick="followAuthor()"></button>
@@ -280,7 +280,33 @@
     }
 
     function collection() {
-
+        var blogId = Cookies.get("blogId");
+        var token = JSON.parse(Cookies.get("token"));
+        if (document.getElementById("collect").innerText == "收藏") {
+            $.ajax({
+                type: "PUT",
+                contentType: "application/json",
+                url: "blog/collection/" + blogId + "?token=" + token.token.token,
+                dataType: "json",
+                success: function (result) {
+                    if (result.success == true) {
+                        document.getElementById("collect").innerHTML = "取消收藏";
+                    }
+                }
+            })
+        } else if (document.getElementById("collect").innerText == "取消收藏") {
+            $.ajax({
+                type: "DELETE",
+                contentType: "application/json",
+                url: "blog/collection/" + blogId + "?token=" + token.token.token,
+                dataType: "json",
+                success: function (result) {
+                    if (result.success == true) {
+                        document.getElementById("collect").innerHTML = "收藏";
+                    }
+                }
+            })
+        }
     }
 
     function getContent(){
@@ -305,6 +331,7 @@
                 document.getElementById("content").appendChild(content);
                 document.getElementById("thumbs-number").innerHTML = result.data.likeCount;
                 getComment();
+                getCollection();
 
                 var loginUserName = Cookies.get("loginUserName");
                 var userName = document.createElement("div");
@@ -322,6 +349,23 @@
                 document.getElementById("userName").appendChild(userName);
             }
         });
+    }
+
+    function getCollection() {
+        var blogId = Cookies.get("blogId");
+        var token = JSON.parse(Cookies.get("token"));
+        $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            url: "blog/collected/" + blogId + "?token=" + token.token.token,
+            success: function (result) {
+                if (result.data == true) {
+                    document.getElementById("collect").innerHTML = "取消收藏";
+                } else {
+                    document.getElementById("collect").innerHTML = "收藏";
+                }
+            }
+        })
     }
 
     function getComment() {

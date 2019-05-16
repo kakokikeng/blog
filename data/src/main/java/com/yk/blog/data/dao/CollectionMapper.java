@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface CollectionMapper {
 
-    int createCollection(Collection collection);
+    int createCollection(@Param("collection") Collection collection);
 
     int cancelCollect(@Param("userId") String userId, @Param("blogId") int blogId);
 
