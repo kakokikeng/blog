@@ -4,10 +4,7 @@ import com.yk.blog.core.dto.GenericResult;
 import com.yk.blog.core.dto.Result;
 import com.yk.blog.core.dto.CommentReqDTO;
 import com.yk.blog.core.dto.CommentRespDTO;
-import com.yk.blog.core.service.AuthorityService;
-import com.yk.blog.core.service.BlogService;
-import com.yk.blog.core.service.CommentService;
-import com.yk.blog.core.service.UserService;
+import com.yk.blog.core.service.*;
 import com.yk.blog.core.constant.Constant;
 import com.yk.blog.core.constant.ErrorMessages;
 import com.yk.blog.core.utils.GenericResultUtils;
@@ -47,6 +44,9 @@ public class CommentServiceImpl implements CommentService {
     @Autowired
     JedisPool jedispool;
 
+    @Autowired
+    RecordService recordService;
+
 
     @Override
     public Result deleteCommentByBlogId(int blogId) {
@@ -70,6 +70,8 @@ public class CommentServiceImpl implements CommentService {
             if (count > 0) {
                 long commentCount = jedis.hincrBy(Utils.generatePrefix(Constant.BLOG_COMMENT_COUNT), String.valueOf(commentReqDTO.getBlogId()), 1);
                 blogService.updateBlogCommentCount(commentReqDTO.getBlogId(), (int) commentCount);
+                //增加用户与文章之间的record记录
+                recordService.insertRecord(commentReqDTO.getUserId(),commentReqDTO.getBlogId(),Constant.SCORE_LIKE_OR_COMMENT);
                 // TODO 被回复用户消息推送
             }
             return generateResultWithCount(count);
