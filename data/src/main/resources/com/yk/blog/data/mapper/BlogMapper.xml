@@ -17,6 +17,10 @@
         select * from blog order by read_count desc limit 10
     </select>
 
+    <select id="getBlogsByRandom" resultMap="blog">
+        SELECT * FROM blog WHERE id >= ((SELECT MAX(id) FROM blog)-(SELECT MIN(id) FROM blog)) * RAND() + (SELECT MIN(id) FROM blog)  LIMIT #{n}
+    </select>
+
     <select id="getBlogsByIds" resultMap="blog">
         select * from blog where id in
         <foreach collection="list" item="ids" open="(" separator="," close=")">

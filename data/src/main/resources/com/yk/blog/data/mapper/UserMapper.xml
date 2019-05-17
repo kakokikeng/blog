@@ -18,6 +18,10 @@
         select id from user where email = #{email};
     </select>
 
+    <select id="getUsersByRandom" resultMap="user">
+        SELECT * FROM user WHERE id >= ((SELECT MAX(id) FROM user)-(SELECT MIN(id) FROM user)) * RAND() + (SELECT MIN(id) FROM user)  LIMIT #{n}
+    </select>
+
     <update id="updatePasswd">
         update user set passwd = #{newPasswd} where email = #{email};
     </update>

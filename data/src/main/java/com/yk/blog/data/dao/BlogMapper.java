@@ -132,5 +132,14 @@ public interface BlogMapper {
      */
     List<Blog> getBlogsByIds(List<Integer> ids);
 
+    /**
+     *  随机选取N条数据
+     *  @author  yikang
+     *  @date  2019/5/16
+     *  @param
+     *  @return
+     */
+    List<Blog> getBlogsByRandom(@Param("n") int n);
+
 
 }

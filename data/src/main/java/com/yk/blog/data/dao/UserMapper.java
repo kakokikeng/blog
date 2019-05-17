@@ -1,5 +1,6 @@
 package com.yk.blog.data.dao;
 
+import com.yk.blog.domain.dto.Blog;
 import com.yk.blog.domain.dto.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -12,6 +13,15 @@ import java.util.List;
  */
 @Mapper
 public interface UserMapper {
+
+    /**
+     *  随机选取N条数据
+     *  @author  yikang
+     *  @date  2019/5/16
+     *  @param
+     *  @return
+     */
+    List<User> getUsersByRandom(@Param("n") int n);
 
     /**
      *  通过邮箱获得用户id

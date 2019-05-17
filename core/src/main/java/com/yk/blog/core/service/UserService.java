@@ -4,6 +4,7 @@ import com.yk.blog.core.dto.GenericResult;
 import com.yk.blog.core.dto.Result;
 import com.yk.blog.core.dto.UserReqDTO;
 import com.yk.blog.core.dto.UserRespDTO;
+import com.yk.blog.domain.dto.User;
 
 import java.util.List;
 
@@ -13,6 +14,15 @@ import java.util.List;
  */
 
 public interface UserService {
+
+    /**
+     *  随机获取用户
+     *  @author  yikang
+     *  @date  2019/5/16
+     *  @param  n
+     *  @return  java.util.List<com.yk.blog.domain.dto.User>
+     */
+    List<User> getUsersByRandom(int n);
 
     /**
      * @param

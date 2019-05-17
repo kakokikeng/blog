@@ -10,8 +10,8 @@ import java.util.Map;
  */
 public class MatrixConstructionUtils {
 
-    //构建评分矩阵 输入值input为三列
-    int[][] scoreMatrix(List<String> users, List<String> blogs, String[][] input) {
+    //构建评分矩阵 行为文章列为用户 输入值input为三列 第一列为 第二列为 第三列为评分
+    public static int[][] scoreMatrix(List<String> users, List<String> blogs, String[][] input) {
         String[][] tmp = new String[users.size() + 1][blogs.size() + 1];
         int[][] result = new int[users.size()][blogs.size()];
         for (int i = 1; i < tmp.length; i++) {
@@ -48,7 +48,7 @@ public class MatrixConstructionUtils {
     }
 
     //构建相似度矩阵
-    int[][] similarMatrix(int[][] score, List<String> blogs) {
+    public static int[][] similarMatrix(int[][] score, List<String> blogs) {
         int[][] result = new int[score[0].length][score[0].length];
 
         Map<String, Integer> map = new HashMap<>();

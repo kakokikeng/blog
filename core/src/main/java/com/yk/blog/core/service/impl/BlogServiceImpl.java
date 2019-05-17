@@ -7,16 +7,19 @@ import com.yk.blog.core.factories.BlogReqFactory;
 import com.yk.blog.core.factories.BlogRespFactory;
 import com.yk.blog.core.service.*;
 import com.yk.blog.core.utils.GenericResultUtils;
+import com.yk.blog.core.utils.MatrixConstructionUtils;
 import com.yk.blog.core.utils.Utils;
 import com.yk.blog.data.dao.BlogMapper;
 import com.yk.blog.domain.dto.Blog;
 import com.yk.blog.domain.dto.Collection;
+import com.yk.blog.domain.dto.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -129,6 +132,50 @@ public class BlogServiceImpl implements BlogService {
     @Override
     public GenericResult<List<BlogRespDTO>> getRecommendBlog(String token) {
 
+        try(Jedis jedis = jedisPool.getResource()) {
+            String userId = jedis.hget(Utils.generatePrefix(Constant.TOKEN_WITH_USER_ID),token);
+            List<BlogRespDTO> data = new ArrayList<>();
+            List<Blog> blogs = blogMapper.getBlogsByRandom(Constant.RECOMMEND_NUMBER);
+            List<User> users = userService.getUsersByRandom(Constant.RECOMMEND_NUMBER);
+            boolean in = false;
+            for (int i = 0; i < users.size(); i++) {
+                if(users.get(i).getId().equals(userId)){
+                    in = true;
+                    break;
+                }
+            }
+            //将获取推荐文章的用户加入用户队列
+            if(!in){
+                users.remove(0);
+                User u = new User();
+                UserRespDTO user = userService.getLoginUserInfo(token);
+                u.setUserName(user.getUserName());
+                u.setEmail(user.getEmail());
+                u.setCreateTime(new Timestamp(user.getCreateTime()));
+                u.setId(user.getId());
+                u.setFans(user.getFans());
+                u.setBlogs(user.getBlogs());
+                u.setFollows(user.getFollows());
+                users.add(u);
+            }
+            //userList转为userNameList
+            List<String> userNameList = new ArrayList<>(users.size());
+            for (int i = 0; i < users.size(); i++) {
+                userNameList.add(users.get(i).getUserName());
+            }
+
+            //blogList转为blogTitleList
+            List<String> blogTitleList = new ArrayList<>(blogs.size());
+            for (int i = 0; i < blogs.size(); i++) {
+                blogTitleList.add(blogs.get(i).getTitle());
+            }
+
+            String [][] input = new String[3][blogs.size()];
+
+            MatrixConstructionUtils.scoreMatrix(userNameList,blogTitleList,input);
+
+
+        }
 
 
         return null;
@@ -206,6 +253,8 @@ public class BlogServiceImpl implements BlogService {
         }
         try (Jedis jedis = jedisPool.getResource()) {
             String userId = jedis.hget(Utils.generatePrefix(Constant.TOKEN_WITH_USER_ID), token);
+            //外键依赖，先删除评论
+            commentService.deleteCommentByBlogId(blogId);
             int count = blogMapper.deleteBlog(userId, blogId);
             if (count > 0) {
                 jedis.srem(Utils.generatePrefix(Constant.EXIST_BLOG), String.valueOf(blogId));
@@ -213,7 +262,6 @@ public class BlogServiceImpl implements BlogService {
                 jedis.hdel(Utils.generatePrefix(Constant.BLOG_COMMENT_COUNT), String.valueOf(blogId));
                 jedis.hdel(Utils.generatePrefix(Constant.BLOG_LIKED_COUNT), String.valueOf(blogId));
                 jedis.srem(Utils.generatePrefix(Constant.BLOG_LIKED_RECORD + userId), String.valueOf(blogId));
-                commentService.deleteCommentByBlogId(blogId);
             }
             countService.updateBlogCount(userId, -1);
             return generateResultWithCount(count);
