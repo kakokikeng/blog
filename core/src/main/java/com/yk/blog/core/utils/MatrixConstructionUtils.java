@@ -18,17 +18,17 @@ public class MatrixConstructionUtils {
             tmp[i][0] = userIds.get(i - 1);
             tmp[0][i] = String.valueOf(blogIds.get(i - 1));
         }
-        for (int i = 0; i < input.length; i++) {
+        for (int i = 0; i < input[0].length; i++) {
             int x = 0, y = 0;
-            for (int j = 0; j < input[0].length; j++) {
+            for (int j = 0; j < input.length; j++) {
                 for (int q = 1; q < tmp.length; q++) {
-                    if (tmp[0][q].equals(input[i][j])) {
+                    if (tmp[0][q].equals(input[1][j])) {
                         y = q;
                         break;
                     }
                 }
                 for (int q = 1; q < tmp[0].length; q++) {
-                    if (tmp[q][0].equals(input[i][j])) {
+                    if (tmp[q][0].equals(input[0][j])) {
                         x = q;
                         break;
                     }

@@ -186,14 +186,14 @@ public class BlogServiceImpl implements BlogService {
             int[][] recommendScore = new int[2][scoreMatrix.length];
             for (int i = 0; i < resultMatrix[0].length; i++) {
                 recommendScore[0][i] = blogIds.get(i);
-                recommendScore[1][i] = resultMatrix[resultMatrix.length][i];
+                recommendScore[1][i] = resultMatrix[resultMatrix.length - 1][i];
             }
             bubble(recommendScore);
 
             List<Integer> respBlogIds = new ArrayList<>();
             int index = recommendScore[0].length - 1;
-            for (int i = 0; i < Constant.RECOMMEND_RETURN_NUM; i++) {
-                respBlogIds.add(recommendScore[1][index --]);
+            for (int i = 0; i < Constant.RECOMMEND_RETURN_NUM && index >= 0; i++) {
+                respBlogIds.add(recommendScore[0][index --]);
             }
 
             List<Blog> respBlogs = blogMapper.getBlogsByIds(respBlogIds);
