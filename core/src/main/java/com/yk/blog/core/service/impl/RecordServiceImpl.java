@@ -3,10 +3,13 @@ package com.yk.blog.core.service.impl;
 import com.yk.blog.core.constant.Constant;
 import com.yk.blog.core.service.RecordService;
 import com.yk.blog.data.dao.RecordMapper;
+import com.yk.blog.domain.dto.IdLists;
 import com.yk.blog.domain.dto.Record;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.JedisPool;
+
+import java.util.List;
 
 /**
  * @author yikang
@@ -42,5 +45,13 @@ public class RecordServiceImpl implements RecordService {
             }
 
         }
+    }
+
+    @Override
+    public List<Record> getRecords(List<String> userIds, List<Integer> blogIds) {
+        IdLists idLists = new IdLists();
+        idLists.setUserIds(userIds);
+        idLists.setBlogIds(blogIds);
+        return recordMapper.getRecords(idLists);
     }
 }

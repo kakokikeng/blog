@@ -61,7 +61,9 @@ public class Constant {
 
     public static final int SCORE_COLLECTION_ = 3;
 
-    public static final int RECOMMEND_NUMBER = 10;
+    public static final int RECOMMEND_SRC_NUM = 10;
+
+    public static final int RECOMMEND_RETURN_NUM = 5;
 
 
 

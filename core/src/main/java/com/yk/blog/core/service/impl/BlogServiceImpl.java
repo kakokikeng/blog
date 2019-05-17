@@ -12,6 +12,7 @@ import com.yk.blog.core.utils.Utils;
 import com.yk.blog.data.dao.BlogMapper;
 import com.yk.blog.domain.dto.Blog;
 import com.yk.blog.domain.dto.Collection;
+import com.yk.blog.domain.dto.Record;
 import com.yk.blog.domain.dto.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -59,6 +60,9 @@ public class BlogServiceImpl implements BlogService {
 
     @Autowired
     CollectionService collectionService;
+
+    @Autowired
+    RecordService recordService;
 
 
     @Override
@@ -131,21 +135,19 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public GenericResult<List<BlogRespDTO>> getRecommendBlog(String token) {
-
-        try(Jedis jedis = jedisPool.getResource()) {
-            String userId = jedis.hget(Utils.generatePrefix(Constant.TOKEN_WITH_USER_ID),token);
-            List<BlogRespDTO> data = new ArrayList<>();
-            List<Blog> blogs = blogMapper.getBlogsByRandom(Constant.RECOMMEND_NUMBER);
-            List<User> users = userService.getUsersByRandom(Constant.RECOMMEND_NUMBER);
+        try (Jedis jedis = jedisPool.getResource()) {
+            String userId = jedis.hget(Utils.generatePrefix(Constant.TOKEN_WITH_USER_ID), token);
+            List<Blog> blogs = blogMapper.getBlogsByRandom(Constant.RECOMMEND_SRC_NUM);
+            List<User> users = userService.getUsersByRandom(Constant.RECOMMEND_SRC_NUM);
             boolean in = false;
             for (int i = 0; i < users.size(); i++) {
-                if(users.get(i).getId().equals(userId)){
+                if (users.get(i).getId().equals(userId)) {
                     in = true;
                     break;
                 }
             }
-            //将获取推荐文章的用户加入用户队列
-            if(!in){
+            //将获取推荐文章的用户加入用户队列最后一个
+            if (!in) {
                 users.remove(0);
                 User u = new User();
                 UserRespDTO user = userService.getLoginUserInfo(token);
@@ -158,27 +160,65 @@ public class BlogServiceImpl implements BlogService {
                 u.setFollows(user.getFollows());
                 users.add(u);
             }
-            //userList转为userNameList
-            List<String> userNameList = new ArrayList<>(users.size());
+            //userList转为userIds
+            List<String> userIds = new ArrayList<>(users.size());
             for (int i = 0; i < users.size(); i++) {
-                userNameList.add(users.get(i).getUserName());
+                userIds.add(users.get(i).getId());
             }
 
-            //blogList转为blogTitleList
-            List<String> blogTitleList = new ArrayList<>(blogs.size());
+            //blogList转为blogIds
+            List<Integer> blogIds = new ArrayList<>(blogs.size());
             for (int i = 0; i < blogs.size(); i++) {
-                blogTitleList.add(blogs.get(i).getTitle());
+                blogIds.add(blogs.get(i).getId());
             }
 
-            String [][] input = new String[3][blogs.size()];
+            List<Record> records = recordService.getRecords(userIds, blogIds);
+            String[][] input = new String[3][blogs.size()];
+            for (int i = 0; i < records.size(); i++) {
+                input[0][i] = records.get(i).getUserId();
+                input[1][i] = String.valueOf(records.get(i).getBlogId());
+                input[2][i] = String.valueOf(records.get(i).getScore());
+            }
+            int[][] scoreMatrix = MatrixConstructionUtils.scoreMatrix(userIds, blogIds, input);
+            int[][] similarMatrix = MatrixConstructionUtils.similarMatrix(scoreMatrix, blogIds);
+            int[][] resultMatrix = MatrixConstructionUtils.multiplyMatrix(scoreMatrix, similarMatrix);
+            //recommendScore数组存储对该用户推荐文章的预估评分，第一行表示文章id，第二行表示文章推荐预估评分
+            int[][] recommendScore = new int[2][scoreMatrix.length];
+            for (int i = 0; i < resultMatrix[0].length; i++) {
+                recommendScore[0][i] = blogIds.get(i);
+                recommendScore[1][i] = resultMatrix[resultMatrix.length][i];
+            }
+            bubble(recommendScore);
 
-            MatrixConstructionUtils.scoreMatrix(userNameList,blogTitleList,input);
+            List<Integer> respBlogIds = new ArrayList<>();
+            int index = recommendScore[0].length - 1;
+            for (int i = 0; i < Constant.RECOMMEND_RETURN_NUM; i++) {
+                respBlogIds.add(recommendScore[1][index --]);
+            }
 
-
+            List<Blog> respBlogs = blogMapper.getBlogsByIds(respBlogIds);
+            List<BlogRespDTO> data = new ArrayList<>(respBlogs.size());
+            for (int i = 0; i < respBlogs.size(); i++) {
+                data.add(new BlogRespDTO(respBlogs.get(i)));
+            }
+            return GenericResultUtils.genericResult(true,data);
         }
 
+    }
 
-        return null;
+    private void bubble(int[][] arr) {
+        for (int i = 0; i < arr[0].length - 1; i++) {
+            for (int j = 0; j < arr[0].length - i - 1; j++) {
+                if (arr[1][j] > arr[1][j + 1]) {
+                    int num = arr[1][j];
+                    int id = arr[0][j];
+                    arr[1][j] = arr[1][j + 1];
+                    arr[0][j] = arr[0][j + 1];
+                    arr[0][j + 1] = id;
+                    arr[1][j + 1] = num;
+                }
+            }
+        }
     }
 
     @Override

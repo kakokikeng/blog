@@ -10,13 +10,13 @@ import java.util.Map;
  */
 public class MatrixConstructionUtils {
 
-    //构建评分矩阵 行为文章列为用户 输入值input为三列 第一列为 第二列为 第三列为评分
-    public static int[][] scoreMatrix(List<String> users, List<String> blogs, String[][] input) {
-        String[][] tmp = new String[users.size() + 1][blogs.size() + 1];
-        int[][] result = new int[users.size()][blogs.size()];
+    //构建评分矩阵 行为文章列为用户 输入值input为三列 第一列为userId 第二列为blogId 第三列为评分
+    public static int[][] scoreMatrix(List<String> userIds, List<Integer> blogIds, String[][] input) {
+        String[][] tmp = new String[userIds.size() + 1][blogIds.size() + 1];
+        int[][] result = new int[userIds.size()][blogIds.size()];
         for (int i = 1; i < tmp.length; i++) {
-            tmp[0][i] = users.get(i - 1);
-            tmp[i][0] = blogs.get(i - 1);
+            tmp[i][0] = userIds.get(i - 1);
+            tmp[0][i] = String.valueOf(blogIds.get(i - 1));
         }
         for (int i = 0; i < input.length; i++) {
             int x = 0, y = 0;
@@ -37,7 +37,7 @@ public class MatrixConstructionUtils {
                     break;
                 }
             }
-            tmp[x][y] = input[i][3];
+            tmp[x][y] = input[2][i];
         }
         for (int i = 1; i < tmp.length; i++) {
             for (int j = 1; j < tmp[0].length; j++) {
@@ -48,11 +48,11 @@ public class MatrixConstructionUtils {
     }
 
     //构建相似度矩阵
-    public static int[][] similarMatrix(int[][] score, List<String> blogs) {
+    public static int[][] similarMatrix(int[][] score, List<Integer> blogIds) {
         int[][] result = new int[score[0].length][score[0].length];
 
         Map<String, Integer> map = new HashMap<>();
-        for (int i = 1; i < score.length; i++) {
+        for (int i = 0; i < score.length; i++) {
             for (int j = i + 1; j < score.length; j++) {
                 for (int q = 1; q < score[0].length; q++) {
                     if (score[i][q] == score[j][q]) {
@@ -66,11 +66,11 @@ public class MatrixConstructionUtils {
             String blog1 = ((String) entry.getKey()).split(":")[0];
             String blog2 = ((String) entry.getKey()).split(":")[1];
             int x = 0, y = 0;
-            for (int i = 0; i < blogs.size(); i++) {
-                if (x == 0 && (blogs.get(i).equals(blog1) || blogs.get(i).equals(blog2))) {
+            for (int i = 0; i < blogIds.size(); i++) {
+                if (x == 0 && (String.valueOf(blogIds.get(i)).equals(blog1) || String.valueOf(blogIds.get(i)).equals(blog2))) {
                     x = i;
                 }
-                if (x != 0 && (blogs.get(i).equals(blog1) || blogs.get(i).equals(blog2))) {
+                if (x != 0 && (String.valueOf(blogIds.get(i)).equals(blog1) || String.valueOf(blogIds.get(i)).equals(blog2))) {
                     y = i;
                 }
                 if (x != 0 && y != 0) {

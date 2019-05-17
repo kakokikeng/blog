@@ -17,6 +17,17 @@
         select * from record where user_id = #{userId} and blog_id = #{blogId};
     </select>
 
+    <select id="getRecords" resultMap="record">
+        select * from record where user_id in
+        <foreach collection="idLists.userIds" index="index" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+        and blog_id in
+        <foreach collection="idLists.blogIds" index="index" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </select>
+
     <update id="updataRecord">
         update record set score = #{record.score} where user_id = #{record.userId} and blog_id = #{record.blogId};
     </update>
